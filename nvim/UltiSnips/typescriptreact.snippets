@@ -1,0 +1,53 @@
+global !p
+def upperfirst(t):
+	if len(t) < 2:
+		return '' if len(t) < 1 else t.capitalize()
+	return t[0].capitalize() + t[1:]
+def lowerdash(t):
+	return '-'.join([ w.lower() for w in re.findall('[a-z]+|[A-Z]+[a-z]*', t) ])
+endglobal
+
+
+snippet fcde "function component default export (with prop interface)" b
+import * as React from 'react'
+
+export interface $1Props {
+	$3
+}
+
+export default function ${1:`!v expand('%:t:r')`}(${2:props}: $1Props) {
+	return (
+		${4:null}$0
+	)
+}
+endsnippet
+
+snippet fcdeh "function component default export (with prop interface and react hook)" b
+import * as React, {useState, useEffect} from 'react'
+
+export interface $1Props {
+	$3
+}
+
+export default function ${1:`!v expand('%:t:r')`}(${2:props}: $1Props) {
+	return (
+		${4:null}$0
+	)
+}
+endsnippet
+
+
+# =========================
+# react hook
+# =========================
+snippet useS "useState()" b
+const [$1, set$4`!p snip.rv=upperfirst(t[1])`] = useState<$2>($3)$0
+endsnippet
+
+snippet useE "useEffect() not deps" b
+React.useEffect($1)
+endsnippet
+
+snippet useEd "useEffect() has deps" b
+React.useEffect($1, [$2])
+endsnippet
