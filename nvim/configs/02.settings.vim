@@ -12,10 +12,10 @@ set shiftwidth=4
 "number
 
 "map key movement int insert mode
-inoremap <A-h> <C-o>h
-inoremap <A-j> <C-o>j
-inoremap <A-k> <C-o>k
-inoremap <A-l> <C-o>l
+inoremap <A-h> <Left>
+inoremap <A-j> <Down>
+inoremap <A-k> <Up>
+inoremap <A-l> <Right>
 inoremap <A-b> <C-o>b
 inoremap <A-w> <C-o>w
 

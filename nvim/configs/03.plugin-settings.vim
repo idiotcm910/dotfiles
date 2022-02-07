@@ -9,10 +9,6 @@ colorscheme onedark
 let g:jsx_ext_required = 1
 let g:jsx_pragma_required = 1
 
-""NerdTree
-"Map key NerdTree
-nnoremap <S-b> :NERDTreeToggle<CR>
-
 "Tu dong dong' NerdTree khi dong tab
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") 
@@ -30,6 +26,12 @@ set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path '**/node_modules/**' -prune -o -path '*.class' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 
+""vim easymotion
+"
+nmap <silent> ;l <Plug>(easymotion-overwin-line)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+nmap s <Plug>(easymotion-overwin-f2)
+map  / <Plug>(easymotion-sn)
 "rainbow
 let g:rainbow_active = 1
 let g:rainbow_load_separately = [
