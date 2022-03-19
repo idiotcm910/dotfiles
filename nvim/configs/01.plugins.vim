@@ -17,6 +17,8 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'MaxMEllon/vim-jsx-pretty'
+"snippets
+Plug 'honza/vim-snippets'
 "colorscheme
 Plug 'joshdick/onedark.vim'
 Plug 'dracula/vim'

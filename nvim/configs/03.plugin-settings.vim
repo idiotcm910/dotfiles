@@ -244,33 +244,59 @@ lua <<EOF
 vim.opt.laststatus=2
 vim.opt.showtabline=2
 
-require'staline'.setup{
+--require'staline'.setup{
+--	sections = {
+--		left = {
+--			'- ', '-mode', 'left_sep_double',
+--			'file_name', '  ', 'branch'
+--		},
+--		mid  = {'lsp'},
+--		right= {
+--			'cool_symbol', '  ',
+--			vim.bo.fileencoding:upper(), 'right_sep_double', '-line_column'
+--		}
+--	},
+--	defaults = {
+--		cool_symbol = "  ",
+--		left_separator = "",
+--		right_separator = "",
+--		full_path = false,
+--		branch_symbol = " "
+--	},
+--	mode_colors = {
+--		n = "#986fec",
+--		i = "#e86671",
+--		ic= "#e86671",
+--		c = "#e27d60"
+--	}
+--}
+require("staline").setup {
 	sections = {
 		left = {
-			'- ', '-mode', 'left_sep_double',
-			'file_name', '  ', 'branch'
+			'▊', ' ', { 'Evil', ' ' }, ' ',         -- The mode and evil sign
+			'file_size', ' ',                        -- Filesize
+			{ 'StalineFile', 'file_name' }, ' '       -- Filename in different highlight
 		},
-		mid  = {'lsp'},
-		right= {
-			'cool_symbol', '  ',
-			vim.bo.fileencoding:upper(), 'right_sep_double', '-line_column'
+		mid = { ' ', 'lsp_name' },                      -- "lsp_name" is still a little buggy
+		right = {
+			{ 'StalineEnc', vim.bo.fileencoding:upper() }, '  ',  -- Example for custom section
+			{ 'StalineEnc', 'cool_symbol' }, ' ',                 -- the cool_symbol for your OS
+			{ 'StalineGit', 'branch' }, ' ', '▊'                  -- Branch Name in different highlight
 		}
 	},
 	defaults = {
-		cool_symbol = "  ",
-		left_separator = "",
-		right_separator = "",
-		full_path = false,
-		branch_symbol = " "
+		bg = "#202328",
+		branch_symbol = " "
 	},
 	mode_colors = {
-		n = "#986fec",
-		i = "#e86671",
-		ic= "#e86671",
-		c = "#e27d60"
+		n = "#38b1f0",
+		i = "#9ece6a",       -- etc mode
 	}
 }
-
+vim.cmd [[hi Evil        guifg=#f36365 guibg=#202328]]       -- Higlight for Evil symbol
+vim.cmd [[hi StalineEnc  guifg=#7d9955 guibg=#202328]]       -- Encoding Highlight
+vim.cmd [[hi StalineGit  guifg=#8583b3 guibg=#202328]]       -- Branch Name Highlight
+vim.cmd [[hi StalineFile guifg=#c37cda guibg=#202328]]  
 require'stabline'.setup {
 	style = "slant",
 	fg = "#986fec",
