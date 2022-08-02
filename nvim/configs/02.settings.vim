@@ -49,3 +49,34 @@ inoremap jk <Esc>
 autocmd ColorScheme * highlight jvTypedef guifg=#a468ac cterm=bold
 autocmd ColorScheme * highlight jvType guifg=#6f694f cterm=bold
 
+"" deleteing without register overwrite
+" Shortcut to use blackhole register by default
+nnoremap d "_d
+vnoremap d "_d
+nnoremap D "_D
+vnoremap D "_D
+nnoremap c "_c
+vnoremap c "_c
+nnoremap C "_C
+vnoremap C "_C
+nnoremap x "_x
+vnoremap x "_x
+nnoremap X "_X
+vnoremap X "_X
+" Change <leader> to be comma
+let mapleader = ","
+let g:mapleader = ","
+" Shortcut to use clipboard with <leader>
+nnoremap <leader>d d
+vnoremap <leader>d d
+nnoremap <leader>D D
+vnoremap <leader>D D
+nnoremap <leader>c c
+vnoremap <leader>c c
+nnoremap <leader>C C
+vnoremap <leader>C C
+nnoremap <leader>x x
+vnoremap <leader>x x
+nnoremap <leader>X X
+vnoremap <leader>X X
+

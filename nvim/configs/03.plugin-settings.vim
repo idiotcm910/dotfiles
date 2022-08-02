@@ -304,3 +304,8 @@ require'stabline'.setup {
 	exclude_fts = { 'NvimTree', 'dashboard', 'lir' },
 }
 EOF
+
+"" floaterm
+nnoremap   <silent>   <C-t><C-n>    :FloatermNew<CR>
+nnoremap   <silent>   <C-t><C-h>    :FloatermToggle<CR>
+

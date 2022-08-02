@@ -12,6 +12,7 @@ Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'tribela/vim-transparent'
 Plug 'easymotion/vim-easymotion'
+Plug 'voldikss/vim-floaterm'
 "syntax highlight
 Plug 'jelera/vim-javascript-syntax'
 Plug 'leafgarland/typescript-vim'
