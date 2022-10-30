@@ -20,7 +20,7 @@ inoremap <A-b> <C-o>b
 inoremap <A-w> <C-o>w
 
 "remove buffer
-map <S-x> :bd<CR>
+map <S-z> :bd<CR>
 
 "auto save
 map <C-s> :w<CR>

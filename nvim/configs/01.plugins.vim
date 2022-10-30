@@ -23,5 +23,8 @@ Plug 'honza/vim-snippets'
 "colorscheme
 Plug 'joshdick/onedark.vim'
 Plug 'dracula/vim'
+Plug 'drewtempelmeyer/palenight.vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'sainnhe/everforest'
 call plug#end()
 

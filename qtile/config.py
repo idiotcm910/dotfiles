@@ -31,11 +31,6 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-@hook.subscribe.startup_once
-def autostart():
-    home = os.path.expanduser('~/.config/qtile/autostart.sh')
-    subprocess.open([home])
-
 mod = "mod4"
 terminal = guess_terminal()
 
@@ -177,7 +172,9 @@ c_purple = "#bd93f9"
 
 c_red = "#ff5555"
 fontDefault = "bitstreamverasansmono nerd font mono bold"
-heightBar = 30
+heightBar = 25
+border_size = 5
+heightItem = heightBar - border_size
 
 widget_defaults = dict(
     font="bitstreamverasansmono nerd font mono bold",
@@ -185,263 +182,265 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.Sep(
-                    foreground="#50fa7b",
-                    padding=10,
-                    linewidth=10
-                ),
-                widget.Sep(
-                    foreground="#ffb86c",
-                    padding=10,
-                    linewidth=10
-                ),
-                widget.Sep(
-                    foreground="#ff79c6",
-                    padding=10,
-                    linewidth=10
-                ),
-                widget.Spacer(length=20),
-                #======= file manager ======
-                widget.TextBox(
-                    text="\ue0b0",
-                    foreground=c_background,
-                    background=c_green,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    padding=0
-                ),
-                widget.TextBox(
-                    text="\ufc6e",
-                    foreground=c_foreground_2,
-                    background=c_green,
-                    fontsize=heightBar,
-                    padding=10,
-                    font=fontDefault,
-                    mouse_callbacks = {"Button1": open_thunar}
-                ),
-                #======= web =======
-                widget.TextBox(
-                    text="\ue0b4",
-                    foreground=c_green,
-                    background=c_orange,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    padding=0
-                ),
-                widget.TextBox(
-                    text="\uf268",
-                    foreground=c_foreground_2,
-                    background=c_orange,
-                    padding=10,
-                    fontsize=heightBar,
-                    font="bitstreamverasansmono nerd font mono bold",
-                    mouse_callbacks = {"Button1": open_web}
-                ),
-                #======= terminal ======
-                widget.TextBox(
-                    text="\ue0c7",
-                    foreground=c_pink,
-                    background=c_orange,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    padding=0
-                ),
-                widget.TextBox(
-                    text="\ue795",
-                    foreground=c_foreground_2,
-                    background=c_pink,
-                    padding=10,
-                    fontsize=heightBar,
-                    font="bitstreamverasansmono nerd font mono bold",
-                    mouse_callbacks = {"Button1": open_terminal}
-                ),
-                widget.TextBox(
-                    text="\ue0bc",
-                    foreground=c_pink,
-                    background=c_red,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    padding=0
-                ),
-                #===== group box =====
-                widget.TextBox(
-                    text="\uf7c2",
-                    foreground=c_foreground_2,
-                    background=c_red,
-                    font=fontDefault,
-                    fontsize=heightBar + 5
-                ),
-                widget.TextBox(
-                    text="\ue0d2",
-                    foreground=c_red,
-                    background=c_background,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    padding=0
-                ),
-                widget.GroupBox(
-                    font=fontDefault,
-                    highlight_method="block",
-                    background=c_background,
-                    inactive=c_foreground,
-                    active=c_foreground_2,
-                    this_current_screen_border=c_red
-                ),
-                widget.TextBox(
-                    text="\ue0d4",
-                    foreground=c_red,
-                    background=c_background,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    padding=0
-                ),
-                #=========== Clock =========
-                widget.Spacer(length=280),
-                widget.TextBox(
-                    text="\ue0b6",
-                    foreground=c_purple,
-                    background=c_background,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    padding=0
-                ),
-                widget.Clock(
-                    format="%Y-%m-%d %a %I:%M %p",
-                    background=c_purple,
-                    foreground=c_foreground_2,
-                    font=fontDefault,
-                    fontsize=14
-                ),
-                widget.TextBox(
-                    text="\ue0b4",
-                    foreground=c_purple,
-                    background=c_background,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    padding=0
-                ),
-                widget.Spacer(length=280),
-                #========= cpu ===========
-#                widget.Sep(
-#                    foreground="#50fa7b",
-#                    padding=10,
-#                    linewidth=10
+screens = []
+
+#screens = [
+#    Screen(
+#        top=bar.Bar(
+#            [
+##                widget.Sep(
+##                    foreground="#50fa7b",
+##                    padding=10,
+##                    linewidth=10
+##                ),
+##                widget.Sep(
+##                    foreground="#ffb86c",
+##                    padding=10,
+##                    linewidth=10
+##                ),
+##                widget.Sep(
+##                    foreground="#ff79c6",
+##                    padding=10,
+##                    linewidth=10
+##                ),
+##                widget.Spacer(length=20),
+#                #======= file manager ======
+#                widget.TextBox(
+#                    text="\ue0b0",
+#                    foreground=c_background,
+#                    background=c_green,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    padding=0
 #                ),
-                widget.TextBox(
-                    text="\uf0a0",
-                    foreground=c_green,
-                    padding=5,
-                    fontsize=heightBar,
-                    font="bitstreamverasansmono nerd font mono bold",
-                ),
-                widget.CPU(
-                    format="{load_percent}%",
-                    font=fontDefault,
-                    fontsize=14,
-                    foreground=c_foreground
-                ),
-                #========== memory =========
-#                widget.Sep(
-#                    foreground=c_orange,
+#                widget.TextBox(
+#                    text="\ufc6e",
+#                    foreground=c_foreground_2,
+#                    background=c_green,
+#                    fontsize=heightBar,
 #                    padding=10,
-#                    linewidth=10
+#                    font=fontDefault,
+#                    mouse_callbacks = {"Button1": open_thunar}
 #                ),
-                widget.TextBox(
-                    text="",
-                    foreground=c_orange,
-                    padding=5,
-                    fontsize=heightBar,
-                    font=fontDefault
-                ),
-                widget.Memory(
-                    font=fontDefault,
-                    fontsize=14,
-                    foreground=c_foreground
-                ),
-                #========= battery ========
-#                widget.Sep(
+#                #======= web =======
+#                widget.TextBox(
+#                    text="\ue0b4",
+#                    foreground=c_green,
+#                    background=c_orange,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    padding=0
+#                ),
+#                widget.TextBox(
+#                    text="\uf268",
+#                    foreground=c_foreground_2,
+#                    background=c_orange,
+#                    padding=10,
+#                    fontsize=heightBar,
+#                    font="bitstreamverasansmono nerd font mono bold",
+#                    mouse_callbacks = {"Button1": open_web}
+#                ),
+#                #======= terminal ======
+#                widget.TextBox(
+#                    text="\ue0c7",
 #                    foreground=c_pink,
-#                    padding=10,
-#                    linewidth=10
+#                    background=c_orange,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    padding=0
 #                ),
-                widget.TextBox(
-                    text="",
-                    foreground=c_pink,
-                    padding=5,
-                    fontsize=heightBar,
-                    font=fontDefault
-                ),
-                widget.Battery(
-                    format="{percent:2.0%} {hour:d}:{min:02d}",
-                    font=fontDefault,
-                    fontsize=14,
-                    foreground=c_foreground
-                ),
-                #========== volume ==========
-                widget.TextBox(
-                    text="\uf028",
-                    foreground=c_red,
-                    padding=5,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    mouse_callbacks = {'Button1': open_pavucontrol}
-                ),
-                #========== sleeping =========
-                widget.Spacer(length=5),
-                widget.TextBox(
-                    text="\uf186",
-                    foreground=c_cyan,
-                    padding=5,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    mouse_callbacks = {'Button1': sleeping}
-                ),
-                #========== reboot ===========
-                widget.TextBox(
-                    text="\uf01e",
-                    foreground=c_yellow,
-                    padding=5,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    mouse_callbacks = {'Button1': reboot}
-                ),
-                #========== shutdown ===========
-                widget.TextBox(
-                    text="\uf011",
-                    foreground=c_purple,
-                    padding=5,
-                    fontsize=heightBar,
-                    font=fontDefault,
-                    mouse_callbacks = {'Button1': shutdown}
-                ),
-                #============================
-                widget.Spacer(length=20),
-                widget.Sep(
-                    foreground="#50fa7b",
-                    padding=10,
-                    linewidth=10
-                ),
-                widget.Sep(
-                    foreground="#ffb86c",
-                    padding=10,
-                    linewidth=10
-                ),
-                widget.Sep(
-                    foreground="#ff79c6",
-                    padding=10,
-                    linewidth=10
-                ),
-            ],
-            heightBar, background="#282a36", margin=[8, 8, 0, 8]
-            #border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
-    ),
-]
+#                widget.TextBox(
+#                    text="\ue795",
+#                    foreground=c_foreground_2,
+#                    background=c_pink,
+#                    padding=10,
+#                    fontsize=heightBar,
+#                    font="bitstreamverasansmono nerd font mono bold",
+#                    mouse_callbacks = {"Button1": open_terminal}
+#                ),
+#                widget.TextBox(
+#                    text="\ue0bc",
+#                    foreground=c_pink,
+#                    background=c_red,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    padding=0
+#                ),
+#                #===== group box =====
+#                widget.TextBox(
+#                    text="\uf7c2",
+#                    foreground=c_foreground_2,
+#                    background=c_red,
+#                    font=fontDefault,
+#                    fontsize=heightBar + 5
+#                ),
+#                widget.TextBox(
+#                    text="\ue0d2",
+#                    foreground=c_red,
+#                    background=c_background,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    padding=0
+#                ),
+#                widget.GroupBox(
+#                    font=fontDefault,
+#                    highlight_method="block",
+#                    background=c_background,
+#                    inactive=c_foreground,
+#                    active=c_foreground_2,
+#                    this_current_screen_border=c_red
+#                ),
+#                widget.TextBox(
+#                    text="\ue0d4",
+#                    foreground=c_red,
+#                    background=c_background,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    padding=0
+#                ),
+#                #=========== Clock =========
+#                widget.Spacer(length=280),
+##                widget.TextBox(
+##                    text="\ue0b6",
+##                    foreground=c_purple,
+##                    background=c_background,
+##                    fontsize=heightItem,
+##                    font=fontDefault,
+##                    padding=0
+##                ),
+#                widget.Clock(
+#                    format="%Y-%m-%d %a %I:%M %p",
+#                    background=c_purple,
+#                    foreground=c_foreground_2,
+#                    font=fontDefault,
+#                    fontsize=14
+#                ),
+##                widget.TextBox(
+##                    text="\ue0b4",
+##                    foreground=c_purple,
+##                    background=c_background,
+##                    fontsize=heightItem + 4,
+##                    font=fontDefault,
+##                    padding=0
+##                ),
+#                widget.Spacer(length=280),
+#                #========= cpu ===========
+##                widget.Sep(
+##                    foreground="#50fa7b",
+##                    padding=10,
+##                    linewidth=10
+##                ),
+#                widget.TextBox(
+#                    text="\uf0a0",
+#                    foreground=c_green,
+#                    padding=5,
+#                    fontsize=heightBar,
+#                    font="bitstreamverasansmono nerd font mono bold",
+#                ),
+#                widget.CPU(
+#                    format="{load_percent}%",
+#                    font=fontDefault,
+#                    fontsize=14,
+#                    foreground=c_foreground
+#                ),
+#                #========== memory =========
+##                widget.Sep(
+##                    foreground=c_orange,
+##                    padding=10,
+##                    linewidth=10
+##                ),
+#                widget.TextBox(
+#                    text="",
+#                    foreground=c_orange,
+#                    padding=5,
+#                    fontsize=heightBar,
+#                    font=fontDefault
+#                ),
+#                widget.Memory(
+#                    font=fontDefault,
+#                    fontsize=14,
+#                    foreground=c_foreground
+#                ),
+#                #========= battery ========
+##                widget.Sep(
+##                    foreground=c_pink,
+##                    padding=10,
+##                    linewidth=10
+##                ),
+#                widget.TextBox(
+#                    text="",
+#                    foreground=c_pink,
+#                    padding=5,
+#                    fontsize=heightBar,
+#                    font=fontDefault
+#                ),
+#                widget.Battery(
+#                    format="{percent:2.0%} {hour:d}:{min:02d}",
+#                    font=fontDefault,
+#                    fontsize=14,
+#                    foreground=c_foreground
+#                ),
+#                #========== volume ==========
+#                widget.TextBox(
+#                    text="\uf028",
+#                    foreground=c_red,
+#                    padding=5,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    mouse_callbacks = {'Button1': open_pavucontrol}
+#                ),
+#                #========== sleeping =========
+#                widget.Spacer(length=5),
+#                widget.TextBox(
+#                    text="\uf186",
+#                    foreground=c_cyan,
+#                    padding=5,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    mouse_callbacks = {'Button1': sleeping}
+#                ),
+#                #========== reboot ===========
+#                widget.TextBox(
+#                    text="\uf01e",
+#                    foreground=c_yellow,
+#                    padding=5,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    mouse_callbacks = {'Button1': reboot}
+#                ),
+#                #========== shutdown ===========
+#                widget.TextBox(
+#                    text="\uf011",
+#                    foreground=c_purple,
+#                    padding=5,
+#                    fontsize=heightBar,
+#                    font=fontDefault,
+#                    mouse_callbacks = {'Button1': shutdown}
+#                ),
+#                #============================
+##                widget.Spacer(length=20),
+##                widget.Sep(
+##                    foreground="#50fa7b",
+##                    padding=10,
+##                    linewidth=10
+##                ),
+##                widget.Sep(
+##                    foreground="#ffb86c",
+##                    padding=10,
+##                    linewidth=10
+##                ),
+##                widget.Sep(
+##                    foreground="#ff79c6",
+##                    padding=10,
+##                    linewidth=10
+##                ),
+#            ],
+#            heightBar, background="#282a36", margin=[8, 8, 0, 8], border_width=[8, 0, 8, 0]
+#            #border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+#            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+#        ),
+#    ),
+#]
 
 # Drag floating layouts.
 mouse = [
