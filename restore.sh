@@ -28,6 +28,10 @@ sudo pacman -S neovim
 sudo pacman -S python-pip
 pip3 install --user --upgrade neovim
 
+#ibus
+sudo pacman -S ibus
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/BambooEngine/ibus-bamboo/master/archlinux/install.sh)"
+
 
 #chmod
 sudo chmod +x ./config/polybar/launch.sh
