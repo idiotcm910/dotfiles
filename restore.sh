@@ -12,6 +12,7 @@ done
 sudo pacman -S zip
 sudo pacman -S unzip
 sudo pacman -S pavucontrol
+sudo pacman -S gnome-screenshot
 
 #software
 sudo pacman -S rofi
