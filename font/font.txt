@@ -1,1 +1,2 @@
 https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka
+kitty +list-fonts --psnames | grep Iosevka
