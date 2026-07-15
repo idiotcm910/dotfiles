@@ -19,7 +19,11 @@ return {
   opts = {
     view = { width = 34 },
     renderer = { group_empty = true },
-    filters = { dotfiles = false },        -- vẫn hiện file .env, .gitignore...
+    filters = {
+      dotfiles = false,                    -- vẫn hiện file bắt đầu bằng . (.gitignore...)
+      git_ignored = true,                  -- ẩn file trong .gitignore (node_modules, dist, .next...)
+      exclude = { ".env", ".env.local" },  -- ...NHƯNG luôn hiện các file .env này
+    },
     actions = { open_file = { quit_on_open = false } },
     update_focused_file = { enable = true }, -- tự highlight file đang mở trong cây
   },
