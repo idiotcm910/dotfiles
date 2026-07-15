@@ -5,6 +5,7 @@
 
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "master", -- dùng nhánh ổn định (nhánh 'main' là bản viết lại, khác API)
   build = ":TSUpdate",
   event = { "BufReadPost", "BufNewFile" },
   main = "nvim-treesitter.configs",
