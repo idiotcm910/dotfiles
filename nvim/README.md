@@ -8,15 +8,15 @@ Cấu hình Neovim tối giản, tập trung vào **đọc & lần theo code**: 
 
 ## 1. Cài đặt
 
-```bash
-# 1) Đưa config vào đúng chỗ Neovim đọc (symlink tới repo này)
-ln -s ~/thai/system/nvim ~/.config/nvim
+**Máy mới / cài lại Ubuntu — chạy 1 lệnh:**
 
-# 2) Mở nvim — lazy.nvim tự tải plugin, mason tự tải LSP server
-nvim
+```bash
+bash ~/thai/system/nvim/install.sh
 ```
 
-Yêu cầu: **Neovim ≥ 0.11**, `git`, `ripgrep` (`rg`), `fd`. Xem `INSTALL.md` để nâng cấp Neovim và cài `fd`.
+Script tự cài Neovim + công cụ (`rg`/`fd`/`fzf`/`node`/`go`...), symlink config, tải plugin & LSP.
+
+Xem [`INSTALL.md`](./INSTALL.md) nếu muốn làm thủ công từng bước.
 
 ---
 
