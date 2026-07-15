@@ -38,6 +38,18 @@ if ! command -v fd >/dev/null 2>&1; then
   ok "Tạo lệnh 'fd' -> fdfind (nhớ để ~/.local/bin trong PATH)"
 fi
 
+# tree-sitter-cli — nhánh main của nvim-treesitter cần nó để biên dịch parser
+if ! command -v tree-sitter >/dev/null 2>&1; then
+  log "Cài tree-sitter-cli (cho nvim-treesitter nhánh main)"
+  mkdir -p "$HOME/.local/bin"
+  tmpts="$(mktemp -d)"
+  curl -sL "https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz" -o "$tmpts/ts.gz"
+  gunzip -c "$tmpts/ts.gz" > "$HOME/.local/bin/tree-sitter"
+  chmod +x "$HOME/.local/bin/tree-sitter"; rm -rf "$tmpts"
+  ok "tree-sitter $("$HOME/.local/bin/tree-sitter" --version 2>/dev/null | awk '{print $2}')"
+fi
+export PATH="$HOME/.local/bin:$PATH"
+
 # ------------------------------------------------------------
 # 1b. Nerd Font — để nvim-tree / bufferline hiện icon
 #     (nhớ chỉnh terminal dùng font "JetBrainsMono Nerd Font")
@@ -104,6 +116,10 @@ ok "$CONFIG_DIR -> $REPO_DIR"
 log "Tải plugin (lazy.nvim) — chờ một chút..."
 nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
 ok "Đã đồng bộ plugin"
+
+log "Biên dịch parser Treesitter (chờ tới khi xong)..."
+nvim --headless -c "lua require('nvim-treesitter').install({'typescript','tsx','javascript','json','python','go','gomod','lua','vim','vimdoc','html','css','yaml','toml','markdown','markdown_inline','bash'}):wait(300000)" -c "qa" 2>/dev/null || true
+ok "Đã cài parser Treesitter"
 
 log "Tải LSP server (mason): ts_ls, pyright, gopls, lua_ls"
 nvim --headless "+MasonInstall typescript-language-server pyright gopls lua-language-server" +qa 2>/dev/null || true

@@ -50,6 +50,18 @@ mkdir -p ~/.local/bin && ln -sf "$(which fdfind)" ~/.local/bin/fd
 
 `ripgrep` (`rg`) và `git` đã có sẵn trên máy.
 
+## 2b. Cài `tree-sitter-cli` (nvim-treesitter nhánh main cần để biên dịch parser)
+
+```bash
+mkdir -p ~/.local/bin
+curl -sL https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-x64.gz \
+  | gunzip -c > ~/.local/bin/tree-sitter
+chmod +x ~/.local/bin/tree-sitter
+tree-sitter --version   # cần >= 0.26.1
+```
+
+> Cần Neovim **≥ 0.12** cho nhánh main của treesitter (bản 0.11 thì dùng nhánh master).
+
 ## 3. Kích hoạt config
 
 ```bash
