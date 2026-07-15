@@ -108,7 +108,22 @@ Xem [`INSTALL.md`](./INSTALL.md) nếu muốn làm thủ công từng bước.
 
 ---
 
-## 6. Hiểu code (LSP) — nhảy tới định nghĩa, references, hover
+## 6. Header / tab đang mở — bufferline
+
+Thanh trên cùng liệt kê các file (buffer) đang mở, có icon + dấu lỗi LSP.
+*(Icon chỉ hiện khi terminal dùng Nerd Font — xem `INSTALL.md`.)*
+
+| Phím | Tác dụng |
+|---|---|
+| `Shift-l` / `Shift-h` | Sang tab phải / trái |
+| `<leader>bp` | Chọn tab bằng nhãn chữ |
+| `<leader>bc` | Đóng tab hiện tại |
+| `<leader>bo` | Đóng các tab khác |
+| `<leader>b1` … `b3` | Nhảy thẳng tới tab số 1 / 2 / 3 |
+
+---
+
+## 7. Hiểu code (LSP) — nhảy tới định nghĩa, references, hover
 
 *(Phím chỉ hoạt động trong file có LSP: `.ts/.tsx/.js`, `.py`, `.go`, `.lua`)*
 
@@ -130,16 +145,17 @@ Xem [`INSTALL.md`](./INSTALL.md) nếu muốn làm thủ công từng bước.
 
 ---
 
-## 7. Tiện ích khác
+## 8. Tiện ích khác
 
 | Phím | Tác dụng |
 |---|---|
 | `Esc` | Xoá tô sáng kết quả tìm |
 | `Ctrl-h/j/k/l` | Di chuyển giữa các cửa sổ (split) |
-| `Shift-h` / `Shift-l` | Buffer trước / sau |
 | `<leader>w` / `<leader>q` | Lưu file / đóng cửa sổ |
 | `<leader>?` | Hiện phím tắt của buffer hiện tại |
 | `/từ` rồi `Enter` | Tìm trong file · `n`/`N` sang kết quả tiếp/trước |
+
+> **Mẹo:** không nhớ phím? Bấm `Space` rồi chờ 0.4s → **which-key** hiện popup nhắc tất cả.
 
 ---
 
