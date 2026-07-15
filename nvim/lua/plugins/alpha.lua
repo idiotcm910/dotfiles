@@ -7,6 +7,23 @@ return {
   "goolord/alpha-nvim",
   event = "VimEnter",
   dependencies = { "nvim-tree/nvim-web-devicons" },
+  init = function()
+    -- Khi mở `nvim .` (một thư mục): cd vào đó rồi hiện dashboard
+    -- thay vì để lại buffer thư mục trống.
+    vim.api.nvim_create_autocmd("VimEnter", {
+      callback = function()
+        local argv = vim.fn.argv()
+        if #argv == 1 and vim.fn.isdirectory(argv[1]) == 1 then
+          local dir = vim.fn.fnamemodify(argv[1], ":p")
+          vim.cmd.cd(dir)
+          local dir_buf = vim.api.nvim_get_current_buf()
+          require("lazy").load({ plugins = { "alpha-nvim" } })
+          require("alpha").start(false)
+          pcall(vim.api.nvim_buf_delete, dir_buf, { force = true })
+        end
+      end,
+    })
+  end,
   config = function()
     local alpha = require("alpha")
     local dashboard = require("alpha.themes.dashboard")
