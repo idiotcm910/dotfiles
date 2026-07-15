@@ -49,8 +49,7 @@ Xem [`INSTALL.md`](./INSTALL.md) nếu muốn làm thủ công từng bước.
 | `%` | Nhảy giữa cặp ngoặc `() {} []` |
 | `{` / `}` | Sang đoạn (paragraph) trước / sau |
 | `[[` / `]]` | Sang function trước / sau |
-| `Enter` (liên tiếp) | Chọn dần khối code lớn hơn (Treesitter) |
-| `Backspace` | Thu nhỏ vùng chọn lại |
+| `S` (flash) | Chọn/nhảy theo khối code — xem mục 3 |
 
 ### Quay lại chỗ cũ (jumplist)
 | Phím | Tác dụng |
