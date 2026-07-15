@@ -6,7 +6,7 @@
 return {
   "nvim-tree/nvim-tree.lua",
   dependencies = { "nvim-tree/nvim-web-devicons" },
-  lazy = false, -- nạp sẵn để tự mở cây khi chạy `nvim .` (mở thư mục)
+  cmd = { "NvimTreeToggle", "NvimTreeFocus" },
   keys = {
     { "<leader>e", "<cmd>NvimTreeToggle<CR>", desc = "Bật/tắt cây thư mục" },
     { "<leader>o", "<cmd>NvimTreeFocus<CR>",  desc = "Nhảy vào cây thư mục" },
@@ -49,7 +49,7 @@ return {
     },
     actions = { open_file = { quit_on_open = false } },
     update_focused_file = { enable = true }, -- tự highlight file đang mở trong cây
-    hijack_directories = { enable = true, auto_open = true }, -- `nvim .` → mở cây luôn
+    hijack_directories = { enable = false }, -- KHÔNG chiếm thư mục — để dashboard hiện khi `nvim .`
   },
 }
 
