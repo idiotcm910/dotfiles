@@ -15,6 +15,29 @@ return {
     -- Tắt netrw để nvim-tree quản lý
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrwPlugin = 1
+
+    -- Tự đóng cây khi nó là cửa sổ CUỐI cùng (khỏi :q! hai lần)
+    vim.api.nvim_create_autocmd("QuitPre", {
+      callback = function()
+        local tree_wins, total = {}, 0
+        for _, w in ipairs(vim.api.nvim_list_wins()) do
+          -- bỏ qua cửa sổ nổi (popup)
+          if vim.api.nvim_win_get_config(w).relative == "" then
+            total = total + 1
+            local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w))
+            if bufname:match("NvimTree_") then
+              table.insert(tree_wins, w)
+            end
+          end
+        end
+        -- Nếu chỉ còn 1 cửa sổ code + cây → đóng luôn cây
+        if total - #tree_wins == 1 then
+          for _, w in ipairs(tree_wins) do
+            pcall(vim.api.nvim_win_close, w, true)
+          end
+        end
+      end,
+    })
   end,
   opts = {
     view = { width = 34 },
