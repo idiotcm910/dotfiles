@@ -1,5 +1,19 @@
 # Cài đặt & chuẩn bị
 
+## ⚡ Cách nhanh nhất — chạy 1 script (khi cài lại máy Ubuntu)
+
+```bash
+bash ~/thai/system/nvim/install.sh
+```
+
+Script tự làm hết: cài `ripgrep`/`fd`/`fzf`/`nodejs`/`golang`/`build-essential`, cài Neovim mới nhất, symlink config, rồi tải plugin + LSP server. An toàn chạy lại nhiều lần.
+
+> Cần `sudo` (script sẽ hỏi mật khẩu). Sau khi xong, mở `nvim` là dùng được.
+
+Nếu muốn làm **thủ công từng bước**, xem bên dưới.
+
+---
+
 ## 1. Nâng Neovim lên 0.11 (đang có 0.9.5)
 
 Vài plugin (LSP API mới, treesitter, flash) cần Neovim ≥ 0.10. Cài bản mới nhất qua tarball chính thức (sạch, không đụng bản apt):
