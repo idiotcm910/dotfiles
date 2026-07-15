@@ -7,7 +7,10 @@
 
 return {
   "akinsho/bufferline.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+    "famiu/bufdelete.nvim", -- xóa buffer mà giữ nguyên layout (nhảy về tab còn lại)
+  },
   event = "VeryLazy",
   opts = {
     options = {
@@ -44,7 +47,7 @@ return {
   },
   keys = {
     { "<leader>bp", "<cmd>BufferLinePick<CR>",        desc = "Chọn tab bằng nhãn" },
-    { "<leader>bc", "<cmd>bdelete<CR>",               desc = "Đóng tab hiện tại" },
+    { "<leader>bc", "<cmd>Bdelete<CR>",               desc = "Đóng tab hiện tại (giữ layout)" },
     { "<leader>bo", "<cmd>BufferLineCloseOthers<CR>", desc = "Đóng các tab khác" },
     { "<leader>b1", "<cmd>BufferLineGoToBuffer 1<CR>", desc = "Tới tab 1" },
     { "<leader>b2", "<cmd>BufferLineGoToBuffer 2<CR>", desc = "Tới tab 2" },
