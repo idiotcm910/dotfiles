@@ -169,6 +169,8 @@ nvim/
 │   └── lazy.lua              # bootstrap lazy.nvim
 └── lua/plugins/
     ├── colorscheme.lua       # tokyonight
+    ├── bufferline.lua        # header tab đang mở
+    ├── lualine.lua           # thanh trạng thái (preset evil_lualine)
     ├── treesitter.lua        # highlight + chọn khối code
     ├── fzf.lua               # tìm file + grep
     ├── flash.lua             # nhảy màn hình
