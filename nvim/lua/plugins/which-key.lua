@@ -12,6 +12,7 @@ return {
     -- Đặt tên cho các nhóm phím leader (hiện đẹp trong popup)
     spec = {
       { "<leader>f", group = "Find: tìm file / grep" },
+      { "<leader>b", group = "Buffer / tab" },
       { "<leader>d", group = "Diagnostic / symbol" },
       { "<leader>r", group = "Rename" },
       { "<leader>c", group = "Code action" },

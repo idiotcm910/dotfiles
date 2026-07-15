@@ -39,6 +39,22 @@ if ! command -v fd >/dev/null 2>&1; then
 fi
 
 # ------------------------------------------------------------
+# 1b. Nerd Font — để nvim-tree / bufferline hiện icon
+#     (nhớ chỉnh terminal dùng font "JetBrainsMono Nerd Font")
+# ------------------------------------------------------------
+if ! fc-list 2>/dev/null | grep -qi "JetBrainsMono Nerd"; then
+  log "Cài JetBrainsMono Nerd Font"
+  fdir="$HOME/.local/share/fonts/JetBrainsMonoNerdFont"
+  tmpf="$(mktemp -d)"
+  curl -sL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip" -o "$tmpf/f.zip"
+  mkdir -p "$fdir"; unzip -o -q "$tmpf/f.zip" -d "$fdir"
+  fc-cache -f "$fdir" >/dev/null 2>&1; rm -rf "$tmpf"
+  ok "Đã cài font — nhớ đặt terminal dùng 'JetBrainsMono Nerd Font'"
+else
+  ok "Nerd Font đã có"
+fi
+
+# ------------------------------------------------------------
 # 2. Cài Neovim mới nhất (tarball chính thức, không đụng bản apt cũ)
 # ------------------------------------------------------------
 NEED_NVIM=1
