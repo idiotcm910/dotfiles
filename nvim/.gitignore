@@ -1,0 +1,2 @@
+# Không có gì cần bỏ qua — commit cả lazy-lock.json để khoá phiên bản plugin.
+# (Neovim sinh file runtime trong ~/.local/share/nvim, KHÔNG nằm trong repo này.)
