@@ -171,6 +171,12 @@ nvim/
     ├── colorscheme.lua       # tokyonight
     ├── bufferline.lua        # header tab đang mở
     ├── lualine.lua           # thanh trạng thái (preset evil_lualine)
+    ├── dropbar.lua           # breadcrumb đầu file (class > function)
+    ├── noice.lua             # UI cmdline/thông báo nổi đẹp
+    ├── indent-blankline.lua  # đường kẻ thụt lề
+    ├── rainbow-delimiters.lua# tô màu cặp ngoặc
+    ├── mini-animate.lua      # cuộn/resize mượt
+    ├── undo-glow.lua         # chớp sáng vùng vừa sửa
     ├── treesitter.lua        # highlight + chọn khối code
     ├── fzf.lua               # tìm file + grep
     ├── flash.lua             # nhảy màn hình
