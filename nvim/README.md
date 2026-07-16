@@ -138,7 +138,7 @@ Thanh trên cùng liệt kê các file (buffer) đang mở, có icon + dấu l�
 | `[d` / `]d` | Nhảy tới lỗi/cảnh báo trước / sau |
 | `<leader>dl` | Xem chi tiết lỗi tại dòng |
 | `<leader>rn` | Đổi tên symbol (rename) |
-| `<leader>ca` | Code action (sửa nhanh) |
+| `<leader>la` | Code action (sửa nhanh) |
 
 > Sau `gd`/`gr` nhảy đi rồi, bấm `Ctrl-o` để quay lại chỗ cũ.
 
