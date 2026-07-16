@@ -11,6 +11,8 @@ git -C "$repo_root" worktree list --porcelain | awk '/^worktree /{print $2}' | w
   changed="$(git -C "$wt" status --porcelain 2>/dev/null | wc -l | tr -d ' ')"
   claude=0
   for pid in $(pgrep -x claude 2>/dev/null || true); do
+    args="$(tr '\0' ' ' < "/proc/$pid/cmdline" 2>/dev/null || true)"
+    case "$args" in *bg-pty-host*|*bg-spare*|*" daemon "*|*"daemon "*) continue;; esac
     cwd="$(readlink -f "/proc/$pid/cwd" 2>/dev/null || true)"
     case "$cwd" in "$wt"|"$wt"/*) claude=$((claude+1));; esac
   done
