@@ -17,15 +17,19 @@ while read -r wt <&3; do
   [ -d "$wt" ] || continue
   branch="$(git -C "$wt" branch --show-current 2>/dev/null || echo '')"
   [ -z "$branch" ] && continue
+  [ "$branch" = "$main_branch" ] && continue
   # sed cắt cả '+' (branch đang được checkout trong worktree khác) lẫn '*'/space.
-  if git -C "$repo_root" branch --merged "$main_branch" | sed 's/^[+* ]*//' | grep -qx "$branch"; then
+  if git -C "$repo_root" branch --merged "$main_branch" | sed 's/^[+* ]*//' | grep -Fqx "$branch"; then
     read -r -p "Xóa worktree '$branch' (đã merge vào $main_branch)? [y/N] " ans
     if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
-      git -C "$repo_root" worktree remove "$wt" --force
-      git -C "$repo_root" branch -d "$branch" 2>/dev/null || true
-      session="$(echo "$branch" | tr './:' '___')"
-      tmux kill-session -t "$session" 2>/dev/null || true
-      echo "→ Đã xóa $branch"
+      if git -C "$repo_root" worktree remove "$wt" 2>/dev/null; then
+        git -C "$repo_root" branch -d "$branch" 2>/dev/null || true
+        session="$(echo "$branch" | tr './:' '___')"
+        tmux kill-session -t "$session" 2>/dev/null || true
+        echo "→ Đã xóa $branch"
+      else
+        echo "⚠ Bỏ qua '$branch' — worktree còn thay đổi chưa lưu. Nếu chắc chắn muốn xóa: git worktree remove --force \"$wt\""
+      fi
     fi
   fi
 done 3< <(git -C "$repo_root" worktree list --porcelain | awk '/^worktree /{print $2}')
