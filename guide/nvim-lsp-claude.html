@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nvim · LSP & Claude · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="nvim-lsp-claude" data-title="Nvim · LSP & Claude">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Lần theo code bằng <b>LSP</b>. Vibe code bằng hai plugin Claude: <b>claude-multi</b> (nhiều phiên trong nvim) và <b>claudecode</b> (gửi selection + diff).</p>
+
+        <div class="group">
+          <h2>LSP — hiểu & lần code <span class="tag">TS · Python · Go · Lua</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>g</kbd><kbd>d</kbd></div><div class="d"><b>Nhảy tới định nghĩa</b> (kể cả file khác)</div></div>
+            <div class="row"><div class="keys"><kbd>g</kbd><kbd>r</kbd></div><div class="d"><b>Tìm mọi nơi được gọi</b> (references)</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>k</kbd></div><div class="d"><b>Hover</b> — xem type / docstring</div></div>
+            <div class="row"><div class="keys"><kbd>g</kbd><kbd>i</kbd> · <kbd>g</kbd><kbd>t</kbd></div><div class="d">Implementation · định nghĩa type</div></div>
+            <div class="row"><div class="keys"><kbd>g</kbd><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>d</kbd></div><div class="d">Nhảy tới khai báo</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>d</kbd><kbd>s</kbd></div><div class="d">Outline symbol trong file</div></div>
+            <div class="row"><div class="keys"><kbd>[</kbd><kbd>d</kbd> / <kbd>]</kbd><kbd>d</kbd></div><div class="d">Lỗi/cảnh báo trước / sau</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>d</kbd><kbd>l</kbd></div><div class="d">Xem chi tiết lỗi tại dòng</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>r</kbd><kbd>n</kbd></div><div class="d">Đổi tên symbol (rename)</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>l</kbd><kbd>a</kbd></div><div class="d">Code action (sửa nhanh)</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>claude-multi — nhiều Claude trong nvim <span class="tag">Space c …</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>n</kbd></div><div class="d"><b>Phiên mới</b> (mở thêm một Claude Code)</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>c</kbd></div><div class="d">Bật / tắt cửa sổ Claude</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>h</kbd> / <kbd>Space</kbd><kbd>c</kbd><kbd>l</kbd></div><div class="d">Phiên trước / sau (chuyển tab)</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>w</kbd></div><div class="d">Phiên mới trong git worktree riêng</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>r</kbd></div><div class="d">Recall hội thoại cũ (cần tool <code class="cmd">recall</code>)</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>x</kbd></div><div class="d">Đóng phiên</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>claudecode — tích hợp IDE <span class="tag">Space a …</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>s</kbd></div><div class="d"><b>Gửi selection</b> (bôi đen) cho Claude — chế độ visual</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>a</kbd> / <kbd>Space</kbd><kbd>a</kbd><kbd>d</kbd></div><div class="d"><b>Nhận / từ chối diff</b> Claude đề xuất</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>b</kbd></div><div class="d">Thêm buffer hiện tại làm ngữ cảnh</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>c</kbd> / <kbd>Space</kbd><kbd>a</kbd><kbd>f</kbd></div><div class="d">Toggle / focus cửa sổ Claude IDE</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>m</kbd></div><div class="d">Chọn model</div></div>
+          </div>
+        </div>
+
+        <div class="callout">Khi Claude đề xuất sửa, <b>claudecode</b> mở diff 2 cột ngay trong nvim — bạn chỉnh lại rồi <kbd>Space</kbd><kbd>a</kbd><kbd>a</kbd> để nhận. Hai nhóm phím tách bạch: <kbd>Space</kbd><kbd>c</kbd> = claude-multi, <kbd>Space</kbd><kbd>a</kbd> = claudecode.</div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
