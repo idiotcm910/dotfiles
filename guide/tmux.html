@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tmux · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="tmux" data-title="tmux">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Prefix là <b><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>a</kbd></b>. Bấm prefix rồi bấm phím lệnh.</p>
+
+        <div class="group">
+          <h2>Workspace / Session <span class="tag">sesh</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>o</kbd></div><div class="d"><b>Switcher</b> — popup xem tất cả workspace + nhảy</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>d</kbd></div><div class="d">Detach — rời tmux, mọi thứ chạy nền</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>s</kbd></div><div class="d">Cây session tích hợp của tmux</div></div>
+            <div class="row"><div class="keys"><code class="cmd">tmux attach</code></div><div class="d">Vào lại tmux đang chạy nền</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Pane (chia màn hình)</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>|</kbd></div><div class="d">Split <b>dọc</b> (giữ cwd)</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>-</kbd></div><div class="d">Split <b>ngang</b> (giữ cwd)</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></div><div class="d">Nhảy pane — <b>xuyên cả nvim ↔ tmux</b></div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>z</kbd></div><div class="d"><b>Zoom</b> full pane (bấm lại thu về)</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>e</kbd></div><div class="d">Toggle <b>sync-panes</b> — gõ 1 lệnh chạy mọi pane</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>x</kbd></div><div class="d">Đóng pane hiện tại</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Window (tab của tmux)</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>c</kbd></div><div class="d">Window mới</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>,</kbd></div><div class="d">Đổi tên window</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>n</kbd> / <kbd>p</kbd></div><div class="d">Window sau / trước</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>1</kbd>…<kbd>9</kbd></div><div class="d">Nhảy tới window số</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Copy mode <span class="tag">tmux-yank</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>[</kbd></div><div class="d">Vào copy-mode (cuộn xem lịch sử)</div></div>
+            <div class="row"><div class="keys"><kbd>v</kbd><span class="then">rồi</span><kbd>y</kbd></div><div class="d">Bôi đen (v) → yank (y) vào <b>clipboard hệ thống</b></div></div>
+            <div class="row"><div class="keys"><kbd>q</kbd></div><div class="d">Thoát copy-mode</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Persistence & config <span class="tag">resurrect · continuum</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>s</kbd></div><div class="d">Lưu toàn bộ session thủ công</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>r</kbd></div><div class="d">Khôi phục session đã lưu</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>I</kbd></div><div class="d">Cài plugin tmux (tpm)</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>r</kbd></div><div class="d">Reload <code class="cmd">~/.tmux.conf</code></div></div>
+          </div>
+          <p>Continuum tự lưu mỗi 15 phút và tự khôi phục khi mở tmux — workspaces sống qua reboot.</p>
+        </div>
+
+        <div class="callout">Prefix đổi từ mặc định <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>b</kbd> sang <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>a</kbd> cho dễ bấm. Mouse bật sẵn — click chọn pane, kéo chỉnh kích thước được.</div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

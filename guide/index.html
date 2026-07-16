@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tổng quan · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="index" data-title="Tổng quan">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Một source, <b>nhiều git worktree</b> chạy song song. Mỗi worktree là một workspace cách ly: <b>tmux session</b> riêng, <b>Neovim</b> riêng, và <b>nhiều Claude Code</b> vibe code cùng lúc.</p>
+        <p class="note">Attach vào một workspace là full màn hình; các workspace khác vẫn chạy nền. Đóng terminal, Claude vẫn chạy — mở lại là nguyên trạng.</p>
+
+        <div class="arch">
+          <div class="layer"><div class="badge">1</div><div><div class="lay-t">tmux — tầng cách ly workspace</div><div class="lay-d">Mỗi <code>session</code> = một worktree. Chuyển bằng <code>sesh</code>, sống qua reboot.</div></div></div>
+          <div class="layer"><div class="badge">2</div><div><div class="lay-t">Neovim — editor mỗi worktree</div><div class="lay-d">Mở đúng thư mục worktree, LSP đúng root, xem code AI vibe.</div></div></div>
+          <div class="layer"><div class="badge">3</div><div><div class="lay-t">Claude Code — nhiều phiên</div><div class="lay-d">Trong nvim (<code>claude-multi</code>) hoặc pane tmux. Gửi selection, xem diff (<code>claudecode</code>).</div></div></div>
+        </div>
+
+        <div class="group">
+          <h2>Luồng làm việc điển hình</h2>
+          <ol class="flow">
+            <li><span><b>Mở tmux.</b> Terminal thường tự vào tmux (trừ Warp). Hoặc gõ <code>tmux</code>.</span></li>
+            <li><span><b>Tạo workspace.</b> <code>wt-new feat-login</code> → worktree + session + nvim tự mở.</span></li>
+            <li><span><b>Vibe code.</b> Trong nvim: <code>Space c n</code> mở Claude Code; thêm phiên nữa cũng <code>Space c n</code>.</span></li>
+            <li><span><b>Gửi ngữ cảnh.</b> Bôi đen code → <code>Space a s</code>; nhận diff <code>Space a a</code>.</span></li>
+            <li><span><b>Tập trung.</b> <code>Space z</code> hoặc <code>prefix z</code> zoom full.</span></li>
+            <li><span><b>Nhảy workspace.</b> <code>prefix o</code> — cái cũ vẫn chạy nền.</span></li>
+            <li><span><b>Dọn.</b> <code>wt-clean</code> xoá worktree đã merge.</span></li>
+          </ol>
+        </div>
+
+        <div class="group">
+          <h2>Đi tới từng phần</h2>
+          <div class="cards">
+            <a class="card" href="tmux.html"><div class="cn">01</div><div class="ct">tmux</div><div class="cd">Session, pane, window, copy-mode, persistence</div></a>
+            <a class="card" href="workspace.html"><div class="cn">02</div><div class="ct">Workspace</div><div class="cd">wt-new / status / clean · sesh · zoxide</div></a>
+            <a class="card" href="nvim-motion.html"><div class="cn">03</div><div class="ct">Nvim · Di chuyển</div><div class="cd">Vim motions, flash, cửa sổ, tab, undo</div></a>
+            <a class="card" href="nvim-search.html"><div class="cn">04</div><div class="ct">Nvim · Tìm & Duyệt</div><div class="cd">fzf-lua, nvim-tree, dropbar</div></a>
+            <a class="card" href="nvim-lsp-claude.html"><div class="cn">05</div><div class="ct">Nvim · LSP & Claude</div><div class="cd">LSP, claude-multi, claudecode</div></a>
+            <a class="card" href="setup.html"><div class="cn">06</div><div class="ct">Cài đặt</div><div class="cd">Script cài, yêu cầu, font, auto-tmux</div></a>
+          </div>
+        </div>
+
+        <div class="callout">Leader = <kbd>Space</kbd> · tmux prefix = <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>a</kbd>. Trong nvim bấm <kbd>Space</kbd> rồi khựng lại → which-key nhắc phím. Trên mọi trang, bấm <kbd>/</kbd> để tìm phím nhanh.</div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workspace · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="workspace" data-title="Workspace">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Ba script <b><code class="cmd">wt-*</code></b> quản vòng đời worktree. <b>sesh</b> nhảy giữa workspace, <b>zoxide</b> nhảy tới thư mục bất kỳ.</p>
+
+        <div class="group">
+          <h2>Scripts worktree <span class="tag">~/thai/system/bin</span></h2>
+          <div class="rows">
+            <div class="row"><div class="keys"><code class="cmd">wt-new &lt;branch&gt;</code></div><div class="d"><b>Tạo</b> worktree + branch + tmux session + nvim tự mở. Đường dẫn: <code class="cmd">&lt;repo&gt;.worktrees/&lt;branch&gt;</code></div></div>
+            <div class="row"><div class="keys"><code class="cmd">wt-status</code></div><div class="d"><b>Bảng tổng quan</b> mọi worktree: branch · số file đổi · số Claude Code đang chạy</div></div>
+            <div class="row"><div class="keys"><code class="cmd">wt-clean</code></div><div class="d"><b>Dọn</b> worktree đã merge vào main + kill session. Worktree còn thay đổi chưa lưu được giữ lại + cảnh báo</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>sesh — nhảy workspace</h2>
+          <div class="rows">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>o</kbd></div><div class="d">Popup fuzzy: tmux session + thư mục zoxide + config. Gõ để lọc, Enter để nhảy</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>zoxide — nhảy tới thư mục</h2>
+          <p>Học đường dẫn khi bạn <code class="cmd">cd</code>/<code class="cmd">z</code>. Càng dùng càng xếp hạng thông minh.</p>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">z vibe</code></div><div class="d">Nhảy tới thư mục khớp "vibe" (điểm cao nhất)</div></div>
+            <div class="row"><div class="keys"><code class="cmd">z lovinbot api</code></div><div class="d">Nhiều từ khoá → thu hẹp kết quả</div></div>
+            <div class="row"><div class="keys"><code class="cmd">zi vid</code></div><div class="d">Chọn <b>tương tác</b> (fzf) nếu nhiều thư mục khớp</div></div>
+            <div class="row"><div class="keys"><code class="cmd">zoxide query --list</code></div><div class="d">Xem tất cả thư mục đã học</div></div>
+          </div>
+        </div>
+
+        <div class="callout">Một worktree chạy được <b>nhiều Claude Code</b> — trong nvim (<kbd>Space</kbd><kbd>c</kbd><kbd>n</kbd>) hoặc mở pane tmux rồi gõ <code class="cmd">claude</code>. Xem trang <a href="nvim-lsp-claude.html">Nvim · LSP &amp; Claude</a>.</div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

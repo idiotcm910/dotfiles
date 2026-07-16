@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- ============================================================
+     TEMPLATE — copy file này để thêm trang mới:
+     1. Đổi <title>, data-page (id duy nhất), data-title (tiêu đề hiện)
+     2. Viết nội dung trong khối .doc (dùng group + row)
+     3. Thêm 1 dòng vào mảng PAGES trong assets/app.js
+     ============================================================ -->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiêu đề · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="ID-DUY-NHAT" data-title="Tiêu đề hiện">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Câu mở đầu…</p>
+
+        <div class="group">
+          <h2>Tên nhóm <span class="tag">nhãn</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>x</kbd></div><div class="d">Mô tả</div></div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
