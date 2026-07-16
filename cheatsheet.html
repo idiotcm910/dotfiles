@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe Workspace · Cẩm nang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper: oklch(0.972 0.010 85);
+  --paper-2: oklch(0.945 0.014 82);
+  --ink: oklch(0.255 0.018 268);
+  --ink-soft: oklch(0.45 0.02 268);
+  --ink-faint: oklch(0.60 0.018 268);
+  --rust: oklch(0.555 0.145 42);
+  --rust-deep: oklch(0.46 0.13 40);
+  --sage: oklch(0.50 0.055 190);
+  --line: oklch(0.86 0.014 80);
+  --key-face: oklch(0.995 0.006 90);
+  --key-edge: oklch(0.80 0.02 80);
+  --key-ink: oklch(0.30 0.02 268);
+  --accent: var(--rust);
+  --shadow: 0 1px 0 var(--key-edge), 0 2px 3px oklch(0.5 0.03 60 / .18);
+  --radius: 7px;
+}
+:root[data-theme="dark"]{
+  --paper: oklch(0.205 0.012 65);
+  --paper-2: oklch(0.245 0.014 62);
+  --ink: oklch(0.92 0.015 82);
+  --ink-soft: oklch(0.76 0.02 82);
+  --ink-faint: oklch(0.60 0.02 82);
+  --rust: oklch(0.70 0.135 48);
+  --rust-deep: oklch(0.62 0.13 46);
+  --sage: oklch(0.72 0.06 185);
+  --line: oklch(0.33 0.016 65);
+  --key-face: oklch(0.30 0.016 65);
+  --key-edge: oklch(0.16 0.012 65);
+  --key-ink: oklch(0.90 0.015 82);
+  --shadow: 0 1px 0 var(--key-edge), 0 2px 4px oklch(0 0 0 / .35);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Public Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size:clamp(14px,0.6vw + 12px,16px); line-height:1.55;
+  transition:background .35s ease, color .35s ease;
+}
+::selection{background:var(--rust); color:var(--paper)}
+
+/* ── shell ── */
+.wrap{max-width:1180px; margin:0 auto; padding:clamp(1.2rem,3vw,2.6rem) clamp(1rem,4vw,2.4rem) 5rem}
+
+header.masthead{
+  display:grid; grid-template-columns:1fr auto; align-items:end; gap:1.4rem;
+  padding-bottom:1.3rem; border-bottom:2px solid var(--ink);
+}
+.brand{display:flex; flex-direction:column; gap:.15rem}
+.kicker{
+  font:600 .74rem/1 "Public Sans"; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--rust); display:flex; align-items:center; gap:.6rem;
+}
+.kicker::before{content:""; width:26px; height:2px; background:var(--rust)}
+h1{
+  margin:.1rem 0 0; font-family:"Fraunces", Georgia, serif;
+  font-weight:900; font-size:clamp(2.3rem,5.5vw,3.9rem); line-height:.94;
+  letter-spacing:-.02em;
+}
+h1 em{font-style:italic; font-weight:500; color:var(--rust)}
+.tagline{color:var(--ink-soft); max-width:46ch; margin-top:.5rem; font-size:.95rem}
+
+.controls{display:flex; flex-direction:column; align-items:flex-end; gap:.7rem}
+.search{
+  display:flex; align-items:center; gap:.5rem; background:var(--paper-2);
+  border:1px solid var(--line); border-radius:var(--radius); padding:.5rem .75rem; min-width:min(280px,60vw);
+}
+.search:focus-within{border-color:var(--rust); box-shadow:0 0 0 3px oklch(0.555 0.145 42 / .16)}
+.search svg{width:16px;height:16px;color:var(--ink-faint);flex:none}
+.search input{
+  border:0; background:transparent; outline:0; color:var(--ink); width:100%;
+  font:500 .9rem "Public Sans";
+}
+.search input::placeholder{color:var(--ink-faint)}
+.theme-btn{
+  border:1px solid var(--line); background:var(--paper-2); color:var(--ink-soft);
+  border-radius:var(--radius); padding:.42rem .7rem; cursor:pointer; font:600 .8rem "Public Sans";
+  display:flex; align-items:center; gap:.45rem; transition:.2s;
+}
+.theme-btn:hover{border-color:var(--rust); color:var(--rust)}
+
+/* ── tabs ── */
+nav.tabs{
+  display:flex; gap:.2rem; flex-wrap:wrap; margin:1.6rem 0 0;
+  border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5;
+  background:var(--paper); padding-top:.4rem;
+}
+.tab{
+  appearance:none; border:0; background:transparent; cursor:pointer;
+  font:600 .92rem "Public Sans"; color:var(--ink-faint);
+  padding:.7rem .95rem; position:relative; letter-spacing:.01em; white-space:nowrap;
+  transition:color .2s;
+}
+.tab .n{font-family:"JetBrains Mono"; font-size:.72rem; color:var(--rust); margin-right:.45rem; opacity:.7}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink)}
+.tab[aria-selected="true"]::after{
+  content:""; position:absolute; left:.6rem; right:.6rem; bottom:-1px; height:3px;
+  background:var(--rust); border-radius:3px 3px 0 0;
+}
+
+/* ── panels ── */
+.panel{display:none; animation:rise .5s cubic-bezier(.2,.7,.2,1)}
+.panel.on{display:block}
+@keyframes rise{from{opacity:0; transform:translateY(10px)}to{opacity:1;transform:none}}
+.lede{
+  font-family:"Fraunces",serif; font-size:clamp(1.15rem,2vw,1.5rem); font-weight:400;
+  line-height:1.4; color:var(--ink); max-width:60ch; margin:2rem 0 .4rem;
+}
+.lede b{color:var(--rust); font-weight:600}
+.note{color:var(--ink-soft); max-width:64ch; font-size:.92rem; margin:.3rem 0 1.4rem}
+
+/* section groups */
+.group{margin:2.1rem 0}
+.group > h3{
+  font:700 .78rem "Public Sans"; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--sage); margin:0 0 .1rem; display:flex; align-items:center; gap:.6rem;
+}
+.group > h3 .tag{
+  font-family:"JetBrains Mono"; font-size:.68rem; color:var(--ink-faint);
+  background:var(--paper-2); border:1px solid var(--line); border-radius:5px; padding:.05rem .4rem; letter-spacing:0; text-transform:none;
+}
+.group > p{color:var(--ink-soft); font-size:.9rem; margin:.35rem 0 .9rem; max-width:66ch}
+
+.rows{display:grid; grid-template-columns:1fr; gap:0}
+@media(min-width:820px){ .rows.two{grid-template-columns:1fr 1fr; column-gap:2.6rem} }
+.row{
+  display:grid; grid-template-columns:minmax(120px,190px) 1fr; gap:1rem; align-items:baseline;
+  padding:.55rem 0; border-bottom:1px solid var(--line);
+}
+.row .keys{display:flex; flex-wrap:wrap; gap:.3rem; align-items:center}
+.row .d{color:var(--ink-soft); font-size:.92rem}
+.row .d b{color:var(--ink); font-weight:600}
+.row.hide{display:none}
+
+kbd{
+  font-family:"JetBrains Mono", ui-monospace, monospace; font-weight:700; font-size:.78rem;
+  color:var(--key-ink); background:var(--key-face); border:1px solid var(--key-edge);
+  border-radius:6px; padding:.16rem .48rem; box-shadow:var(--shadow); line-height:1.4; white-space:nowrap;
+}
+kbd.mod{color:var(--rust)}
+.plus{color:var(--ink-faint); font-size:.72rem; font-family:"JetBrains Mono"}
+.then{color:var(--ink-faint); font-size:.68rem; font-style:italic; margin:0 .1rem; font-family:"Fraunces",serif}
+code.cmd{
+  font-family:"JetBrains Mono",monospace; font-weight:500; font-size:.82rem;
+  background:var(--paper-2); border:1px solid var(--line); border-radius:5px; padding:.12rem .4rem; color:var(--rust-deep);
+}
+
+/* architecture diagram */
+.arch{
+  margin:1.8rem 0; border:1px solid var(--line); border-radius:12px; overflow:hidden;
+  background:var(--paper-2);
+}
+.arch .layer{display:grid; grid-template-columns:auto 1fr; gap:1.1rem; padding:1.05rem 1.2rem; border-bottom:1px solid var(--line); align-items:center}
+.arch .layer:last-child{border-bottom:0}
+.arch .badge{
+  font-family:"Fraunces",serif; font-weight:900; font-size:1.5rem; color:var(--paper);
+  background:var(--rust); width:2.6rem; height:2.6rem; border-radius:9px;
+  display:grid; place-items:center; box-shadow:var(--shadow);
+}
+.arch .layer:nth-child(2) .badge{background:var(--sage)}
+.arch .layer:nth-child(3) .badge{background:var(--ink)}
+.arch .lay-t{font:700 1rem "Public Sans"; color:var(--ink)}
+.arch .lay-d{font-size:.88rem; color:var(--ink-soft)}
+.arch .lay-d code{font-family:"JetBrains Mono";font-size:.8rem;color:var(--rust-deep)}
+
+/* flow steps */
+.flow{counter-reset:s; display:grid; gap:.1rem; margin:1.4rem 0}
+.flow li{
+  list-style:none; display:grid; grid-template-columns:auto 1fr; gap:1rem; align-items:start;
+  padding:.7rem 0; border-bottom:1px dashed var(--line);
+}
+.flow li::before{
+  counter-increment:s; content:counter(s,decimal-leading-zero);
+  font-family:"JetBrains Mono"; font-weight:700; font-size:.82rem; color:var(--rust);
+  border:1px solid var(--rust); border-radius:6px; padding:.1rem .4rem; height:fit-content;
+}
+.flow b{color:var(--ink)}
+.flow code{font-family:"JetBrains Mono";font-size:.82rem;background:var(--paper-2);padding:.08rem .35rem;border-radius:4px;color:var(--rust-deep);border:1px solid var(--line)}
+
+.callout{
+  border-left:3px solid var(--rust); background:var(--paper-2); border-radius:0 8px 8px 0;
+  padding:.85rem 1.1rem; margin:1.4rem 0; font-size:.9rem; color:var(--ink-soft);
+}
+.callout b{color:var(--ink)}
+
+.noresult{display:none; padding:2rem 0; color:var(--ink-faint); font-family:"Fraunces",serif; font-size:1.2rem; font-style:italic}
+.noresult.on{display:block}
+
+footer{margin-top:3.5rem; padding-top:1.2rem; border-top:1px solid var(--line); color:var(--ink-faint); font-size:.8rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:.6rem}
+footer code{font-family:"JetBrains Mono";color:var(--ink-soft)}
+@media(max-width:640px){
+  header.masthead{grid-template-columns:1fr}
+  .controls{align-items:stretch}
+  .row{grid-template-columns:1fr; gap:.25rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="brand">
+      <span class="kicker">Multi-worktree · Claude Code</span>
+      <h1>Vibe <em>Workspace</em></h1>
+      <p class="tagline">Cẩm nang phím tắt & cách dùng cho môi trường tmux · Neovim · Claude Code. Một nguồn tra cứu duy nhất.</p>
+    </div>
+    <div class="controls">
+      <button class="theme-btn" id="themeBtn" aria-label="Đổi giao diện sáng/tối">
+        <span id="themeIcon">◑</span><span id="themeTxt">Tối</span>
+      </button>
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="q" type="search" placeholder="Tìm phím hoặc chức năng… (vd: grep, zoom, worktree)" autocomplete="off">
+      </label>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+
+  <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+  <!-- ══════════════ 1 · TỔNG QUAN ══════════════ -->
+  <section class="panel on" data-tab="Tổng quan" data-n="01">
+    <p class="lede">Một source, <b>nhiều git worktree</b> chạy song song. Mỗi worktree là một workspace cách ly: <b>tmux session</b> riêng, <b>Neovim</b> riêng, và <b>nhiều Claude Code</b> vibe code cùng lúc.</p>
+    <p class="note">Attach vào một workspace là full màn hình; các workspace khác vẫn chạy nền. Đóng terminal, Claude vẫn chạy — mở lại là nguyên trạng.</p>
+
+    <div class="arch" data-noscan>
+      <div class="layer"><div class="badge">1</div><div><div class="lay-t">tmux — tầng cách ly workspace</div><div class="lay-d">Mỗi <code>session</code> = một worktree. Chuyển bằng <code>sesh</code>, persistence qua reboot.</div></div></div>
+      <div class="layer"><div class="badge">2</div><div><div class="lay-t">Neovim — editor mỗi worktree</div><div class="lay-d">Mở đúng thư mục worktree, LSP đúng root, xem code AI vibe.</div></div></div>
+      <div class="layer"><div class="badge">3</div><div><div class="lay-t">Claude Code — nhiều phiên</div><div class="lay-d">Trong nvim (<code>claude-multi</code>) hoặc pane tmux. Gửi selection, xem diff (<code>claudecode</code>).</div></div></div>
+    </div>
+
+    <div class="group">
+      <h3>Luồng làm việc điển hình</h3>
+      <ol class="flow" data-noscan>
+        <li><span><b>Mở tmux.</b> Terminal thường tự vào tmux (trừ Warp). Hoặc gõ <code>tmux</code>.</span></li>
+        <li><span><b>Tạo workspace.</b> <code>wt-new feat-login</code> → tạo worktree + session + nvim tự mở.</span></li>
+        <li><span><b>Vibe code.</b> Trong nvim: <code>Space c n</code> mở Claude Code; thêm phiên nữa cũng <code>Space c n</code>.</span></li>
+        <li><span><b>Gửi ngữ cảnh.</b> Bôi đen code → <code>Space a s</code> gửi cho Claude; <code>Space a a</code> nhận diff.</span></li>
+        <li><span><b>Tập trung.</b> <code>Space z</code> hoặc <code>prefix z</code> zoom full.</span></li>
+        <li><span><b>Nhảy workspace.</b> <code>prefix o</code> → popup xem tất cả, chọn cái khác (cái cũ vẫn chạy).</span></li>
+        <li><span><b>Dọn.</b> Xong feature → <code>wt-clean</code> xoá worktree đã merge.</span></li>
+      </ol>
+    </div>
+
+    <div class="callout" data-noscan><b>Leader = <kbd>Space</kbd>, tmux prefix = <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>a</kbd>.</b> Trong nvim, bấm <kbd>Space</kbd> rồi khựng lại → which-key hiện popup nhắc mọi phím. Trong tmux, quên thì mở tab tương ứng ở đây.</div>
+  </section>
+
+  <!-- ══════════════ 2 · TMUX ══════════════ -->
+  <section class="panel" data-tab="tmux" data-n="02">
+    <p class="lede">Prefix là <b><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>a</kbd></b>. Bấm prefix rồi bấm phím lệnh.</p>
+
+    <div class="group">
+      <h3>Workspace / Session <span class="tag">sesh</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>o</kbd></div><div class="d"><b>Switcher</b> — popup xem tất cả workspace + nhảy</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>d</kbd></div><div class="d">Detach — rời tmux, mọi thứ chạy nền</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>s</kbd></div><div class="d">Cây session tích hợp của tmux</div></div>
+        <div class="row"><div class="keys"><code class="cmd">tmux attach</code></div><div class="d">Vào lại tmux đang chạy nền</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Pane (chia màn hình)</h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>|</kbd></div><div class="d">Split <b>dọc</b> (giữ cwd)</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>-</kbd></div><div class="d">Split <b>ngang</b> (giữ cwd)</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></div><div class="d">Nhảy pane — <b>xuyên cả nvim ↔ tmux</b></div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>z</kbd></div><div class="d"><b>Zoom</b> full pane (bấm lại thu về)</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>e</kbd></div><div class="d">Toggle <b>sync-panes</b> — gõ 1 lệnh chạy mọi pane</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>x</kbd></div><div class="d">Đóng pane hiện tại</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Window (tab của tmux)</h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>c</kbd></div><div class="d">Window mới</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>,</kbd></div><div class="d">Đổi tên window</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>n</kbd> / <kbd>p</kbd></div><div class="d">Window sau / trước</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>1</kbd>…<kbd>9</kbd></div><div class="d">Nhảy tới window số</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Copy mode <span class="tag">tmux-yank</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>[</kbd></div><div class="d">Vào copy-mode (cuộn lên xem lịch sử)</div></div>
+        <div class="row"><div class="keys"><kbd>v</kbd><span class="then">rồi</span><kbd>y</kbd></div><div class="d">Bôi đen (v) → yank (y) vào <b>clipboard hệ thống</b></div></div>
+        <div class="row"><div class="keys"><kbd>q</kbd></div><div class="d">Thoát copy-mode</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Persistence & config <span class="tag">resurrect · continuum</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>s</kbd></div><div class="d">Lưu toàn bộ session thủ công</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>r</kbd></div><div class="d">Khôi phục session đã lưu</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>I</kbd></div><div class="d">Cài plugin tmux (tpm)</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>r</kbd></div><div class="d">Reload <code class="cmd">~/.tmux.conf</code></div></div>
+      </div>
+      <p>Continuum tự lưu mỗi 15 phút và tự khôi phục khi mở tmux — workspaces sống qua reboot.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════ 3 · WORKSPACE ══════════════ -->
+  <section class="panel" data-tab="Workspace" data-n="03">
+    <p class="lede">Ba script <b><code class="cmd">wt-*</code></b> quản vòng đời worktree. <b>sesh</b> nhảy giữa workspace, <b>zoxide</b> nhảy tới thư mục bất kỳ.</p>
+
+    <div class="group">
+      <h3>Scripts worktree <span class="tag">~/thai/system/bin</span></h3>
+      <div class="rows" data-list>
+        <div class="row"><div class="keys"><code class="cmd">wt-new &lt;branch&gt;</code></div><div class="d"><b>Tạo</b> worktree + branch + tmux session + nvim tự mở. Đường dẫn: <code class="cmd">&lt;repo&gt;.worktrees/&lt;branch&gt;</code></div></div>
+        <div class="row"><div class="keys"><code class="cmd">wt-status</code></div><div class="d"><b>Bảng tổng quan</b> mọi worktree: branch · số file đổi · số Claude Code đang chạy</div></div>
+        <div class="row"><div class="keys"><code class="cmd">wt-clean</code></div><div class="d"><b>Dọn</b> worktree đã merge vào main + kill session. Worktree còn thay đổi chưa lưu sẽ được giữ lại + cảnh báo</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>sesh — nhảy workspace</h3>
+      <div class="rows" data-list>
+        <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>o</kbd></div><div class="d">Popup fuzzy: tmux session + thư mục zoxide + config. Gõ để lọc, Enter để nhảy</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>zoxide — nhảy tới thư mục</h3>
+      <p>Học đường dẫn khi bạn <code class="cmd">cd</code>/<code class="cmd">z</code>. Càng dùng càng xếp hạng thông minh.</p>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><code class="cmd">z vibe</code></div><div class="d">Nhảy tới thư mục khớp "vibe" (điểm cao nhất)</div></div>
+        <div class="row"><div class="keys"><code class="cmd">z lovinbot api</code></div><div class="d">Nhiều từ khoá → thu hẹp kết quả</div></div>
+        <div class="row"><div class="keys"><code class="cmd">zi vid</code></div><div class="d">Chọn <b>tương tác</b> (fzf) nếu nhiều thư mục khớp</div></div>
+        <div class="row"><div class="keys"><code class="cmd">zoxide query --list</code></div><div class="d">Xem tất cả thư mục đã học</div></div>
+      </div>
+    </div>
+
+    <div class="callout" data-noscan>Một worktree chạy được <b>nhiều Claude Code</b> — trong nvim (<kbd>Space</kbd><kbd>c</kbd><kbd>n</kbd>) hoặc mở pane tmux rồi gõ <code class="cmd">claude</code>. Xem tab <b>LSP &amp; Claude</b>.</div>
+  </section>
+
+  <!-- ══════════════ 4 · NVIM DI CHUYỂN ══════════════ -->
+  <section class="panel" data-tab="Nvim · Di chuyển" data-n="04">
+    <p class="lede">Nền tảng là <b>vim motions</b> (không cần plugin), tăng tốc bằng <b>flash</b> để nhảy bất kỳ đâu.</p>
+
+    <div class="group">
+      <h3>Theo dòng</h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>j</kbd> / <kbd>k</kbd></div><div class="d">Xuống / lên 1 dòng</div></div>
+        <div class="row"><div class="keys"><kbd>5</kbd><kbd>j</kbd> · <kbd>12</kbd><kbd>k</kbd></div><div class="d">Xuống 5 / lên 12 dòng (số dòng tương đối)</div></div>
+        <div class="row"><div class="keys"><kbd>g</kbd><kbd>g</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>g</kbd></div><div class="d">Đầu / cuối file</div></div>
+        <div class="row"><div class="keys"><kbd>4</kbd><kbd>2</kbd><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>g</kbd></div><div class="d">Nhảy tới <b>dòng 42</b></div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>h</kbd> <kbd>m</kbd> <kbd>l</kbd></div><div class="d">Đầu / giữa / cuối màn hình</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>d</kbd> / <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>u</kbd></div><div class="d">Cuộn nửa trang (giữ con trỏ giữa)</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Trong một dòng</h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>w</kbd> / <kbd>b</kbd></div><div class="d">Sang từ tiếp / về từ trước</div></div>
+        <div class="row"><div class="keys"><kbd>0</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>4</kbd></div><div class="d">Đầu dòng / cuối dòng ($)</div></div>
+        <div class="row"><div class="keys"><kbd>^</kbd></div><div class="d">Ký tự đầu (bỏ khoảng trắng)</div></div>
+        <div class="row"><div class="keys"><kbd>f</kbd><kbd>)</kbd> · <kbd>t</kbd><kbd>,</kbd></div><div class="d">Nhảy tới <kbd>)</kbd> / ngay trước <kbd>,</kbd></div></div>
+        <div class="row"><div class="keys"><kbd>;</kbd></div><div class="d">Lặp lại f/t lần nữa</div></div>
+        <div class="row"><div class="keys"><kbd>%</kbd></div><div class="d">Nhảy giữa cặp ngoặc <kbd>(</kbd><kbd>)</kbd><kbd>{</kbd><kbd>}</kbd></div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Theo khối & quay lại</h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>{</kbd> / <kbd>}</kbd></div><div class="d">Đoạn trước / sau</div></div>
+        <div class="row"><div class="keys"><kbd>[</kbd><kbd>[</kbd> / <kbd>]</kbd><kbd>]</kbd></div><div class="d">Function trước / sau</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>o</kbd> / <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>i</kbd></div><div class="d">Lùi / tiến trong jumplist (sau khi nhảy đi)</div></div>
+        <div class="row"><div class="keys"><kbd>`</kbd><kbd>`</kbd></div><div class="d">Về vị trí trước lần nhảy cuối</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Flash — nhảy bất kỳ đâu <span class="tag">flash.nvim</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>s</kbd><span class="then">rồi</span> 2 ký tự</div><div class="d">Mọi chỗ khớp hiện <b>nhãn chữ</b> → bấm nhãn là nhảy tới</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>s</kbd></div><div class="d">Nhảy/chọn theo <b>khối code</b> (Treesitter)</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Cửa sổ · Tab · Undo <span class="tag">bufferline · undo-glow</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd></div><div class="d">Nhảy giữa cửa sổ (split)</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>z</kbd></div><div class="d"><b>Zoom</b> cửa sổ nvim (toggle)</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>l</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>h</kbd></div><div class="d">Tab (buffer) sau / trước</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>b</kbd><kbd>p</kbd></div><div class="d">Chọn tab bằng nhãn</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>b</kbd><kbd>c</kbd></div><div class="d">Đóng tab hiện tại (giữ layout)</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>b</kbd><kbd>o</kbd></div><div class="d">Đóng các tab khác</div></div>
+        <div class="row"><div class="keys"><kbd>u</kbd> · <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>r</kbd></div><div class="d">Undo / Redo (có chớp sáng vùng đổi)</div></div>
+        <div class="row"><div class="keys"><kbd>p</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>p</kbd></div><div class="d">Paste dưới / trên (có chớp sáng)</div></div>
+        <div class="row"><div class="keys"><kbd>Esc</kbd></div><div class="d">Xoá tô sáng kết quả tìm</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>w</kbd> / <kbd>Space</kbd><kbd>q</kbd></div><div class="d">Lưu file / đóng cửa sổ</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 5 · NVIM TÌM & DUYỆT ══════════════ -->
+  <section class="panel" data-tab="Nvim · Tìm & Duyệt" data-n="05">
+    <p class="lede">Tìm file & grep toàn repo bằng <b>fzf-lua</b>, duyệt cây bằng <b>nvim-tree</b>, biết mình đang ở đâu bằng <b>dropbar</b>.</p>
+
+    <div class="group">
+      <h3>fzf-lua — tìm file & grep <span class="tag">Space f …</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>f</kbd></div><div class="d"><b>Tìm file</b> theo tên</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>g</kbd></div><div class="d"><b>Grep</b> chuỗi toàn repo (ripgrep)</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>w</kbd></div><div class="d">Grep nhanh <b>từ đang trỏ</b></div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>l</kbd></div><div class="d">Tìm dòng trong file hiện tại</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>b</kbd></div><div class="d">Chuyển giữa buffer đang mở</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>o</kbd></div><div class="d">File mở gần đây</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>r</kbd></div><div class="d">Mở lại tìm kiếm trước</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>k</kbd></div><div class="d">Xem mọi phím tắt</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>f</kbd><kbd>h</kbd></div><div class="d">Tra help của Neovim</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>nvim-tree — cây thư mục</h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>e</kbd></div><div class="d">Bật / tắt cây thư mục</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>o</kbd></div><div class="d">Nhảy con trỏ vào cây</div></div>
+        <div class="row"><div class="keys"><kbd>a</kbd></div><div class="d">Tạo file (thêm <kbd>/</kbd> cuối = thư mục)</div></div>
+        <div class="row"><div class="keys"><kbd>d</kbd> · <kbd>r</kbd></div><div class="d">Xoá · đổi tên</div></div>
+        <div class="row"><div class="keys"><kbd>x</kbd> <kbd>c</kbd> <kbd>p</kbd></div><div class="d">Cắt · copy · dán</div></div>
+        <div class="row"><div class="keys"><kbd>Enter</kbd> / <kbd>Tab</kbd></div><div class="d">Mở file / xem trước</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>h</kbd> · <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>i</kbd></div><div class="d">Ẩn/hiện file ẩn · file gitignore</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>r</kbd> · <kbd>g</kbd><kbd>?</kbd></div><div class="d">Nạp lại cây · xem toàn bộ phím</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Định vị & tìm trong file <span class="tag">dropbar</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>;</kbd></div><div class="d">Dropbar: mở menu breadcrumb (class › function)</div></div>
+        <div class="row"><div class="keys"><kbd>/</kbd> chữ <span class="then">rồi</span><kbd>Enter</kbd></div><div class="d">Tìm trong file</div></div>
+        <div class="row"><div class="keys"><kbd>n</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>n</kbd></div><div class="d">Kết quả tiếp / trước (giữ giữa màn hình)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 6 · LSP & CLAUDE ══════════════ -->
+  <section class="panel" data-tab="Nvim · LSP & Claude" data-n="06">
+    <p class="lede">Lần theo code bằng <b>LSP</b>. Vibe code bằng hai plugin Claude: <b>claude-multi</b> (nhiều phiên trong nvim) và <b>claudecode</b> (gửi selection + diff).</p>
+
+    <div class="group">
+      <h3>LSP — hiểu & lần code <span class="tag">TS · Python · Go · Lua</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>g</kbd><kbd>d</kbd></div><div class="d"><b>Nhảy tới định nghĩa</b> (kể cả file khác)</div></div>
+        <div class="row"><div class="keys"><kbd>g</kbd><kbd>r</kbd></div><div class="d"><b>Tìm mọi nơi được gọi</b> (references)</div></div>
+        <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>k</kbd></div><div class="d"><b>Hover</b> — xem type / docstring</div></div>
+        <div class="row"><div class="keys"><kbd>g</kbd><kbd>i</kbd> · <kbd>g</kbd><kbd>t</kbd></div><div class="d">Implementation · định nghĩa type</div></div>
+        <div class="row"><div class="keys"><kbd>g</kbd><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>d</kbd></div><div class="d">Nhảy tới khai báo</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>d</kbd><kbd>s</kbd></div><div class="d">Outline symbol trong file</div></div>
+        <div class="row"><div class="keys"><kbd>[</kbd><kbd>d</kbd> / <kbd>]</kbd><kbd>d</kbd></div><div class="d">Lỗi/cảnh báo trước / sau</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>d</kbd><kbd>l</kbd></div><div class="d">Xem chi tiết lỗi tại dòng</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>r</kbd><kbd>n</kbd></div><div class="d">Đổi tên symbol (rename)</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>l</kbd><kbd>a</kbd></div><div class="d">Code action (sửa nhanh)</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>claude-multi — nhiều Claude trong nvim <span class="tag">Space c …</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>n</kbd></div><div class="d"><b>Phiên mới</b> (mở thêm một Claude Code)</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>c</kbd></div><div class="d">Bật / tắt cửa sổ Claude</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>h</kbd> / <kbd>Space</kbd><kbd>c</kbd><kbd>l</kbd></div><div class="d">Phiên trước / sau (chuyển tab)</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>w</kbd></div><div class="d">Phiên mới trong git worktree riêng</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>r</kbd></div><div class="d">Recall hội thoại cũ (cần tool <code class="cmd">recall</code>)</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>x</kbd></div><div class="d">Đóng phiên</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>claudecode — tích hợp IDE <span class="tag">Space a …</span></h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>s</kbd></div><div class="d"><b>Gửi selection</b> (bôi đen) cho Claude — chế độ visual</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>a</kbd> / <kbd>Space</kbd><kbd>a</kbd><kbd>d</kbd></div><div class="d"><b>Nhận / từ chối diff</b> Claude đề xuất</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>b</kbd></div><div class="d">Thêm buffer hiện tại làm ngữ cảnh</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>c</kbd> / <kbd>Space</kbd><kbd>a</kbd><kbd>f</kbd></div><div class="d">Toggle / focus cửa sổ Claude IDE</div></div>
+        <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>m</kbd></div><div class="d">Chọn model</div></div>
+      </div>
+    </div>
+    <div class="callout" data-noscan>Khi Claude đề xuất sửa, <b>claudecode</b> mở diff 2 cột ngay trong nvim — bạn chỉnh lại rồi <kbd>Space</kbd><kbd>a</kbd><kbd>a</kbd> để nhận.</div>
+  </section>
+
+  <!-- ══════════════ 7 · CÀI ĐẶT ══════════════ -->
+  <section class="panel" data-tab="Cài đặt" data-n="07">
+    <p class="lede">Repo dotfiles <b><code class="cmd">~/thai/system</code></b>. Hai script cài toàn bộ trên máy mới.</p>
+
+    <div class="group">
+      <h3>Cài trên máy mới</h3>
+      <div class="rows" data-list>
+        <div class="row"><div class="keys"><code class="cmd">bash ~/thai/system/nvim/install.sh</code></div><div class="d">Neovim + plugin + LSP + Nerd Font + treesitter</div></div>
+        <div class="row"><div class="keys"><code class="cmd">bash ~/thai/system/setup-workspace.sh</code></div><div class="d">tmux + tpm + sesh + zoxide + scripts + auto-tmux</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Yêu cầu</h3>
+      <div class="rows two" data-list>
+        <div class="row"><div class="keys"><code class="cmd">Neovim ≥ 0.12</code></div><div class="d">Cho nvim-treesitter nhánh main</div></div>
+        <div class="row"><div class="keys"><code class="cmd">tmux · git · fzf</code></div><div class="d">Nền tảng workspace</div></div>
+        <div class="row"><div class="keys"><code class="cmd">ripgrep · fd</code></div><div class="d">fzf-lua tìm file & grep</div></div>
+        <div class="row"><div class="keys"><code class="cmd">node · go</code></div><div class="d">mason cài LSP (ts / pyright / gopls)</div></div>
+        <div class="row"><div class="keys"><code class="cmd">tree-sitter-cli</code></div><div class="d">Biên dịch parser highlight</div></div>
+        <div class="row"><div class="keys"><code class="cmd">sesh · zoxide</code></div><div class="d">Switcher + nhảy thư mục</div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Font & Terminal</h3>
+      <p>Icon (tree, header, breadcrumb) cần <b>Nerd Font</b>. Đặt terminal dùng <code class="cmd">JetBrainsMono Nerd Font Mono</code>.</p>
+      <div class="rows" data-list>
+        <div class="row"><div class="keys">Warp</div><div class="d">Settings → Terminal font → tìm <b>"JetBrains"</b> → JetBrainsMono Nerd Font Mono</div></div>
+        <div class="row"><div class="keys">GNOME Terminal</div><div class="d">Preferences → profile → Custom font → JetBrainsMono Nerd Font</div></div>
+      </div>
+    </div>
+
+    <div class="callout" data-noscan><b>Auto-tmux:</b> terminal thường tự vào tmux; <b>Warp được loại trừ</b> để giữ Blocks. Muốn đổi: sửa khối <code class="cmd">&gt;&gt;&gt; auto-tmux &lt;&lt;&lt;</code> trong <code class="cmd">~/.bashrc</code>.</div>
+  </section>
+
+  <footer>
+    <span>Vibe Workspace · cẩm nang cá nhân · <code>~/thai/system/cheatsheet.html</code></span>
+    <span>tmux · Neovim · Claude Code</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var tabsNav = document.getElementById('tabs');
+  var q = document.getElementById('q');
+  var noresult = document.getElementById('noresult');
+
+  // build tabs
+  panels.forEach(function(p, i){
+    var b = document.createElement('button');
+    b.className = 'tab'; b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', i===0 ? 'true':'false');
+    b.innerHTML = '<span class="n">'+p.dataset.n+'</span>'+p.dataset.tab;
+    b.addEventListener('click', function(){ select(i); });
+    tabsNav.appendChild(b);
+  });
+  var tabBtns = Array.prototype.slice.call(tabsNav.children);
+
+  function select(i){
+    panels.forEach(function(p,j){ p.classList.toggle('on', i===j); });
+    tabBtns.forEach(function(b,j){ b.setAttribute('aria-selected', i===j?'true':'false'); });
+    if(q.value) filter(); else noresult.classList.remove('on');
+  }
+
+  // search: filter rows in ALL panels, auto-switch to first panel with matches
+  function filter(){
+    var term = q.value.trim().toLowerCase();
+    if(!term){
+      document.querySelectorAll('.row').forEach(function(r){ r.classList.remove('hide'); });
+      noresult.classList.remove('on');
+      return;
+    }
+    var firstHit = -1;
+    panels.forEach(function(p, i){
+      var lists = p.querySelectorAll('[data-list]');
+      var pHit = 0;
+      lists.forEach(function(list){
+        list.querySelectorAll('.row').forEach(function(r){
+          var hit = r.textContent.toLowerCase().indexOf(term) !== -1;
+          r.classList.toggle('hide', !hit);
+          if(hit) pHit++;
+        });
+      });
+      // hide empty groups
+      p.querySelectorAll('.group').forEach(function(g){
+        var vis = g.querySelectorAll('.row:not(.hide)').length;
+        var hasList = g.querySelector('[data-list]');
+        if(hasList) g.style.display = vis? '':'none';
+      });
+      if(pHit>0 && firstHit<0) firstHit = i;
+    });
+    if(firstHit>=0){ select(firstHit); noresult.classList.remove('on'); }
+    else { noresult.classList.add('on'); }
+  }
+  q.addEventListener('input', filter);
+  // reset group display when clearing
+  q.addEventListener('search', function(){ if(!q.value){ document.querySelectorAll('.group').forEach(function(g){g.style.display='';}); }});
+
+  // '/' focuses search
+  document.addEventListener('keydown', function(e){
+    if(e.key==='/' && document.activeElement!==q){ e.preventDefault(); q.focus(); }
+    if(e.key==='Escape' && document.activeElement===q){ q.value=''; filter(); document.querySelectorAll('.group').forEach(function(g){g.style.display='';}); q.blur(); }
+  });
+
+  // theme
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeBtn');
+  var icon = document.getElementById('themeIcon');
+  var txt = document.getElementById('themeTxt');
+  function applyTheme(t){
+    root.setAttribute('data-theme', t);
+    icon.textContent = t==='dark' ? '◐' : '◑';
+    txt.textContent = t==='dark' ? 'Sáng' : 'Tối';
+    try{ localStorage.setItem('vibe-theme', t); }catch(e){}
+  }
+  var saved = null; try{ saved = localStorage.getItem('vibe-theme'); }catch(e){}
+  applyTheme(saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'));
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme')==='dark' ? 'light':'dark');
+  });
+})();
+</script>
+</body>
+</html>
