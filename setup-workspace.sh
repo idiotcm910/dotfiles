@@ -51,5 +51,8 @@ log "Cài plugin tmux (tpm)"
 tmux kill-server 2>/dev/null || true
 tmux new-session -d -s _setup && ~/.tmux/plugins/tpm/bin/install_plugins && tmux kill-session -t _setup 2>/dev/null || true
 
+log "Màu GNOME Terminal = tokyonight (khớp nvim)"
+bash ~/thai/system/terminal/gnome-terminal-tokyonight.sh || true
+
 echo ""
 echo "✅ XONG. Mở terminal mới → gõ 'tmux' → 'wt-new <branch>' để bắt đầu."
