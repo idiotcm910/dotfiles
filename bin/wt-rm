@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# wt-rm <branch> [--force] — xóa MỘT workspace cụ thể:
+#   worktree + branch + tmux session + quên đường dẫn trong zoxide.
+# Khác wt-clean (chỉ dọn worktree đã merge vào main), wt-rm xóa đúng cái bạn chỉ định.
+set -euo pipefail
+branch="${1:?Cần tên branch: wt-rm <branch> [--force]}"
+force=0; [ "${2:-}" = "--force" ] && force=1
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "Không ở trong git repo"; exit 1; }
+
+# Tìm path worktree theo branch; fallback theo convention path
+wt="$(git -C "$repo_root" worktree list --porcelain | awk -v b="refs/heads/$branch" '
+  /^worktree /{p=$2} /^branch /{ if($2==b) print p }' | head -1)"
+if [ -z "$wt" ]; then
+  repo_name="$(basename "$repo_root")"
+  cand="$(dirname "$repo_root")/${repo_name}.worktrees/${branch}"
+  [ -d "$cand" ] && wt="$cand"
+fi
+
+# 1) worktree
+if [ -n "$wt" ] && [ -d "$wt" ]; then
+  if [ "$force" = 1 ]; then
+    git -C "$repo_root" worktree remove "$wt" --force && echo "→ Đã xóa worktree $wt (force)"
+  elif git -C "$repo_root" worktree remove "$wt" 2>/dev/null; then
+    echo "→ Đã xóa worktree $wt"
+  else
+    echo "⚠ Worktree '$branch' còn thay đổi chưa lưu (hoặc có worktree con). Dùng: wt-rm $branch --force"
+    exit 1
+  fi
+  git -C "$repo_root" branch -D "$branch" 2>/dev/null || true
+  command -v zoxide >/dev/null 2>&1 && zoxide remove "$wt" 2>/dev/null || true
+else
+  echo "(không thấy worktree cho '$branch' — chỉ dọn session/zoxide nếu có)"
+fi
+
+# 2) tmux session (tên = branch sanitize)
+session="$(echo "$branch" | tr './:' '___')"
+if tmux has-session -t "$session" 2>/dev/null; then
+  tmux kill-session -t "$session" 2>/dev/null && echo "→ Đã kill session $session" || true
+fi
+echo "✓ Xong: $branch"
