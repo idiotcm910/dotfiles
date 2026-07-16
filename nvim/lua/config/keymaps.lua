@@ -27,3 +27,15 @@ map("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Buffer sau" })
 -- Lưu / thoát nhanh (dù chủ yếu đọc, thỉnh thoảng vẫn cần)
 map("n", "<leader>w", "<cmd>write<CR>", { desc = "Lưu file" })
 map("n", "<leader>q", "<cmd>quit<CR>", { desc = "Đóng cửa sổ" })
+
+-- Zoom cửa sổ nvim: phóng to cửa sổ hiện tại, bấm lần nữa trả về (toggle)
+map("n", "<leader>z", function()
+  if vim.t.zoom_restore then
+    vim.cmd(vim.t.zoom_restore)
+    vim.t.zoom_restore = nil
+  else
+    local restore = vim.fn.winrestcmd()
+    vim.cmd("resize | vertical resize")
+    vim.t.zoom_restore = restore
+  end
+end, { desc = "Zoom cửa sổ (toggle)" })
