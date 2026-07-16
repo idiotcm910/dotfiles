@@ -30,6 +30,23 @@ log "PATH cho scripts"
 grep -q 'thai/system/bin' ~/.bashrc || echo 'export PATH="$HOME/thai/system/bin:$HOME/.local/bin:$PATH"' >> ~/.bashrc
 chmod +x ~/thai/system/bin/*
 
+log "Auto-tmux khi mở terminal (trừ Warp)"
+if ! grep -qF '# >>> auto-tmux (trừ Warp) >>>' ~/.bashrc; then
+cat >> ~/.bashrc <<'BASHRC'
+
+# >>> auto-tmux (trừ Warp) >>>
+# Tự vào tmux khi mở terminal thường; BỎ QUA Warp (giữ Blocks) + editor + shell non-interactive
+if command -v tmux >/dev/null 2>&1 \
+  && [ -z "${TMUX:-}" ] \
+  && [[ $- == *i* ]] && [ -t 0 ] \
+  && [ "${TERM_PROGRAM:-}" != "WarpTerminal" ] \
+  && [ "${TERM_PROGRAM:-}" != "vscode" ]; then
+  exec tmux new-session -A -s main
+fi
+# <<< auto-tmux (trừ Warp) <<<
+BASHRC
+fi
+
 log "Cài plugin tmux (tpm)"
 tmux kill-server 2>/dev/null || true
 tmux new-session -d -s _setup && ~/.tmux/plugins/tpm/bin/install_plugins && tmux kill-session -t _setup 2>/dev/null || true
