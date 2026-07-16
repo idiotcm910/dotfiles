@@ -15,7 +15,9 @@ return {
       { "<leader>b", group = "Buffer / tab" },
       { "<leader>d", group = "Diagnostic / symbol" },
       { "<leader>r", group = "Rename" },
-      { "<leader>c", group = "Code action" },
+      { "<leader>l", group = "LSP" },
+      { "<leader>c", group = "Claude" },
+      { "<leader>a", group = "AI / Claude Code" },
     },
   },
   keys = {

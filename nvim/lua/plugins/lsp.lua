@@ -35,7 +35,7 @@ return {
         map("gt", vim.lsp.buf.type_definition, "Nhảy tới định nghĩa type")
         map("K",  vim.lsp.buf.hover,           "Xem type/doc (hover)")
         map("<leader>rn", vim.lsp.buf.rename,      "Đổi tên symbol")
-        map("<leader>ca", vim.lsp.buf.code_action, "Code action")
+        map("<leader>la", vim.lsp.buf.code_action, "Code action (LSP)")
         map("<leader>ds", "<cmd>FzfLua lsp_document_symbols<CR>",  "Outline symbol trong file")
         map("[d", function() vim.diagnostic.jump({ count = -1 }) end, "Lỗi/cảnh báo trước")
         map("]d", function() vim.diagnostic.jump({ count = 1 })  end, "Lỗi/cảnh báo sau")
