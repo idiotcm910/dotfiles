@@ -21,10 +21,12 @@
 
         <div class="group">
           <h2>Scripts worktree <span class="tag">~/thai/system/bin</span></h2>
+          <p><b>wt-rm</b> = xóa đúng một cái bạn chỉ định. <b>wt-clean</b> = quét dọn tất cả cái đã merge. Cần xóa workspace chưa merge → dùng <code class="cmd">wt-rm</code>.</p>
           <div class="rows">
             <div class="row"><div class="keys"><code class="cmd">wt-new &lt;branch&gt;</code></div><div class="d"><b>Tạo</b> worktree + branch + tmux session + nvim tự mở. Đường dẫn: <code class="cmd">&lt;repo&gt;.worktrees/&lt;branch&gt;</code></div></div>
             <div class="row"><div class="keys"><code class="cmd">wt-status</code></div><div class="d"><b>Bảng tổng quan</b> mọi worktree: branch · số file đổi · số Claude Code đang chạy</div></div>
-            <div class="row"><div class="keys"><code class="cmd">wt-clean</code></div><div class="d"><b>Dọn</b> worktree đã merge vào main + kill session. Worktree còn thay đổi chưa lưu được giữ lại + cảnh báo</div></div>
+            <div class="row"><div class="keys"><code class="cmd">wt-rm &lt;branch&gt;</code></div><div class="d"><b>Xóa MỘT workspace</b> cụ thể (bất kể merged): worktree + branch + session + quên zoxide. Thêm <code class="cmd">--force</code> nếu còn thay đổi chưa lưu</div></div>
+            <div class="row"><div class="keys"><code class="cmd">wt-clean</code></div><div class="d"><b>Dọn HÀNG LOẠT</b> worktree đã merge vào <code class="cmd">main</code> + kill session + quên zoxide. Worktree còn thay đổi chưa lưu được giữ lại + cảnh báo</div></div>
           </div>
         </div>
 
