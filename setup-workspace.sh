@@ -54,5 +54,27 @@ tmux new-session -d -s _setup && ~/.tmux/plugins/tpm/bin/install_plugins && tmux
 log "Màu GNOME Terminal = tokyonight (khớp nvim)"
 bash ~/thai/system/terminal/gnome-terminal-tokyonight.sh || true
 
+log "Cài ble.sh (gợi ý lệnh kiểu fish cho bash)"
+if [ ! -f ~/.local/share/blesh/ble.sh ]; then
+  tmpb="$(mktemp -d)"
+  burl="$(curl -s https://api.github.com/repos/akinomyoga/ble.sh/releases/latest \
+    | grep -oP '"browser_download_url": "\K[^"]*' | grep -E 'tar\.xz$' | head -1)"
+  [ -z "$burl" ] && burl="https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz"
+  curl -sL "$burl" -o "$tmpb/ble.tar.xz" && tar xJf "$tmpb/ble.tar.xz" -C "$tmpb"
+  bsrc="$(find "$tmpb" -maxdepth 1 -type d -name 'ble-*' | head -1)"
+  mkdir -p ~/.local/share && rm -rf ~/.local/share/blesh && mv "$bsrc" ~/.local/share/blesh
+  rm -rf "$tmpb"
+fi
+if ! grep -qF '# >>> ble.sh (gợi ý lệnh) >>>' ~/.bashrc; then
+cat >> ~/.bashrc <<'BLESH'
+
+# >>> ble.sh (gợi ý lệnh) >>>
+# Gợi ý lệnh cũ dạng chữ mờ (bấm → hoặc End để nhận) + tô màu cú pháp.
+# Đặt SAU khối auto-tmux: shell ngoài exec thẳng vào tmux, shell trong tmux mới load.
+[[ $- == *i* ]] && [[ -f ~/.local/share/blesh/ble.sh ]] && source ~/.local/share/blesh/ble.sh
+# <<< ble.sh (gợi ý lệnh) <<<
+BLESH
+fi
+
 echo ""
 echo "✅ XONG. Mở terminal mới → gõ 'tmux' → 'wt-new <branch>' để bắt đầu."
