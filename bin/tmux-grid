@@ -13,8 +13,28 @@ TAB=$'\t'
 # Window đang active của session. run-shell không truyền target nên không dùng -t.
 cur_win() { tmux display-message -p '#{window_id}'; }
 
+LAYOUTS='tiled
+even-horizontal
+even-vertical
+main-vertical
+main-horizontal'
+
+# Chọn layout. In ra stdout tên layout, hoặc chuỗi rỗng nếu người dùng thoát fzf.
+pick_layout() {
+  printf '%s\n' "$LAYOUTS" \
+    | fzf-tmux -p 42%,40% --no-sort --prompt '  layout  ' --border-label " gộp $1 pane " \
+    || true
+}
+
+# Hỏi xác nhận khi lưới sẽ quá chật. Trả về 0 nếu đồng ý.
+confirm_many() {
+  local pick
+  pick="$(printf 'Huỷ\nGộp %s pane\n' "$1" | fzf-tmux -p 42%,30% --no-sort --prompt '  lưới sẽ chật  ' || true)"
+  [ "$pick" = "Gộp $1 pane" ]
+}
+
 merge() {
-  local dst="$1" layout="$2"
+  local dst="$1" layout="$2" total
   local rows=() r p wid wix wnm last
 
   # Thu thập TRƯỚC khi join: renumber-windows on làm window_index đổi ngay khi
@@ -26,6 +46,15 @@ merge() {
   if [ "${#rows[@]}" -eq 0 ]; then
     tmux display-message "tmux-grid: session chỉ có một window, không có gì để gộp"
     return 0
+  fi
+
+  if [ -z "$layout" ]; then
+    total=$(( ${#rows[@]} + $(tmux list-panes -t "$dst" -F x | wc -l) ))
+    if [ "$total" -gt 6 ] && ! confirm_many "$total"; then
+      return 0
+    fi
+    layout="$(pick_layout "$total")"
+    [ -n "$layout" ] || return 0
   fi
 
   for r in "${rows[@]}"; do
@@ -78,7 +107,7 @@ main() {
   if [ "$(tmux display-message -p -t "$dst" '#{@grid}')" = "on" ]; then
     split_back "$dst"
   else
-    merge "$dst" "${1:-tiled}"
+    merge "$dst" "${1:-}"
   fi
 }
 
