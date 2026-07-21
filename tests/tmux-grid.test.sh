@@ -13,6 +13,15 @@ ok() { printf "  \033[32m✓\033[0m %s\n" "$1"; }
 no() { printf "  \033[31m✗\033[0m %s\n      mong đợi: %s\n      thực tế : %s\n" "$1" "$2" "$3"; fail=1; }
 eq() { [ "$2" = "$3" ] && ok "$1" || no "$1" "$2" "$3"; }
 
+# Tv <lệnh tmux…> — như T nhưng khi lệnh lỗi thì in "LỖI(<mã>): …" chứ không im
+# lặng trả chuỗi rỗng. Dùng cho assertion kỳ vọng chuỗi rỗng: nếu không, một lệnh
+# tmux hỏng (sai tên session, server chết) cũng làm assertion đạt.
+Tv() {
+  local out rc
+  out="$(T "$@" 2>&1)" && rc=0 || rc=$?
+  if [ "$rc" -eq 0 ]; then printf '%s' "$out"; else printf 'LỖI(%s): %s' "$rc" "$out"; fi
+}
+
 # mkwins <session> <tên window>... — dựng session sạch với các window cho trước
 mkwins() {
   local s="$1"; shift
@@ -49,9 +58,9 @@ grid t2 alpha            # bấm lần hai = tách
 eq "về lại 3 window"        "3" "$(T list-windows -t t2 -F x | wc -l)"
 eq "tên window đúng như cũ" "alpha beta gamma" \
    "$(T list-windows -t t2 -F '#{window_name}' | tr '\n' ' ' | sed 's/ *$//')"
-eq "cờ @grid đã xoá"        "" "$(T display-message -p -t t2 '#{@grid}')"
+eq "cờ @grid đã xoá"        "" "$(Tv display-message -p -t t2 '#{@grid}')"
 eq "pane option đã xoá"     "" \
-   "$(T list-panes -s -t t2 -F '#{@grid_win_id}' | tr -d '\n')"
+   "$(Tv list-panes -s -t t2 -F '#{@grid_win_id}' | tr -d '\n')"
 
 echo ""
 echo "── Tên window trùng nhau ──"
@@ -79,7 +88,7 @@ echo "── Session chỉ có một window ──"
 mkwins t5 alpha
 grid t5 alpha tiled
 eq "không đổi gì"      "1" "$(T list-windows -t t5 -F x | wc -l)"
-eq "không đánh cờ"     ""  "$(T display-message -p -t t5 '#{@grid}')"
+eq "không đánh cờ"     ""  "$(Tv display-message -p -t t5 '#{@grid}')"
 
 echo ""
 echo "── Sau khi gộp không kẹt zoom (tmux tự bỏ zoom) ──"
@@ -124,10 +133,19 @@ eq "thứ tự y như trước khi gộp" "1:alpha 2:beta 3:gamma 4:delta" \
 
 echo ""
 echo "── Chạy ngoài tmux ──"
-if TMUX= "$GRID" tiled >/dev/null 2>&1; then
-  no "ngoài tmux phải lỗi" "mã thoát khác 0" "mã thoát 0"
+# Lần gọi duy nhất không đi qua T(), tức không có -L: nếu guard TMUX trong script
+# hồi quy thì tmux ở đây sẽ rơi về socket mặc định — nơi session thật của người
+# dùng đang chạy. TMUX_TMPDIR trỏ vào thư mục rỗng chặn đúng đường đó.
+out="$(TMUX= TMUX_TMPDIR="$(mktemp -d)" "$GRID" tiled 2>&1)" && rc=0 || rc=$?
+case "$out" in
+  *"phải chạy bên trong tmux"*) guard=1 ;;
+  *)                            guard=0 ;;
+esac
+if [ "$rc" -ne 0 ] && [ "$guard" -eq 1 ]; then
+  ok "ngoài tmux báo đúng lỗi guard và thoát khác 0"
 else
-  ok "ngoài tmux thoát với lỗi"
+  no "ngoài tmux phải dừng ở guard TMUX" \
+     "mã thoát khác 0 kèm 'phải chạy bên trong tmux'" "mã thoát $rc, output: $out"
 fi
 
 echo ""
