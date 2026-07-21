@@ -30,11 +30,14 @@ mkwins() {
   local w; for w in "$@"; do T new-window -t "$s": -n "$w"; done
 }
 
-# grid <session> <window active> [layout] — chạy tmux-grid như tmux sẽ chạy (run-shell)
+# grid <session> <window> [layout] — chạy tmux-grid như tmux sẽ chạy (run-shell),
+# truyền thẳng window id đúng như bind trong tmux.conf. Không dùng select-window:
+# bên trong run-shell không có TMUX_PANE nên nếu không truyền target thì script
+# thao tác lên session được tạo gần nhất, tức suite chỉ đúng nhờ thứ tự tạo session.
 grid() {
-  local s="$1" w="$2" layout="${3:-}"
-  T select-window -t "$s:$w"
-  T run-shell "$GRID $layout"
+  local s="$1" w="$2" layout="${3:-}" wid
+  wid="$(T display-message -p -t "$s:$w" '#{window_id}')"
+  T run-shell "$GRID $wid $layout"
 }
 
 cleanup() { T kill-server 2>/dev/null; }
@@ -136,7 +139,7 @@ echo "── Chạy ngoài tmux ──"
 # Lần gọi duy nhất không đi qua T(), tức không có -L: nếu guard TMUX trong script
 # hồi quy thì tmux ở đây sẽ rơi về socket mặc định — nơi session thật của người
 # dùng đang chạy. TMUX_TMPDIR trỏ vào thư mục rỗng chặn đúng đường đó.
-out="$(TMUX= TMUX_TMPDIR="$(mktemp -d)" "$GRID" tiled 2>&1)" && rc=0 || rc=$?
+out="$(TMUX= TMUX_TMPDIR="$(mktemp -d)" "$GRID" @0 tiled 2>&1)" && rc=0 || rc=$?
 case "$out" in
   *"phải chạy bên trong tmux"*) guard=1 ;;
   *)                            guard=0 ;;
