@@ -42,5 +42,38 @@ eq "pane nhớ tên window nguồn"   "beta gamma" \
    "$(T list-panes -t t1 -F '#{@grid_win_name}' | grep -v '^$' | tr '\n' ' ' | sed 's/ *$//')"
 
 echo ""
+echo "── Tách khôi phục ──"
+mkwins t2 alpha beta gamma
+grid t2 alpha tiled
+grid t2 alpha            # bấm lần hai = tách
+eq "về lại 3 window"        "3" "$(T list-windows -t t2 -F x | wc -l)"
+eq "tên window đúng như cũ" "alpha beta gamma" \
+   "$(T list-windows -t t2 -F '#{window_name}' | tr '\n' ' ' | sed 's/ *$//')"
+eq "cờ @grid đã xoá"        "" "$(T display-message -p -t t2 '#{@grid}')"
+eq "pane option đã xoá"     "" \
+   "$(T list-panes -s -t t2 -F '#{@grid_win_id}' | tr -d '\n')"
+
+echo ""
+echo "── Tên window trùng nhau ──"
+mkwins t3 repo repo repo
+grid t3 1 tiled
+eq "gộp được dù tên trùng"  "3" "$(T list-panes -t t3 -F x | wc -l)"
+grid t3 1
+eq "tách ra đúng 3 window"  "3" "$(T list-windows -t t3 -F x | wc -l)"
+eq "cả ba đều tên repo"     "repo repo repo" \
+   "$(T list-windows -t t3 -F '#{window_name}' | tr '\n' ' ' | sed 's/ *$//')"
+
+echo ""
+echo "── Window vốn có nhiều pane ──"
+mkwins t4 alpha beta gamma
+T split-window -t t4:beta          # beta có 2 pane
+grid t4 alpha tiled
+eq "gộp đủ 4 pane"          "4" "$(T list-panes -t t4 -F x | wc -l)"
+grid t4 alpha
+eq "tách lại đúng 3 window" "3" "$(T list-windows -t t4 -F x | wc -l)"
+eq "beta gom lại 2 pane"    "1 2 1" \
+   "$(T list-windows -t t4 -F '#{window_panes}' | tr '\n' ' ' | sed 's/ *$//')"
+
+echo ""
 [ "$fail" -eq 0 ] && echo "TẤT CẢ ĐỀU ĐẠT" || echo "CÓ TEST HỎNG"
 exit "$fail"

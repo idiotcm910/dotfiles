@@ -40,9 +40,43 @@ merge() {
   tmux set-option -w -t "$dst" @grid_layout "$layout"
 }
 
+split_back() {
+  local dst="$1"
+  local rows=() r p gid gix gnm
+  declare -A newwin=()
+
+  # Chỉ những pane có @grid_win_id mới là pane bị hút vào; pane do người dùng
+  # tự split sau khi gộp không có cờ nên được giữ nguyên tại window hiện tại.
+  mapfile -t rows < <(
+    tmux list-panes -t "$dst" -F "#{pane_id}${TAB}#{@grid_win_id}${TAB}#{@grid_win_idx}${TAB}#{@grid_win_name}" \
+      | awk -F'\t' '$2 != ""' \
+      | sort -t"$TAB" -k3,3n
+  )
+
+  for r in "${rows[@]}"; do
+    IFS="$TAB" read -r p gid gix gnm <<<"$r"
+    if [ -z "${newwin[$gid]:-}" ]; then
+      tmux break-pane -d -s "$p" -n "$gnm"
+      newwin[$gid]="$(tmux display-message -p -t "$p" '#{window_id}')"
+    else
+      tmux join-pane -d -s "$p" -t "${newwin[$gid]}"
+    fi
+    tmux set-option -pu -t "$p" @grid_win_id
+    tmux set-option -pu -t "$p" @grid_win_name
+    tmux set-option -pu -t "$p" @grid_win_idx
+  done
+
+  tmux set-option -wu -t "$dst" @grid
+  tmux set-option -wu -t "$dst" @grid_layout
+}
+
 main() {
   local dst; dst="$(cur_win)"
-  merge "$dst" "${1:-tiled}"
+  if [ "$(tmux display-message -p -t "$dst" '#{@grid}')" = "on" ]; then
+    split_back "$dst"
+  else
+    merge "$dst" "${1:-tiled}"
+  fi
 }
 
 main "$@"
