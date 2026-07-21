@@ -75,5 +75,41 @@ eq "beta gom lại 2 pane"    "1 2 1" \
    "$(T list-windows -t t4 -F '#{window_panes}' | tr '\n' ' ' | sed 's/ *$//')"
 
 echo ""
+echo "── Session chỉ có một window ──"
+mkwins t5 alpha
+grid t5 alpha tiled
+eq "không đổi gì"      "1" "$(T list-windows -t t5 -F x | wc -l)"
+eq "không đánh cờ"     ""  "$(T display-message -p -t t5 '#{@grid}')"
+
+echo ""
+echo "── Đang zoom lúc gộp ──"
+mkwins t6 alpha beta gamma
+T select-window -t t6:alpha
+T split-window -t t6:alpha        # alpha 2 pane để zoom được
+T resize-pane -Z -t t6:alpha
+eq "đang zoom thật"    "1" "$(T display-message -p -t t6:alpha '#{window_zoomed_flag}')"
+grid t6 alpha tiled
+eq "gộp xong hết zoom" "0" "$(T display-message -p -t t6 '#{window_zoomed_flag}')"
+eq "gộp đủ 4 pane"     "4" "$(T list-panes -t t6 -F x | wc -l)"
+
+echo ""
+echo "── Pane tự mở thêm khi đang ở lưới ──"
+mkwins t7 alpha beta gamma
+grid t7 alpha tiled
+T split-window -t t7:1            # pane mới, không có cờ nguồn
+eq "lưới có 4 pane"    "4" "$(T list-panes -t t7 -F x | wc -l)"
+grid t7 1
+eq "tách ra 3 window"  "3" "$(T list-windows -t t7 -F x | wc -l)"
+eq "pane mới ở lại"    "2" "$(T list-panes -t t7:1 -F x | wc -l)"
+
+echo ""
+echo "── Chạy ngoài tmux ──"
+if TMUX= "$GRID" tiled >/dev/null 2>&1; then
+  no "ngoài tmux phải lỗi" "mã thoát khác 0" "mã thoát 0"
+else
+  ok "ngoài tmux thoát với lỗi"
+fi
+
+echo ""
 [ "$fail" -eq 0 ] && echo "TẤT CẢ ĐỀU ĐẠT" || echo "CÓ TEST HỎNG"
 exit "$fail"
