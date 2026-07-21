@@ -107,6 +107,22 @@ eq "tách ra 3 window"  "3" "$(T list-windows -t t7 -F x | wc -l)"
 eq "pane mới ở lại"    "2" "$(T list-panes -t t7:1 -F x | wc -l)"
 
 echo ""
+echo "── Gộp từ window cuối rồi tách, thứ tự window không đổi ──"
+mkwins t8 alpha beta gamma
+grid t8 gamma tiled
+grid t8 gamma
+eq "thứ tự y như trước khi gộp" "1:alpha 2:beta 3:gamma" \
+   "$(T list-windows -t t8 -F '#{window_index}:#{window_name}' | tr '\n' ' ' | sed 's/ *$//')"
+
+echo ""
+echo "── Gộp từ window giữa rồi tách, thứ tự window không đổi ──"
+mkwins t9 alpha beta gamma delta
+grid t9 beta tiled
+grid t9 beta
+eq "thứ tự y như trước khi gộp" "1:alpha 2:beta 3:gamma 4:delta" \
+   "$(T list-windows -t t9 -F '#{window_index}:#{window_name}' | tr '\n' ' ' | sed 's/ *$//')"
+
+echo ""
 echo "── Chạy ngoài tmux ──"
 if TMUX= "$GRID" tiled >/dev/null 2>&1; then
   no "ngoài tmux phải lỗi" "mã thoát khác 0" "mã thoát 0"
