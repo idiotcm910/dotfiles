@@ -82,15 +82,19 @@ eq "không đổi gì"      "1" "$(T list-windows -t t5 -F x | wc -l)"
 eq "không đánh cờ"     ""  "$(T display-message -p -t t5 '#{@grid}')"
 
 echo ""
-echo "── Đang zoom lúc gộp ──"
+echo "── Sau khi gộp không kẹt zoom (tmux tự bỏ zoom) ──"
+# tmux 3.4's join-pane/break-pane tự unzoom window đích khi thao tác — đã kiểm
+# chứng thực nghiệm trên socket gridtest — nên script không cần code unzoom
+# riêng. Nhóm này chỉ là regression check: gộp xong không được kẹt zoom, bất
+# kể ai (script hay tmux) là người bỏ zoom.
 mkwins t6 alpha beta gamma
 T select-window -t t6:alpha
 T split-window -t t6:alpha        # alpha 2 pane để zoom được
 T resize-pane -Z -t t6:alpha
-eq "đang zoom thật"    "1" "$(T display-message -p -t t6:alpha '#{window_zoomed_flag}')"
+eq "đang zoom thật"      "1" "$(T display-message -p -t t6:alpha '#{window_zoomed_flag}')"
 grid t6 alpha tiled
-eq "gộp xong hết zoom" "0" "$(T display-message -p -t t6 '#{window_zoomed_flag}')"
-eq "gộp đủ 4 pane"     "4" "$(T list-panes -t t6 -F x | wc -l)"
+eq "gộp xong không kẹt zoom" "0" "$(T display-message -p -t t6 '#{window_zoomed_flag}')"
+eq "gộp đủ 4 pane"       "4" "$(T list-panes -t t6 -F x | wc -l)"
 
 echo ""
 echo "── Pane tự mở thêm khi đang ở lưới ──"
