@@ -57,6 +57,12 @@ merge() {
     [ -n "$layout" ] || return 0
   fi
 
+  # Đánh cờ TRƯỚC vòng join: nếu một lệnh giữa chừng hỏng, các pane đã bị hút vào
+  # vẫn nằm trong một window mang cờ @grid, nên lần bấm sau vào nhánh tách và gỡ
+  # lại được. Đặt cờ sau vòng join thì thất bại giữa chừng là kẹt vĩnh viễn.
+  tmux set-option -w -t "$dst" @grid on
+  tmux set-option -w -t "$dst" @grid_layout "$layout"
+
   for r in "${rows[@]}"; do
     IFS="$TAB" read -r p wid wix wnm <<<"$r"
     tmux set-option -p -t "$p" @grid_win_id   "$wid"
@@ -68,8 +74,6 @@ merge() {
   done
 
   tmux select-layout -t "$dst" "$layout"
-  tmux set-option -w -t "$dst" @grid on
-  tmux set-option -w -t "$dst" @grid_layout "$layout"
 }
 
 split_back() {
@@ -103,11 +107,23 @@ split_back() {
 }
 
 main() {
-  local dst; dst="$(cur_win)"
-  if [ "$(tmux display-message -p -t "$dst" '#{@grid}')" = "on" ]; then
+  local dst layout="${1:-}"
+  dst="$(cur_win)"
+
+  # Kiểm layout trước khi đụng vào window nào: gõ nhầm tên layout mà vẫn gộp rồi
+  # mới chết ở select-layout là đúng đường dẫn tới trạng thái kẹt.
+  if [ -n "$layout" ] && ! printf '%s\n' "$LAYOUTS" | grep -qxF -- "$layout"; then
+    echo "tmux-grid: layout không hợp lệ: $layout" >&2
+    exit 1
+  fi
+
+  # Nhận ra lưới kể cả khi cờ @grid mất (lần gộp trước chết giữa chừng): pane còn
+  # mang @grid_win_id thì đây vẫn là lưới và phải tách lại được.
+  if [ "$(tmux display-message -p -t "$dst" '#{@grid}')" = "on" ] \
+     || [ -n "$(tmux list-panes -t "$dst" -F '#{@grid_win_id}' | tr -d '\n')" ]; then
     split_back "$dst"
   else
-    merge "$dst" "${1:-}"
+    merge "$dst" "$layout"
   fi
 }
 
