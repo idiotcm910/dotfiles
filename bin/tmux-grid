@@ -2,15 +2,20 @@
 # tmux-grid — gộp mọi window của session hiện tại thành lưới pane trong một window;
 # chạy lại để tách mỗi pane về đúng window cũ.
 #
-# Dùng: prefix g (bind trong tmux.conf). Truyền tên layout làm tham số để chạy
-# không tương tác, bỏ qua popup — dành cho test.
+# Dùng: tmux-grid [<window-id>] [<layout>]
+#   <window-id>  window đích, dạng @N. tmux.conf truyền "#{window_id}" vì bên
+#                trong run-shell không có TMUX_PANE — không truyền thì mọi lệnh
+#                tmux rơi về "session hiện tại" của server, có thể là session
+#                khác hẳn session vừa bấm phím. Bỏ trống = window đang active.
+#   <layout>     tên layout để chạy thẳng, bỏ qua popup — dành cho test.
+# Bind: prefix g (xem tmux.conf).
 set -euo pipefail
 
 [ -n "${TMUX:-}" ] || { echo "tmux-grid: phải chạy bên trong tmux" >&2; exit 1; }
 
 TAB=$'\t'
 
-# Window đang active của session. run-shell không truyền target nên không dùng -t.
+# Window đang active của server — chỉ là dự phòng khi không được truyền window id.
 cur_win() { tmux display-message -p '#{window_id}'; }
 
 LAYOUTS='tiled
@@ -39,8 +44,11 @@ merge() {
 
   # Thu thập TRƯỚC khi join: renumber-windows on làm window_index đổi ngay khi
   # một window bị hút rỗng, đọc sau sẽ ra số sai.
+  # -t "$dst": không có target thì -s liệt kê pane của "session hiện tại" của
+  # server, tức có thể là session khác với session chứa window đích.
   mapfile -t rows < <(
-    tmux list-panes -s -F "#{pane_id}${TAB}#{window_id}${TAB}#{window_index}${TAB}#{window_name}" \
+    tmux list-panes -s -t "$dst" \
+      -F "#{pane_id}${TAB}#{window_id}${TAB}#{window_index}${TAB}#{window_name}" \
       | awk -F'\t' -v d="$dst" '$2 != d'
   )
   if [ "${#rows[@]}" -eq 0 ]; then
@@ -129,8 +137,13 @@ split_back() {
 }
 
 main() {
-  local dst layout="${1:-}"
-  dst="$(cur_win)"
+  local dst="${1:-}" layout="${2:-}"
+
+  [ -n "$dst" ] || dst="$(cur_win)"
+  case "$dst" in
+    @[0-9]*) ;;
+    *) echo "tmux-grid: tham số 1 phải là window id dạng @N, nhận được: $dst" >&2; exit 1 ;;
+  esac
 
   # Kiểm layout trước khi đụng vào window nào: gõ nhầm tên layout mà vẫn gộp rồi
   # mới chết ở select-layout là đúng đường dẫn tới trạng thái kẹt.
