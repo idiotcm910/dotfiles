@@ -62,6 +62,11 @@ merge() {
   # lại được. Đặt cờ sau vòng join thì thất bại giữa chừng là kẹt vĩnh viễn.
   tmux set-option -w -t "$dst" @grid on
   tmux set-option -w -t "$dst" @grid_layout "$layout"
+  # Index gốc của window đích — phải đọc TRƯỚC vòng join, vì renumber-windows
+  # đánh số lại ngay khi window đầu tiên bị hút rỗng. split_back cần nó để biết
+  # window nào thuộc phía trước, window nào thuộc phía sau window lưới.
+  tmux set-option -w -t "$dst" @grid_dst_idx \
+    "$(tmux display-message -p -t "$dst" '#{window_index}')"
 
   for r in "${rows[@]}"; do
     IFS="$TAB" read -r p wid wix wnm <<<"$r"
@@ -78,22 +83,38 @@ merge() {
 
 split_back() {
   local dst="$1"
-  local rows=() r p gid gix gnm
+  local rows=() r p gid gix gnm dst_idx after
   declare -A newwin=()
+
+  # Lưới gộp bằng bản cũ, hoặc gộp hỏng trước khi kịp ghi, thì không có index gốc.
+  dst_idx="$(tmux display-message -p -t "$dst" '#{@grid_dst_idx}')"
+  [ -n "$dst_idx" ] || dst_idx="$(tmux display-message -p -t "$dst" '#{window_index}')"
+  after="$dst"   # window mới nhất đã chèn ở phía sau window lưới
 
   # Chỉ những pane có @grid_win_id mới là pane bị hút vào; pane do người dùng
   # tự split sau khi gộp không có cờ nên được giữ nguyên tại window hiện tại.
   mapfile -t rows < <(
     tmux list-panes -t "$dst" -F "#{pane_id}${TAB}#{@grid_win_id}${TAB}#{@grid_win_idx}${TAB}#{@grid_win_name}" \
       | awk -F'\t' '$2 != ""' \
-      | sort -t"$TAB" -k3,3n
+      | sort -s -t"$TAB" -k3,3n
   )
 
   for r in "${rows[@]}"; do
     IFS="$TAB" read -r p gid gix gnm <<<"$r"
     if [ -z "${newwin[$gid]:-}" ]; then
-      tmux break-pane -d -s "$p" -n "$gnm"
-      newwin[$gid]="$(tmux display-message -p -t "$p" '#{window_id}')"
+      # break-pane không có -t thì tmux thêm window vào cuối, nên gộp từ window
+      # thứ hai trở đi sẽ xoay thứ tự sau khi tách. Chèn đúng phía so với window
+      # lưới để round-trip trả lại đúng thứ tự cũ: nhóm phía trước duyệt tăng dần
+      # nên -b vào chính $dst là đủ; nhóm phía sau phải nối tiếp window vừa tạo,
+      # nếu cứ -a vào $dst thì chúng đảo ngược lẫn nhau.
+      if [ "${gix:-0}" -lt "$dst_idx" ]; then
+        tmux break-pane -d -b -t "$dst" -s "$p" -n "$gnm"
+        newwin[$gid]="$(tmux display-message -p -t "$p" '#{window_id}')"
+      else
+        tmux break-pane -d -a -t "$after" -s "$p" -n "$gnm"
+        newwin[$gid]="$(tmux display-message -p -t "$p" '#{window_id}')"
+        after="${newwin[$gid]}"
+      fi
     else
       tmux join-pane -d -s "$p" -t "${newwin[$gid]}"
     fi
@@ -104,6 +125,7 @@ split_back() {
 
   tmux set-option -wu -t "$dst" @grid
   tmux set-option -wu -t "$dst" @grid_layout
+  tmux set-option -wu -t "$dst" @grid_dst_idx
 }
 
 main() {
