@@ -41,7 +41,7 @@ Phóng to một pane dùng `prefix z` (tmux built-in, đã có sẵn) — bấm 
 
 1. Đếm số window trong session. Nếu chỉ có 1 → hiện thông báo "Không có window nào để gộp" và dừng.
 2. Đếm tổng số pane sẽ có sau khi gộp. Nếu > 6 → `confirm-before` hỏi xác nhận, huỷ thì dừng.
-3. Nếu pane hiện tại đang zoom → `resize-pane -Z` để bỏ zoom (join-pane thất bại trên window có pane zoom).
+3. Không cần bỏ zoom: `join-pane` tự bỏ zoom window đích, script không làm gì thêm (kiểm chứng thực nghiệm trên tmux 3.4 — bản nháp trước của spec ghi "join-pane thất bại trên window có pane zoom", điều đó sai).
 4. Hiện popup fzf chọn layout: `tiled`, `even-horizontal`, `even-vertical`, `main-vertical`, `main-horizontal`. Thoát fzf mà không chọn → huỷ toàn bộ, không gộp gì.
 5. Với mỗi pane của mỗi window khác (duyệt theo thứ tự index window tăng dần):
    - Ghi lên pane ba user option: `@grid_win_id` (window id gốc, dạng `@2`), `@grid_win_name` (tên window gốc), `@grid_win_idx` (index gốc).
@@ -53,7 +53,7 @@ Lưu **window id** chứ không phải tên vì tên window có thể trùng nha
 
 ### Tách
 
-1. Nếu pane đang zoom → bỏ zoom trước.
+1. Không cần bỏ zoom: `break-pane` tự bỏ zoom, window kết quả có `window_zoomed_flag=0`.
 2. Liệt kê pane của window hiện tại kèm `@grid_win_id`.
 3. Pane không có `@grid_win_id` (do người dùng tự split sau khi gộp) → để nguyên tại window hiện tại.
 4. Nhóm pane theo `@grid_win_id`, sắp nhóm theo `@grid_win_idx` tăng dần. Với mỗi nhóm:
@@ -68,7 +68,7 @@ Lưu **window id** chứ không phải tên vì tên window có thể trùng nha
 
 | Tình huống | Xử lý |
 |---|---|
-| Pane đang zoom khi gộp/tách | Tự bỏ zoom trước |
+| Pane đang zoom khi gộp/tách | tmux tự bỏ zoom khi join/break pane, script không cần bước bỏ zoom |
 | Session chỉ có 1 window, chưa gộp | Thông báo, không làm gì |
 | Thoát popup layout không chọn | Huỷ, không gộp |
 | Tổng pane > 6 | Hỏi xác nhận |
