@@ -13,6 +13,12 @@ TAB=$'\t'
 # Window đang active của session. run-shell không truyền target nên không dùng -t.
 cur_win() { tmux display-message -p '#{window_id}'; }
 
+unzoom() {
+  if [ "$(tmux display-message -p -t "$1" '#{window_zoomed_flag}')" = "1" ]; then
+    tmux resize-pane -Z -t "$1"
+  fi
+}
+
 merge() {
   local dst="$1" layout="$2"
   local rows=() r p wid wix wnm last
@@ -23,7 +29,12 @@ merge() {
     tmux list-panes -s -F "#{pane_id}${TAB}#{window_id}${TAB}#{window_index}${TAB}#{window_name}" \
       | awk -F'\t' -v d="$dst" '$2 != d'
   )
-  [ "${#rows[@]}" -gt 0 ] || return 0
+  if [ "${#rows[@]}" -eq 0 ]; then
+    tmux display-message "tmux-grid: session chỉ có một window, không có gì để gộp"
+    return 0
+  fi
+
+  unzoom "$dst"
 
   for r in "${rows[@]}"; do
     IFS="$TAB" read -r p wid wix wnm <<<"$r"
@@ -44,6 +55,8 @@ split_back() {
   local dst="$1"
   local rows=() r p gid gix gnm
   declare -A newwin=()
+
+  unzoom "$dst"
 
   # Chỉ những pane có @grid_win_id mới là pane bị hút vào; pane do người dùng
   # tự split sau khi gộp không có cờ nên được giữ nguyên tại window hiện tại.
