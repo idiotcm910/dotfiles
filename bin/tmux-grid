@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# tmux-grid — gộp mọi window của session hiện tại thành lưới pane trong một window;
+# chạy lại để tách mỗi pane về đúng window cũ.
+#
+# Dùng: prefix g (bind trong tmux.conf). Truyền tên layout làm tham số để chạy
+# không tương tác, bỏ qua popup — dành cho test.
+set -euo pipefail
+
+[ -n "${TMUX:-}" ] || { echo "tmux-grid: phải chạy bên trong tmux" >&2; exit 1; }
+
+TAB=$'\t'
+
+# Window đang active của session. run-shell không truyền target nên không dùng -t.
+cur_win() { tmux display-message -p '#{window_id}'; }
+
+merge() {
+  local dst="$1" layout="$2"
+  local rows=() r p wid wix wnm last
+
+  # Thu thập TRƯỚC khi join: renumber-windows on làm window_index đổi ngay khi
+  # một window bị hút rỗng, đọc sau sẽ ra số sai.
+  mapfile -t rows < <(
+    tmux list-panes -s -F "#{pane_id}${TAB}#{window_id}${TAB}#{window_index}${TAB}#{window_name}" \
+      | awk -F'\t' -v d="$dst" '$2 != d'
+  )
+  [ "${#rows[@]}" -gt 0 ] || return 0
+
+  for r in "${rows[@]}"; do
+    IFS="$TAB" read -r p wid wix wnm <<<"$r"
+    tmux set-option -p -t "$p" @grid_win_id   "$wid"
+    tmux set-option -p -t "$p" @grid_win_name "$wnm"
+    tmux set-option -p -t "$p" @grid_win_idx  "$wix"
+    # Join vào pane cuối cùng để pane xếp đúng thứ tự window gốc.
+    last="$(tmux list-panes -t "$dst" -F '#{pane_id}' | tail -1)"
+    tmux join-pane -d -s "$p" -t "$last"
+  done
+
+  tmux select-layout -t "$dst" "$layout"
+  tmux set-option -w -t "$dst" @grid on
+  tmux set-option -w -t "$dst" @grid_layout "$layout"
+}
+
+main() {
+  local dst; dst="$(cur_win)"
+  merge "$dst" "${1:-tiled}"
+}
+
+main "$@"
