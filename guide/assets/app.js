@@ -5,12 +5,13 @@
    ============================================================ */
 const PAGES = [
   { page: "index",           file: "index.html",           n: "00", label: "Tổng quan" },
-  { page: "tmux",            file: "tmux.html",            n: "01", label: "tmux" },
-  { page: "workspace",       file: "workspace.html",       n: "02", label: "Workspace" },
-  { page: "nvim-motion",     file: "nvim-motion.html",     n: "03", label: "Nvim · Di chuyển" },
-  { page: "nvim-search",     file: "nvim-search.html",     n: "04", label: "Nvim · Tìm & Duyệt" },
-  { page: "nvim-lsp-claude", file: "nvim-lsp-claude.html", n: "05", label: "Nvim · LSP & Claude" },
-  { page: "setup",           file: "setup.html",           n: "06", label: "Cài đặt" },
+  { page: "hanh-trinh",      file: "hanh-trinh.html",      n: "01", label: "Hành trình" },
+  { page: "tmux",            file: "tmux.html",            n: "02", label: "tmux" },
+  { page: "workspace",       file: "workspace.html",       n: "03", label: "Workspace" },
+  { page: "nvim-motion",     file: "nvim-motion.html",     n: "04", label: "Nvim · Di chuyển" },
+  { page: "nvim-search",     file: "nvim-search.html",     n: "05", label: "Nvim · Tìm & Duyệt" },
+  { page: "nvim-lsp-claude", file: "nvim-lsp-claude.html", n: "06", label: "Nvim · LSP & Claude" },
+  { page: "setup",           file: "setup.html",           n: "07", label: "Cài đặt" },
 ];
 
 (function () {

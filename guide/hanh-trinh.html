@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hành trình · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="hanh-trinh" data-title="Hành trình">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Đọc từ trên xuống là đi hết một vòng: mở máy → tạo workspace → làm việc → nhìn tất cả cùng lúc → tạm rời → dọn. Các trang khác là từ điển tra phím; trang này trả lời <b>“giờ tôi bấm gì”</b>.</p>
+
+        <div class="group">
+          <h2>1 · Mở máy</h2>
+          <div class="rows">
+            <div class="row"><div class="keys">—</div><div class="d">Mở terminal là <b>tự vào tmux</b> session <code class="cmd">main</code> — khối auto-tmux trong <code class="cmd">.bashrc</code> lo việc đó. Không cần gõ gì</div></div>
+            <div class="row"><div class="keys"><code class="cmd">tmux attach</code></div><div class="d">Lỡ thoát hẳn ra ngoài thì vào lại. Mọi thứ vẫn y nguyên chỗ cũ</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>2 · Mở workspace mới</h2>
+          <div class="rows">
+            <div class="row"><div class="keys"><code class="cmd">wt-new &lt;branch&gt;</code></div><div class="d">Một lệnh làm bốn việc: tạo <b>worktree</b> tại <code class="cmd">&lt;repo&gt;.worktrees/&lt;branch&gt;</code>, tạo <b>branch</b> nếu chưa có, tạo <b>tmux session</b>, rồi <b>mở nvim</b> sẵn trong đó</div></div>
+            <div class="row"><div class="keys"><code class="cmd">wt-status</code></div><div class="d">Bảng tổng quan mọi worktree: branch · số file đã đổi · số Claude Code đang chạy trong đó</div></div>
+          </div>
+          <p>Tên session lấy từ tên branch, thay <code class="cmd">.</code> <code class="cmd">/</code> <code class="cmd">:</code> thành <code class="cmd">_</code> — nên <code class="cmd">feat/api</code> thành session <code class="cmd">feat_api</code>.</p>
+        </div>
+
+        <div class="group">
+          <h2>3 · Làm việc</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>c</kbd><kbd>n</kbd></div><div class="d">Mở một <b>Claude Code mới</b> trong nvim. Bấm nữa để mở thêm cái nữa</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>s</kbd></div><div class="d">Bôi đen code trước, rồi bấm để <b>gửi đoạn đang chọn</b> cho Claude</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>a</kbd><kbd>a</kbd></div><div class="d"><b>Nhận diff</b> Claude đề xuất</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>z</kbd></div><div class="d">Zoom cửa sổ nvim đang đứng cho rộng</div></div>
+          </div>
+          <p>Đầy đủ phím nvim và Claude → <a href="nvim-lsp-claude.html">Nvim · LSP &amp; Claude</a>.</p>
+        </div>
+
+        <div class="group">
+          <h2>4 · Chạy nhiều việc song song</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>c</kbd></div><div class="d"><b>Window mới</b> — như mở thêm một tab, chiếm trọn màn hình</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>|</kbd></div><div class="d"><b>Chia dọc</b> — hai pane cạnh nhau, giữ nguyên thư mục</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>-</kbd></div><div class="d"><b>Chia ngang</b> — hai pane trên dưới, giữ nguyên thư mục</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>e</kbd></div><div class="d">Bật/tắt <b>sync-panes</b> — gõ một lệnh chạy trên mọi pane cùng lúc</div></div>
+          </div>
+          <p><b>Window</b> cho việc riêng biệt, <b>pane</b> cho hai thứ cần nhìn cùng lúc. Nhiều Claude thì cứ mỗi cái một window, khi nào cần so sánh thì gộp lại — xem bước 5.</p>
+        </div>
+
+        <div class="group">
+          <h2>5 · Nhìn tất cả cùng lúc <span class="tag">lưới pane</span></h2>
+          <p>Ba window, mỗi cái một Claude. Muốn nhìn cả ba thì gộp thành lưới trong một window, xong lại tách trả về như cũ.</p>
+          <div class="rows">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>g</kbd></div><div class="d"><b>Gộp / tách</b>. Lần đầu hiện popup chọn layout (<code class="cmd">tiled</code> = lưới đều, hợp nhất), rồi hút mọi window thành pane. Bấm lại: mỗi pane về đúng window cũ, đúng tên, đúng thứ tự. <kbd>Esc</kbd> ở popup = huỷ, không đổi gì</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></div><div class="d"><b>Nhảy pane theo hướng</b> — xuyên cả nvim lẫn tmux, không cần prefix</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>q</kbd></div><div class="d"><b>Nhảy pane theo số</b> — hiện số to trên mỗi pane, bấm số đó để tới thẳng</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>z</kbd></div><div class="d"><b>Phóng to</b> pane đang đứng chiếm cả window. Bấm lại về lưới</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>Space</kbd></div><div class="d"><b>Đổi kiểu chia</b> — xoay qua các layout dựng sẵn, không cần tách ra gộp lại</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd></div><div class="d"><b>Chỉnh kích thước</b> pane 1 ô. Giữ <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>a</kbd> một lần rồi bấm mũi tên liên tục được</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Alt</kbd><span class="plus">+</span><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd></div><div class="d">Chỉnh kích thước <b>5 ô</b> một nhịp — nhanh hơn khi cần kéo nhiều</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd></div><div class="d">Mũi tên <b>trơn</b> là <b>nhảy</b> pane. Kèm <kbd class="mod">Ctrl</kbd>/<kbd class="mod">Alt</kbd> mới là chỉnh kích thước — chỗ này rất dễ nhầm</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>|</kbd></div><div class="d">Mở thêm pane khi đang ở lưới. Pane này <b>ở lại</b> lúc bạn tách lưới ra, không bị mang đi đâu cả</div></div>
+          </div>
+          <div class="callout">Đang ở trong lưới thì <kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> <b>không còn tác dụng</b> — cả session gộp lại chỉ còn một window, không còn gì để nhảy. Dùng <kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>q</kbd> hoặc <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd> thay thế.</div>
+        </div>
+
+        <div class="group">
+          <h2>6 · Nhảy qua workspace khác</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>o</kbd></div><div class="d"><b>Switcher</b> — popup liệt kê mọi workspace, gõ để lọc, Enter để nhảy</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>s</kbd></div><div class="d">Cây session tích hợp của tmux, không cần fzf</div></div>
+          </div>
+          <p>Workspace cũ <b>vẫn chạy nền</b> — Claude trong đó không hề dừng lại khi bạn nhảy đi.</p>
+        </div>
+
+        <div class="group">
+          <h2>7 · Tạm rời, mai làm tiếp</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>d</kbd></div><div class="d"><b>Detach</b> — rời tmux, mọi thứ chạy tiếp dưới nền. Đóng luôn cửa sổ terminal cũng không sao</div></div>
+            <div class="row"><div class="keys"><code class="cmd">tmux attach</code></div><div class="d">Vào lại đúng chỗ đã rời</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>s</kbd></div><div class="d">Lưu trạng thái <b>ngay</b>, không đợi tới nhịp tự lưu</div></div>
+          </div>
+          <p>Continuum tự lưu mỗi 15 phút và tự khôi phục khi mở tmux — workspace sống qua cả reboot.</p>
+        </div>
+
+        <div class="group">
+          <h2>8 · Xong hẳn</h2>
+          <div class="rows">
+            <div class="row"><div class="keys"><code class="cmd">git add -A &amp;&amp; git commit</code></div><div class="d">Lưu việc lại trước đã — mọi bước dọn dẹp phía dưới đều giả định code đã commit</div></div>
+            <div class="row"><div class="keys"><code class="cmd">git push -u origin &lt;branch&gt;</code></div><div class="d">Đẩy lên remote rồi mở PR trên GitHub. Code đã nằm trên remote thì dọn gì ở máy cũng an toàn</div></div>
+            <div class="row"><div class="keys"><code class="cmd">wt-clean</code></div><div class="d">Sau khi PR đã merge: quét dọn <b>mọi</b> worktree đã merge vào <code class="cmd">main</code>, kill session, quên đường dẫn zoxide. Worktree còn thay đổi chưa lưu được giữ lại kèm cảnh báo</div></div>
+            <div class="row"><div class="keys"><code class="cmd">wt-rm &lt;branch&gt;</code></div><div class="d">Xoá <b>đúng một</b> workspace bạn chỉ định, bất kể đã merge hay chưa. Thêm <code class="cmd">--force</code> nếu còn thay đổi chưa lưu</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Bốn kiểu “đóng” — đừng nhầm</h2>
+          <div class="rows">
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>d</kbd></div><div class="d"><b>Không mất gì.</b> Rời màn hình, Claude chạy tiếp dưới nền. Dùng khi tắt máy, mai làm tiếp</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>x</kbd></div><div class="d">Đóng <b>một window</b> trong workspace (có hỏi lại). Dùng khi xong một việc nhỏ</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>q</kbd></div><div class="d">Đóng <b>cả session</b> (có hỏi lại). Code trên đĩa <b>còn nguyên</b>, worktree vẫn đó — chỉ mất cái màn hình</div></div>
+            <div class="row"><div class="keys"><code class="cmd">wt-rm &lt;branch&gt;</code></div><div class="d">Xoá worktree <b>và</b> chạy <code class="cmd">git branch -D</code>. Đây là cái duy nhất <b>làm mất code</b> nếu branch chưa merge</div></div>
+          </div>
+          <div class="callout">Lỡ <code class="cmd">wt-rm</code> nhầm branch chưa merge? Commit vẫn còn: <code class="cmd">git reflog</code> tìm SHA cuối cùng, rồi <code class="cmd">git branch &lt;tên&gt; &lt;sha&gt;</code> dựng lại. Chỉ mất phần <b>chưa commit</b>.</div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
