@@ -37,6 +37,9 @@
             <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></div><div class="d">Nhảy pane — <b>xuyên cả nvim ↔ tmux</b></div></div>
             <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>z</kbd></div><div class="d"><b>Zoom</b> full pane (bấm lại thu về)</div></div>
             <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>g</kbd></div><div class="d"><b>Gộp mọi window</b> của session thành lưới pane · bấm lại tách về window cũ. Chọn layout trong popup; <kbd>Esc</kbd> để huỷ</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>q</kbd></div><div class="d"><b>Hiện số pane</b> — bấm tiếp số đó để nhảy thẳng tới. Hữu ích nhất khi đang ở lưới</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>Space</kbd></div><div class="d"><b>Xoay layout</b> — đổi kiểu chia pane qua các bố cục dựng sẵn</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd></div><div class="d"><b>Chỉnh kích thước</b> pane 1 ô (<kbd class="mod">Alt</kbd> thay <kbd class="mod">Ctrl</kbd> = 5 ô). Giữ prefix rồi bấm liên tục được. Mũi tên <b>trơn</b> chỉ nhảy pane, không chỉnh gì</div></div>
             <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>e</kbd></div><div class="d">Toggle <b>sync-panes</b> — gõ 1 lệnh chạy mọi pane</div></div>
             <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>x</kbd></div><div class="d">Đóng pane hiện tại</div></div>
           </div>
@@ -74,6 +77,7 @@
             <div class="row"><div class="keys"><kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>r</kbd></div><div class="d">Reload <code class="cmd">~/.tmux.conf</code></div></div>
           </div>
           <p>Continuum tự lưu mỗi 15 phút và tự khôi phục khi mở tmux — workspaces sống qua reboot.</p>
+          <div class="callout"><b>Sửa <code class="cmd">tmux.conf</code> xong nhớ bấm <kbd class="mod">prefix</kbd><span class="then">rồi</span><kbd>r</kbd>.</b> tmux chỉ đọc config <b>một lần lúc khởi động server</b> — server đang chạy không hề biết về phím mới, kể cả khi bạn mở session mới. Bấm phím mới mà thấy im ru thì gần như luôn là quên bước này.</div>
         </div>
 
         <div class="callout">Prefix đổi từ mặc định <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>b</kbd> sang <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>a</kbd> cho dễ bấm. Mouse bật sẵn — click chọn pane, kéo chỉnh kích thước được.</div>
