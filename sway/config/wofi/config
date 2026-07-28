@@ -1,0 +1,10 @@
+show=drun
+allow_markup=true
+matching=fuzzy
+insensitive=true
+width=560
+height=420
+prompt=Run:
+hide_scroll=true
+term=foot
+print_command=true
