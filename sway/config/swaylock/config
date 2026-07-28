@@ -1,0 +1,18 @@
+color=1a1b26
+inside-color=1a1b26
+ring-color=7dcfff
+line-color=24283b
+separator-color=24283b
+key-hl-color=bb9af7
+bs-hl-color=f7768e
+inside-clear-color=24283b
+ring-clear-color=e0af68
+inside-ver-color=24283b
+ring-ver-color=7dcfff
+inside-wrong-color=24283b
+ring-wrong-color=f7768e
+indicator-radius=100
+indicator-thickness=8
+clock
+timestr=%H:%M
+datestr=%a, %d %B

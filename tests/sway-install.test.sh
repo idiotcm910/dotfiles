@@ -52,5 +52,17 @@ assert_file_contains "workspace shortcut nine exists" "$SWAY_SOURCE/config.d/20-
 assert_file_contains "screenshot shortcut uses grim and slurp" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'grim -g "$(slurp)"'
 
 echo ""
+echo "── Companion UI config ──"
+CONFIG_SOURCE="$REPO/sway/config"
+assert_file_contains "Waybar shows Sway workspaces" "$CONFIG_SOURCE/waybar/config.jsonc" '"sway/workspaces"'
+assert_file_contains "Waybar shows the focused window" "$CONFIG_SOURCE/waybar/config.jsonc" '"sway/window"'
+assert_file_contains "Waybar includes essential system modules" "$CONFIG_SOURCE/waybar/config.jsonc" '"cpu", "memory", "network", "pulseaudio", "battery", "clock", "tray"'
+assert_file_contains "Waybar uses Tokyo Night background" "$CONFIG_SOURCE/waybar/style.css" '#1a1b26'
+assert_file_contains "Waybar uses Tokyo Night cyan focus" "$CONFIG_SOURCE/waybar/style.css" '#7dcfff'
+assert_file_contains "Foot uses JetBrains Mono" "$CONFIG_SOURCE/foot/foot.ini" 'font=JetBrains Mono:size=11'
+assert_file_contains "Mako uses Tokyo Night background" "$CONFIG_SOURCE/mako/config" 'background-color=#24283b'
+assert_file_contains "Swaylock uses cyan ring" "$CONFIG_SOURCE/swaylock/config" 'inside-color=1a1b26'
+
+echo ""
 [ "$fail" -eq 0 ] && echo "TẤT CẢ ĐỀU ĐẠT" || echo "CÓ TEST HỎNG"
 exit "$fail"
