@@ -39,5 +39,18 @@ backup="$(find "$tmp/home/.config" -maxdepth 1 -type d -name 'foot.backup-*' | h
 assert_file_contains "apply preserves old config in backup" "$backup/foot.ini" "old"
 
 echo ""
+echo "── Sway core config ──"
+SWAY_SOURCE="$REPO/sway/config/sway"
+assert_file_contains "entry config includes component files" "$SWAY_SOURCE/config" "include ~/.config/sway/config.d/*.conf"
+assert_file_contains "theme defines Super as main modifier" "$SWAY_SOURCE/config.d/00-theme.conf" 'set $mod Mod4'
+assert_file_contains "terminal shortcut opens Foot" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+Return exec foot'
+assert_file_contains "launcher shortcut opens Wofi" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+d exec wofi --show drun'
+assert_file_contains "close shortcut is explicit" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+Shift+q kill'
+assert_file_contains "lock shortcut uses swaylock" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+l exec swaylock'
+assert_file_contains "workspace shortcut one exists" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+1 workspace number 1'
+assert_file_contains "workspace shortcut nine exists" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+9 workspace number 9'
+assert_file_contains "screenshot shortcut uses grim and slurp" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'grim -g "$(slurp)"'
+
+echo ""
 [ "$fail" -eq 0 ] && echo "TẤT CẢ ĐỀU ĐẠT" || echo "CÓ TEST HỎNG"
 exit "$fail"
