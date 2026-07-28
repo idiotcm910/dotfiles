@@ -12,6 +12,7 @@ const PAGES = [
   { page: "nvim-search",     file: "nvim-search.html",     n: "05", label: "Nvim · Tìm & Duyệt" },
   { page: "nvim-lsp-claude", file: "nvim-lsp-claude.html", n: "06", label: "Nvim · LSP & Claude" },
   { page: "setup",           file: "setup.html",           n: "07", label: "Cài đặt" },
+  { page: "sway",            file: "sway.html",            n: "08", label: "Sway · Tokyo Night" },
 ];
 
 (function () {

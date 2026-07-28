@@ -64,5 +64,21 @@ assert_file_contains "Mako uses Tokyo Night background" "$CONFIG_SOURCE/mako/con
 assert_file_contains "Swaylock uses cyan ring" "$CONFIG_SOURCE/swaylock/config" 'inside-color=1a1b26'
 
 echo ""
+echo "── Sway guide ──"
+GUIDE="$REPO/guide/sway.html"
+assert_file_contains "guide declares Vietnamese language" "$GUIDE" 'lang="vi"'
+assert_file_contains "guide registers the Sway page" "$GUIDE" 'data-page="sway"'
+assert_file_contains "guide loads shared stylesheet" "$GUIDE" 'href="assets/style.css"'
+assert_file_contains "guide loads shared behavior" "$GUIDE" 'src="assets/app.js"'
+assert_file_contains "guide explains first login" "$GUIDE" 'Bắt đầu'
+assert_file_contains "guide documents shortcuts" "$GUIDE" 'Phím tắt'
+assert_file_contains "guide documents workspaces" "$GUIDE" 'Workspace'
+assert_file_contains "guide documents screenshots" "$GUIDE" 'Ảnh chụp màn hình'
+assert_file_contains "guide documents config changes" "$GUIDE" 'Chỉnh cấu hình'
+assert_file_contains "guide documents recovery" "$GUIDE" 'Khôi phục'
+assert_file_contains "shared sidebar links Sway" "$REPO/guide/assets/app.js" 'sway.html'
+assert_file_contains "guide index links Sway" "$REPO/guide/index.html" 'sway.html'
+
+echo ""
 [ "$fail" -eq 0 ] && echo "TẤT CẢ ĐỀU ĐẠT" || echo "CÓ TEST HỎNG"
 exit "$fail"
