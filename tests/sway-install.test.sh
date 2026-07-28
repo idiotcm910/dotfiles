@@ -82,6 +82,21 @@ assert_file_contains "guide documents config changes" "$GUIDE" 'Chỉnh cấu h�
 assert_file_contains "guide documents recovery" "$GUIDE" 'Khôi phục'
 assert_file_contains "shared sidebar links Sway" "$REPO/guide/assets/app.js" 'sway.html'
 assert_file_contains "guide index links Sway" "$REPO/guide/index.html" 'sway.html'
+assert_file_contains "guide starts a developer work session" "$GUIDE" 'Phiên lập trình đầu tiên'
+assert_file_contains "guide explains application launcher" "$GUIDE" 'Mở ứng dụng'
+assert_file_contains "guide explains resize mode" "$GUIDE" 'Resize cửa sổ'
+assert_file_contains "guide explains the status bar" "$GUIDE" 'Waybar'
+assert_file_contains "guide explains clipboard behavior" "$GUIDE" 'Clipboard'
+assert_file_contains "guide explains external monitors" "$GUIDE" 'Màn hình ngoài'
+assert_file_contains "guide includes troubleshooting" "$GUIDE" 'Khi có trục trặc'
+assert_file_contains "guide calls out pending packages" "$GUIDE" 'Package còn thiếu'
+assert_file_contains "guide distinguishes source and live config" "$GUIDE" 'Source và live config'
+assert_file_contains "guide documents resize shortcut" "$GUIDE" 'Super+R'
+assert_file_contains "guide documents launcher shortcut" "$GUIDE" 'Super+D'
+assert_file_contains "guide documents config validation" "$GUIDE" 'sway -C'
+assert_file_contains "guide documents output inspection" "$GUIDE" 'swaymsg -t get_outputs'
+assert_file_contains "guide documents package-limited apply" "$GUIDE" 'SKIP_APT=1'
+assert_file_contains "guide documents GNOME recovery" "$GUIDE" 'chọn GNOME'
 
 echo ""
 [ "$fail" -eq 0 ] && echo "TẤT CẢ ĐỀU ĐẠT" || echo "CÓ TEST HỎNG"

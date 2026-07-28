@@ -28,4 +28,5 @@ xóa thư mục config mới rồi đổi tên bản backup gần nhất về t�
 mv ~/.config/foot.backup-YYYYmmdd-HHMMSS ~/.config/foot
 ```
 
-Xem `../guide/sway.html` để có toàn bộ phím tắt và hướng dẫn sử dụng.
+Xem `../guide/sway.html` để có cẩm nang dùng hằng ngày: workflow terminal/browser,
+workspace, window management, lỗi thường gặp, package còn thiếu và khôi phục.
