@@ -1,0 +1,16 @@
+# Sway session and core desktop tools (Ubuntu repository packages only).
+sway
+swaybg
+swayidle
+swaylock
+waybar
+wofi
+foot
+mako-notifier
+grim
+slurp
+wl-clipboard
+pavucontrol
+playerctl
+brightnessctl
+fonts-jetbrains-mono
