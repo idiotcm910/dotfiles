@@ -50,6 +50,10 @@ assert_file_contains "lock shortcut uses swaylock" "$SWAY_SOURCE/config.d/20-key
 assert_file_contains "workspace shortcut one exists" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+1 workspace number 1'
 assert_file_contains "workspace shortcut nine exists" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+9 workspace number 9'
 assert_file_contains "screenshot shortcut uses grim and slurp" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'grim -g "$(slurp)"'
+assert_file_contains "resize shortcut enters resize mode" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym $mod+r mode "resize"'
+assert_file_contains "resize mode is defined" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'mode "resize" {'
+assert_file_contains "resize mode exits with Escape" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym Escape mode "default"'
+assert_file_contains "resize mode exits with Enter" "$SWAY_SOURCE/config.d/20-keybinds.conf" 'bindsym Return mode "default"'
 
 echo ""
 echo "── Companion UI config ──"
