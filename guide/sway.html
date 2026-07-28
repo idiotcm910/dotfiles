@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sway · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="sway" data-title="Sway · Tokyo Night">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+        <p class="lede">Sway là desktop tiling nhẹ: <b>Super</b> mở lệnh, cửa sổ tự xếp gọn, và mọi cấu hình sống trong <code>~/thai/system/sway</code>.</p>
+        <p class="note">Theme Tokyo Night ưu tiên rõ ràng và nhẹ. Không blur, không compositor phụ, GNOME vẫn nguyên vẹn để dùng dự phòng.</p>
+
+        <div class="group">
+          <h2>Bắt đầu <span class="tag">lần đầu</span></h2>
+          <ol class="flow">
+            <li><span><b>Cài và áp dụng config.</b> Mở GNOME Terminal, chạy <code>cd ~/thai/system &amp;&amp; bash sway/install.sh --dry-run</code>, xem danh sách rồi chạy <code>bash sway/install.sh</code>.</span></li>
+            <li><span><b>Đăng xuất.</b> Ở GDM, bấm biểu tượng bánh răng cạnh nút đăng nhập và chọn <b>Sway</b>.</span></li>
+            <li><span><b>Đăng nhập.</b> Bấm <kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Enter</kbd> để mở Foot, hoặc <kbd class="mod">Super</kbd><span class="plus">+</span><kbd>D</kbd> để tìm ứng dụng.</span></li>
+          </ol>
+        </div>
+
+        <div class="group">
+          <h2>Phím tắt <span class="tag">hằng ngày</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Enter</kbd></div><div class="d">Mở terminal Foot</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>D</kbd></div><div class="d">Mở launcher Wofi</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>Q</kbd></div><div class="d">Đóng cửa sổ đang focus</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>F</kbd></div><div class="d">Bật/tắt toàn màn hình</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Space</kbd></div><div class="d">Bật/tắt floating</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>L</kbd></div><div class="d">Khoá màn hình</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>C</kbd></div><div class="d">Reload Sway config</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>E</kbd></div><div class="d">Thoát Sway (có xác nhận)</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Cửa sổ &amp; Workspace</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>H</kbd><span class="plus">/</span><kbd>J</kbd><span class="plus">/</span><kbd>K</kbd><span class="plus">/</span><kbd>→</kbd></div><div class="d">Đổi focus trái / dưới / trên / phải</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>H/J/K/L</kbd></div><div class="d">Di chuyển cửa sổ theo hướng</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>1…9</kbd></div><div class="d">Đến workspace số 1–9</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>1…9</kbd></div><div class="d">Đưa cửa sổ sang workspace 1–9</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Tab</kbd></div><div class="d">Quay về workspace trước</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Ảnh chụp màn hình &amp; thiết bị</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>Print</kbd></div><div class="d">Chụp toàn màn hình vào clipboard</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Print</kbd></div><div class="d">Chọn vùng, chụp vào clipboard</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>Print</kbd></div><div class="d">Chọn vùng, lưu vào <code>~/Pictures</code></div></div>
+            <div class="row"><div class="keys"><kbd>Media</kbd><span class="plus">/</span><kbd>Brightness</kbd></div><div class="d">Âm lượng, phát/tạm dừng, chuyển bài và độ sáng</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Chỉnh cấu hình</h2>
+          <p class="note">Source chuẩn là <code>~/thai/system/sway/config</code>; bản Sway đang dùng là <code>~/.config/sway</code>. Luôn sửa source rồi áp dụng lại — đừng chỉ sửa bản live.</p>
+          <ol class="flow">
+            <li><span>Sửa file trong <code>~/thai/system/sway/config/…</code>.</span></li>
+            <li><span>Kiểm tra trước: <code>sway -C -c ~/thai/system/sway/config/sway/config</code>.</span></li>
+            <li><span>Áp dụng: <code>cd ~/thai/system &amp;&amp; bash sway/install.sh</code>.</span></li>
+            <li><span>Khi đang ở Sway, bấm <kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>C</kbd> hoặc chạy <code>swaymsg reload</code>.</span></li>
+          </ol>
+        </div>
+
+        <div class="group">
+          <h2>Khôi phục &amp; quay về GNOME</h2>
+          <p class="note">Installer tạo backup như <code>~/.config/foot.backup-YYYYmmdd-HHMMSS</code> trước khi ghi đè. Để khôi phục, đăng xuất Sway, chọn GNOME từ bánh răng tại GDM, sau đó đổi tên backup về lại thư mục gốc.</p>
+          <div class="callout">Không chạy <code>swaymsg reload</code> trong GNOME. Nếu Sway không vào được, chọn GNOME ở GDM; desktop cũ không bị gỡ hoặc thay đổi.</div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
