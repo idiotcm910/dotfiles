@@ -1,2 +1,0 @@
-# Entry point. Keep component settings in config.d so each concern stays small.
-include ~/.config/sway/config.d/*.conf
