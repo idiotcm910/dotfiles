@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=IBus Bamboo
-Comment=Vietnamese input method for Plasma Wayland
-Exec=ibus-daemon -drx
-OnlyShowIn=KDE;
-X-KDE-autostart-after=panel
-X-GNOME-Autostart-enabled=true

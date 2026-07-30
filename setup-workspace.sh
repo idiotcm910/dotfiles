@@ -51,9 +51,6 @@ log "Cài plugin tmux (tpm)"
 tmux kill-server 2>/dev/null || true
 tmux new-session -d -s _setup && ~/.tmux/plugins/tpm/bin/install_plugins && tmux kill-session -t _setup 2>/dev/null || true
 
-log "Màu GNOME Terminal = tokyonight (khớp nvim)"
-bash ~/thai/system/terminal/gnome-terminal-tokyonight.sh || true
-
 log "Cài ble.sh (gợi ý lệnh kiểu fish cho bash)"
 if [ ! -f ~/.local/share/blesh/ble.sh ]; then
   tmpb="$(mktemp -d)"
