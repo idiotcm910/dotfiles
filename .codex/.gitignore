@@ -1,0 +1,8 @@
+*
+!.gitignore
+!README.md
+!config.toml
+!prompts/
+!prompts/**
+!rules/
+!rules/**

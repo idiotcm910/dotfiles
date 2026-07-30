@@ -1,0 +1,9 @@
+*
+!.gitignore
+!README.md
+!settings.json
+!agents/
+!agents/**
+!skills/
+!skills/**
+skills/**/.git/
