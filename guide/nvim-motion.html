@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nvim · Di chuyển · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="nvim-motion" data-title="Nvim · Di chuyển">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Nền tảng là <b>vim motions</b> (không cần plugin), tăng tốc bằng <b>flash</b> để nhảy bất kỳ đâu.</p>
+
+        <div class="group">
+          <h2>Theo dòng</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>j</kbd> / <kbd>k</kbd></div><div class="d">Xuống / lên 1 dòng</div></div>
+            <div class="row"><div class="keys"><kbd>5</kbd><kbd>j</kbd> · <kbd>12</kbd><kbd>k</kbd></div><div class="d">Xuống 5 / lên 12 dòng (số dòng tương đối)</div></div>
+            <div class="row"><div class="keys"><kbd>g</kbd><kbd>g</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>g</kbd></div><div class="d">Đầu / cuối file</div></div>
+            <div class="row"><div class="keys"><kbd>4</kbd><kbd>2</kbd><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>g</kbd></div><div class="d">Nhảy tới <b>dòng 42</b></div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>h</kbd> <kbd>m</kbd> <kbd>l</kbd></div><div class="d">Đầu / giữa / cuối màn hình</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>d</kbd> / <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>u</kbd></div><div class="d">Cuộn nửa trang (giữ con trỏ giữa)</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Trong một dòng</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>w</kbd> / <kbd>b</kbd></div><div class="d">Sang từ tiếp / về từ trước</div></div>
+            <div class="row"><div class="keys"><kbd>0</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>4</kbd></div><div class="d">Đầu dòng / cuối dòng ($)</div></div>
+            <div class="row"><div class="keys"><kbd>^</kbd></div><div class="d">Ký tự đầu (bỏ khoảng trắng)</div></div>
+            <div class="row"><div class="keys"><kbd>f</kbd><kbd>)</kbd> · <kbd>t</kbd><kbd>,</kbd></div><div class="d">Nhảy tới <kbd>)</kbd> / ngay trước <kbd>,</kbd></div></div>
+            <div class="row"><div class="keys"><kbd>;</kbd></div><div class="d">Lặp lại f/t lần nữa</div></div>
+            <div class="row"><div class="keys"><kbd>%</kbd></div><div class="d">Nhảy giữa cặp ngoặc <kbd>(</kbd><kbd>)</kbd><kbd>{</kbd><kbd>}</kbd></div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Theo khối & quay lại</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>{</kbd> / <kbd>}</kbd></div><div class="d">Đoạn trước / sau</div></div>
+            <div class="row"><div class="keys"><kbd>[</kbd><kbd>[</kbd> / <kbd>]</kbd><kbd>]</kbd></div><div class="d">Function trước / sau</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>o</kbd> / <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>i</kbd></div><div class="d">Lùi / tiến trong jumplist (sau khi nhảy đi)</div></div>
+            <div class="row"><div class="keys"><kbd>`</kbd><kbd>`</kbd></div><div class="d">Về vị trí trước lần nhảy cuối</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Flash — nhảy bất kỳ đâu <span class="tag">flash.nvim</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>s</kbd><span class="then">rồi</span> 2 ký tự</div><div class="d">Mọi chỗ khớp hiện <b>nhãn chữ</b> → bấm nhãn là nhảy tới</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>s</kbd></div><div class="d">Nhảy/chọn theo <b>khối code</b> (Treesitter)</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Cửa sổ · Tab · Undo <span class="tag">bufferline · undo-glow</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>h</kbd> <kbd>j</kbd> <kbd>k</kbd> <kbd>l</kbd></div><div class="d">Nhảy giữa cửa sổ (split)</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>z</kbd></div><div class="d"><b>Zoom</b> cửa sổ nvim (toggle)</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>l</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>h</kbd></div><div class="d">Tab (buffer) sau / trước</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>b</kbd><kbd>p</kbd></div><div class="d">Chọn tab bằng nhãn</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>b</kbd><kbd>c</kbd></div><div class="d">Đóng tab hiện tại (giữ layout)</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>b</kbd><kbd>o</kbd></div><div class="d">Đóng các tab khác</div></div>
+            <div class="row"><div class="keys"><kbd>u</kbd> · <kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>r</kbd></div><div class="d">Undo / Redo (chớp sáng vùng đổi)</div></div>
+            <div class="row"><div class="keys"><kbd>p</kbd> / <kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>p</kbd></div><div class="d">Paste dưới / trên (chớp sáng)</div></div>
+            <div class="row"><div class="keys"><kbd>Esc</kbd></div><div class="d">Xoá tô sáng kết quả tìm</div></div>
+            <div class="row"><div class="keys"><kbd>Space</kbd><kbd>w</kbd> / <kbd>Space</kbd><kbd>q</kbd></div><div class="d">Lưu file / đóng cửa sổ</div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

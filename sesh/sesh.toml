@@ -1,0 +1,10 @@
+# ~/thai/system/sesh/sesh.toml
+
+[default_session]
+startup_command = "nvim ."
+
+# Nhóm hiển thị icon cho tmux sessions
+[[session]]
+name = "dotfiles ~/thai/system"
+path = "~/thai/system"
+startup_command = "nvim ."

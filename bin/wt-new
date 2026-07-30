@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# wt-new <branch> — tạo git worktree + tmux session + nvim
+set -euo pipefail
+branch="${1:?Cần tên branch: wt-new <branch>}"
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "Không ở trong git repo"; exit 1; }
+repo_name="$(basename "$repo_root")"
+wt_dir="$(dirname "$repo_root")/${repo_name}.worktrees/${branch}"
+
+if [ ! -d "$wt_dir" ]; then
+  if git -C "$repo_root" show-ref --verify --quiet "refs/heads/${branch}"; then
+    git -C "$repo_root" worktree add "$wt_dir" "$branch"
+  else
+    git -C "$repo_root" worktree add -b "$branch" "$wt_dir"
+  fi
+fi
+
+session="$(echo "$branch" | tr './:' '___')"
+if ! tmux has-session -t "$session" 2>/dev/null; then
+  tmux new-session -d -s "$session" -c "$wt_dir"
+  tmux send-keys -t "$session" "nvim ." C-m
+fi
+
+if [ -n "${TMUX:-}" ]; then
+  tmux switch-client -t "$session"
+else
+  tmux attach -t "$session"
+fi

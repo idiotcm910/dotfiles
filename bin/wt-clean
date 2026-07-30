@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# wt-clean — xóa worktree đã merge vào main + kill session tương ứng
+set -euo pipefail
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "Không ở trong git repo"; exit 1; }
+main_branch="$(git -C "$repo_root" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's@^origin/@@')" || true
+if [ -z "$main_branch" ] || ! git -C "$repo_root" rev-parse --verify "$main_branch" >/dev/null 2>&1; then
+  main_branch=main
+  for cand in main master; do
+    if git -C "$repo_root" rev-parse --verify "$cand" >/dev/null 2>&1; then main_branch="$cand"; break; fi
+  done
+fi
+
+# Đọc danh sách worktree qua fd 3 (không phải stdin) để prompt xác nhận đọc được stdin thật,
+# không bị pipeline/process-substitution nuốt mất.
+while read -r wt <&3; do
+  [ "$wt" = "$repo_root" ] && continue
+  [ -d "$wt" ] || continue
+  branch="$(git -C "$wt" branch --show-current 2>/dev/null || echo '')"
+  [ -z "$branch" ] && continue
+  [ "$branch" = "$main_branch" ] && continue
+  # sed cắt cả '+' (branch đang được checkout trong worktree khác) lẫn '*'/space.
+  if git -C "$repo_root" branch --merged "$main_branch" | sed 's/^[+* ]*//' | grep -Fqx "$branch"; then
+    read -r -p "Xóa worktree '$branch' (đã merge vào $main_branch)? [y/N] " ans
+    if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
+      if git -C "$repo_root" worktree remove "$wt" 2>/dev/null; then
+        git -C "$repo_root" branch -d "$branch" 2>/dev/null || true
+        session="$(echo "$branch" | tr './:' '___')"
+        tmux kill-session -t "$session" 2>/dev/null || true
+        command -v zoxide >/dev/null 2>&1 && zoxide remove "$wt" 2>/dev/null || true
+        echo "→ Đã xóa $branch"
+      else
+        echo "⚠ Bỏ qua '$branch' — worktree còn thay đổi chưa lưu. Nếu chắc chắn muốn xóa: git worktree remove --force \"$wt\""
+      fi
+    fi
+  fi
+done 3< <(git -C "$repo_root" worktree list --porcelain | awk '/^worktree /{print $2}')

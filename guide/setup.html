@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cài đặt · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="setup" data-title="Cài đặt">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Repo dotfiles <b><code class="cmd">~/thai/system</code></b>. Hai script cài toàn bộ trên máy mới.</p>
+
+        <div class="group">
+          <h2>Cài trên máy mới</h2>
+          <div class="rows">
+            <div class="row"><div class="keys"><code class="cmd">bash ~/thai/system/nvim/install.sh</code></div><div class="d">Neovim + plugin + LSP + Nerd Font + treesitter</div></div>
+            <div class="row"><div class="keys"><code class="cmd">bash ~/thai/system/setup-workspace.sh</code></div><div class="d">tmux + tpm + sesh + zoxide + scripts + auto-tmux</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Yêu cầu</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">Neovim ≥ 0.12</code></div><div class="d">Cho nvim-treesitter nhánh main</div></div>
+            <div class="row"><div class="keys"><code class="cmd">tmux · git · fzf</code></div><div class="d">Nền tảng workspace</div></div>
+            <div class="row"><div class="keys"><code class="cmd">ripgrep · fd</code></div><div class="d">fzf-lua tìm file & grep</div></div>
+            <div class="row"><div class="keys"><code class="cmd">node · go</code></div><div class="d">mason cài LSP (ts / pyright / gopls)</div></div>
+            <div class="row"><div class="keys"><code class="cmd">tree-sitter-cli</code></div><div class="d">Biên dịch parser highlight</div></div>
+            <div class="row"><div class="keys"><code class="cmd">sesh · zoxide</code></div><div class="d">Switcher + nhảy thư mục</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Font & Terminal</h2>
+          <p>Icon (tree, header, breadcrumb) cần <b>Nerd Font</b>. Đặt terminal dùng <code class="cmd">JetBrainsMono Nerd Font Mono</code>.</p>
+          <div class="rows">
+            <div class="row"><div class="keys">Warp</div><div class="d">Settings → Terminal font → tìm <b>"JetBrains"</b> → JetBrainsMono Nerd Font Mono</div></div>
+            <div class="row"><div class="keys">Terminal khác</div><div class="d">Chọn JetBrainsMono Nerd Font Mono trong cấu hình font của terminal</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Auto-tmux</h2>
+          <div class="rows">
+            <div class="row"><div class="keys">Terminal thường</div><div class="d"><b>Tự vào tmux</b> khi mở (session <code class="cmd">main</code>)</div></div>
+            <div class="row"><div class="keys">Warp</div><div class="d"><b>Loại trừ</b> — giữ Blocks. Muốn tmux thì gõ <code class="cmd">tmux</code></div></div>
+            <div class="row"><div class="keys">Đổi hành vi</div><div class="d">Sửa khối <code class="cmd">&gt;&gt;&gt; auto-tmux &lt;&lt;&lt;</code> trong <code class="cmd">~/.bashrc</code></div></div>
+          </div>
+        </div>
+
+        <div class="callout">Cấu trúc repo: <code class="cmd">nvim/</code> (config + install.sh) · <code class="cmd">tmux/</code> · <code class="cmd">sesh/</code> · <code class="cmd">bin/</code> (scripts) · <code class="cmd">guide/</code> (cẩm nang này) · <code class="cmd">docs/</code> (spec + plan). Thêm trang guide: copy <code class="cmd">guide/_template.html</code> + thêm 1 dòng vào <code class="cmd">assets/app.js</code>.</div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

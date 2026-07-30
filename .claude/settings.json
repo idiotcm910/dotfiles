@@ -1,0 +1,61 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "model": "opus[1m]",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.ccs/hooks/websearch-transformer.cjs\"",
+            "timeout": 85
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "impeccable@impeccable": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "frontend-slides@frontend-slides": true,
+    "plannotator-effective-html@effective-html": true,
+    "vercel@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "obsidian-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kepano/obsidian-skills"
+      }
+    },
+    "ai-unified-process-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "ai-unified-process/marketplace"
+      }
+    },
+    "frontend-slides": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/zarazhangrui/frontend-slides.git"
+      }
+    },
+    "effective-html": {
+      "source": {
+        "source": "github",
+        "repo": "plannotator/effective-html"
+      }
+    }
+  },
+  "language": "Vietnamese",
+  "effortLevel": "medium",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "useAutoModeDuringPlan": true
+}
