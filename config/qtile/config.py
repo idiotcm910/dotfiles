@@ -34,6 +34,12 @@ from libqtile.utils import guess_terminal
 mod = "mod4"
 terminal = guess_terminal()
 
+
+@hook.subscribe.startup_once
+def autostart():
+    subprocess.Popen([os.path.expanduser("~/.config/qtile/autostart.sh")])
+
+
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
