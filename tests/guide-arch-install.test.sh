@@ -58,6 +58,10 @@ assert_file_contains "$PAGE" 'gnome-keyring libsecret' "hướng dẫn cài GNOM
 assert_file_contains "$PAGE" 'chrome-cookies-and-keyring-' "hướng dẫn dùng file backup cookie"
 assert_file_contains "$PAGE" '-C ~/.config google-chrome' "lệnh restore Chrome đúng thư mục"
 assert_file_contains "$PAGE" '-C ~ .local' "lệnh restore keyring đúng thư mục"
+assert_file_contains "$PAGE" 'data-task="ai-auth-restored"' "có bước khôi phục credential AI"
+assert_file_contains "$PAGE" 'ai-auth-backup.tar.zst' "hướng dẫn dùng backup Codex và Claude"
+assert_file_contains "$PAGE" '.codex/accounts' "hướng dẫn giữ toàn bộ account codex-auth"
+assert_file_contains "$PAGE" 'chmod 600 ~/.codex/auth.json ~/.claude/.credentials.json' "khôi phục quyền credential AI"
 
 task_ids="$(
   grep -o 'data-task="[^"]*"' "$PAGE" 2>/dev/null |

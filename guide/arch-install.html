@@ -324,6 +324,10 @@ sudo pacman -Syu</code></pre>
                 <input class="task-check" type="checkbox" data-task="chrome-cookie-restored">
                 <span><b>Đã khôi phục cookie Chrome trước lần mở Chrome đầu tiên</b><small>Chỉ làm khi có file <code>chrome-cookies-and-keyring-*.tar.zst</code> từ máy cũ; nó chứa session đăng nhập rất nhạy cảm.</small></span>
               </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="ai-auth-restored">
+                <span><b>Đã khôi phục credential Codex và Claude</b><small>Chỉ làm khi có <code>ai-auth-backup.tar.zst</code> từ máy cũ; file giữ toàn bộ account <code>codex-auth</code> và session Claude.</small></span>
+              </label>
             </div>
             <div class="command-block">
               <div class="command-head"><span>Clone và preview</span><button type="button" class="copy-btn" data-copy-target="cmd-clone">Sao chép</button></div>
@@ -346,6 +350,16 @@ sudo pacman -S --needed gnome-keyring libsecret
 tar --zstd -xpf "$archive" -C ~/.config google-chrome
 tar --zstd -xpf "$archive" -C ~ .local</code></pre>
               <p class="command-note">Giữ username <code>quocthai</code> và mật khẩu Linux cũ để GNOME Keyring có thể mở khóa cookie. Session vẫn có thể bị Facebook hoặc tài khoản công ty yêu cầu xác thực lại.</p>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Khôi phục toàn bộ account Codex và Claude</span><button type="button" class="copy-btn" data-copy-target="cmd-ai-auth">Sao chép</button></div>
+              <pre><code id="cmd-ai-auth"># Chạy sau restore.sh. Archive chứa ~/.codex/auth.json,
+# ~/.codex/accounts và ~/.claude/.credentials.json.
+tar --zstd -xpf ~/ai-auth-backup.tar.zst -C ~
+chmod 600 ~/.codex/auth.json ~/.claude/.credentials.json
+codex login status
+codex-auth list</code></pre>
+              <p class="command-note">Không chạy <code>codex login</code> hoặc <code>claude login</code> trước bước này. Archive này tương đương mật khẩu cho các account trong đó, tuyệt đối không commit lên GitHub.</p>
             </div>
           </div>
         </section>
