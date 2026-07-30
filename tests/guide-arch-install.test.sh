@@ -53,6 +53,11 @@ assert_file_contains "$PAGE" 'data-copy-target=' "command có nút copy"
 assert_file_contains "$PAGE" 'https://archlinux.org/download/' "link trang tải Arch chính thức"
 assert_file_contains "$PAGE" 'https://wiki.archlinux.org/title/Installation_guide' "link Installation Guide chính thức"
 assert_file_contains "$PAGE" 'https://wiki.archlinux.org/title/Archinstall' "link Archinstall chính thức"
+assert_file_contains "$PAGE" 'data-task="chrome-cookie-restored"' "có bước khôi phục cookie Chrome"
+assert_file_contains "$PAGE" 'gnome-keyring libsecret' "hướng dẫn cài GNOME Keyring cho Chrome"
+assert_file_contains "$PAGE" 'chrome-cookies-and-keyring-' "hướng dẫn dùng file backup cookie"
+assert_file_contains "$PAGE" '-C ~/.config google-chrome' "lệnh restore Chrome đúng thư mục"
+assert_file_contains "$PAGE" '-C ~ .local' "lệnh restore keyring đúng thư mục"
 
 task_ids="$(
   grep -o 'data-task="[^"]*"' "$PAGE" 2>/dev/null |

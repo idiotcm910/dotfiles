@@ -320,6 +320,10 @@ sudo pacman -Syu</code></pre>
                 <input class="task-check" type="checkbox" data-task="dotfiles-restored">
                 <span><b>Restore hoàn tất không lỗi</b><small>Script cài Qtile/Polybar, Neovim/tmux, Chrome, IBus Bamboo, Codex và Claude.</small></span>
               </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="chrome-cookie-restored">
+                <span><b>Đã khôi phục cookie Chrome trước lần mở Chrome đầu tiên</b><small>Chỉ làm khi có file <code>chrome-cookies-and-keyring-*.tar.zst</code> từ máy cũ; nó chứa session đăng nhập rất nhạy cảm.</small></span>
+              </label>
             </div>
             <div class="command-block">
               <div class="command-head"><span>Clone và preview</span><button type="button" class="copy-btn" data-copy-target="cmd-clone">Sao chép</button></div>
@@ -333,6 +337,15 @@ bash restore.sh --dry-run</code></pre>
               <div class="command-head"><span>Chạy restore sau khi đã review</span><button type="button" class="copy-btn" data-copy-target="cmd-restore">Sao chép</button></div>
               <pre><code id="cmd-restore">cd ~/thai/system
 bash restore.sh</code></pre>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Khôi phục session Chrome từ backup cookie</span><button type="button" class="copy-btn" data-copy-target="cmd-chrome-cookies">Sao chép</button></div>
+              <pre><code id="cmd-chrome-cookies"># Chưa mở Chrome. Đổi tên file thành file bạn mang từ máy cũ.
+archive=~/chrome-cookies-and-keyring-YYYYMMDD-HHMMSS.tar.zst
+sudo pacman -S --needed gnome-keyring libsecret
+tar --zstd -xpf "$archive" -C ~/.config google-chrome
+tar --zstd -xpf "$archive" -C ~ .local</code></pre>
+              <p class="command-note">Giữ username <code>quocthai</code> và mật khẩu Linux cũ để GNOME Keyring có thể mở khóa cookie. Session vẫn có thể bị Facebook hoặc tài khoản công ty yêu cầu xác thực lại.</p>
             </div>
           </div>
         </section>
