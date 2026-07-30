@@ -1,0 +1,385 @@
+<!doctype html>
+<!--
+THESIS: Một checklist sống cạnh người dùng suốt lần cài Arch, từ backup đến Qtile; không biến hướng dẫn thành wizard che mất toàn cảnh.
+OWN-WORLD: Giấy ấm, mực than, rust/sage của Vibe Guide; rail tuần tự, task line và command slab thay cho card dashboard.
+STORY: Xác nhận phạm vi → giữ dữ liệu → tạo USB → cài base → kéo dotfiles → vào đúng workspace code.
+FIRST VIEWPORT: Lời hứa ngắn, trạng thái tiến độ và cảnh báo full-disk xuất hiện trước bước lệnh đầu tiên.
+FORM: Một trang Read tuần tự, cấu trúc được duyệt; kế thừa visual world hiện có, không tạo hệ nhận diện mới.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Checklist từng bước cài lại Arch Linux với Qtile, Polybar và dotfiles idiotcm910.">
+<title>Cài Arch mới · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="arch-install" data-title="Cài Arch mới">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc install-guide" data-checklist data-storage-key="vibe-guide:arch-install:v1">
+        <p class="noresult" id="noresult">Không tìm thấy bước hoặc lệnh nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Từ một ổ đĩa trống đến <b>Arch + Qtile/Polybar</b> và workspace code của bạn — đi từng chặng, không đoán bước tiếp theo.</p>
+        <p class="note">Checklist này giả định máy UEFI x86_64, xóa toàn bộ một ổ và không dual boot. Bản ISO được kiểm tra khi viết guide: <b>2026.07.01</b>; trước khi tải luôn đối chiếu “Current Release” trên trang Arch.</p>
+
+        <section class="install-progress" aria-labelledby="progressTitle">
+          <div class="progress-copy">
+            <div>
+              <p class="progress-kicker" id="progressTitle">Tiến độ cài máy</p>
+              <p class="progress-value" id="progressText">0 / 0 nhiệm vụ</p>
+            </div>
+            <button class="reset-btn" id="resetChecklist" type="button">Làm lại checklist</button>
+          </div>
+          <progress id="installProgress" max="100" value="0">0%</progress>
+          <p class="progress-status" id="progressStatus" aria-live="polite">Tiến độ được lưu trên trình duyệt này.</p>
+        </section>
+
+        <aside class="install-alert danger" role="alert">
+          <span class="alert-mark" aria-hidden="true">!</span>
+          <div><b>Điểm không thể hoàn tác nằm ở chặng 06.</b> Đừng chọn “wipe disk” cho tới khi bạn đã mở thử dữ liệu backup và đối chiếu đúng model, dung lượng của ổ sẽ xóa.</div>
+        </aside>
+
+        <nav class="jump-nav" aria-label="Đi nhanh tới chặng">
+          <a href="#stage-01">Chuẩn bị</a>
+          <a href="#stage-03">USB</a>
+          <a href="#stage-06">archinstall</a>
+          <a href="#stage-08">Dotfiles</a>
+          <a href="#stage-09">Qtile</a>
+        </nav>
+
+        <section class="install-step" id="stage-01" data-stage="01">
+          <div class="step-rail" aria-hidden="true"><span>01</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">Trước khi rút USB</p>
+              <h2>Chốt đúng phạm vi cài</h2>
+              <p>Guide này tối ưu cho một máy code tối giản. Nếu còn Windows, nhiều ổ dữ liệu hoặc cần dual boot, dừng tại đây và lập sơ đồ phân vùng riêng.</p>
+            </header>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="scope-full-wipe">
+                <span><b>Tui xác nhận sẽ xóa toàn bộ đúng một ổ</b><small>Không dùng guide này để giữ phân vùng Windows.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="scope-uefi">
+                <span><b>Máy hỗ trợ UEFI và CPU x86_64</b><small>ISO chính thức hiện dành cho x86_64.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="scope-hardware">
+                <span><b>Đã ghi lại CPU, GPU, Wi‑Fi và model ổ đĩa</b><small>Thông tin này quyết định microcode và driver sau cài đặt.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Nhận diện ổ trước khi reboot</span><button type="button" class="copy-btn" data-copy-target="cmd-lsblk">Sao chép</button></div>
+              <pre><code id="cmd-lsblk">lsblk -o NAME,SIZE,MODEL,TYPE,FSTYPE,MOUNTPOINTS</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-step" id="stage-02" data-stage="02">
+          <div class="step-rail" aria-hidden="true"><span>02</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">An toàn dữ liệu</p>
+              <h2>Backup và mở thử dữ liệu</h2>
+              <p>Repo dotfiles đã ở GitHub, nhưng repo không giữ credential, session AI, source chưa push, database local hoặc profile trình duyệt.</p>
+            </header>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="backup-source">
+                <span><b>Source code đã commit và push</b><small>Chạy kiểm tra trong từng repository đang làm.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="backup-secrets">
+                <span><b>Đã backup bí mật sang nơi mã hóa</b><small><code>~/.ssh</code>, GPG, <code>.env</code>, database, Docker volume và credential cần thiết.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="backup-personal">
+                <span><b>Đã copy dữ liệu cá nhân sang ổ ngoài</b><small>Documents, Downloads, workspace, bookmark và file không nằm trong Git.</small></span>
+              </label>
+              <label class="task gate-task">
+                <input class="task-check" type="checkbox" data-task="backup-confirmed">
+                <span><b>Đã mở thử ít nhất ba file từ bản backup</b><small>Check này mở khóa nhiệm vụ xóa ổ ở chặng 06.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Tìm repo còn thay đổi chưa commit</span><button type="button" class="copy-btn" data-copy-target="cmd-git-status">Sao chép</button></div>
+              <pre><code id="cmd-git-status">find ~/thai -name .git -type d -prune -print | while read -r gitdir; do
+  repo="${gitdir%/.git}"
+  git -C "$repo" status --short
+done</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-step" id="stage-03" data-stage="03">
+          <div class="step-rail" aria-hidden="true"><span>03</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">Installation media</p>
+              <h2>Tải ISO và tạo USB boot</h2>
+              <p>Dùng ISO chính thức mới nhất, không tải từ bài blog hoặc link re-upload. Ventoy, Balena Etcher hoặc GNOME Disks an toàn hơn một lệnh <code>dd</code> gõ vội.</p>
+            </header>
+            <div class="source-links">
+              <a href="https://archlinux.org/download/" target="_blank" rel="noreferrer">Arch Linux Downloads <span aria-hidden="true">↗</span></a>
+              <a href="https://wiki.archlinux.org/title/Installation_guide" target="_blank" rel="noreferrer">Installation Guide <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="iso-download">
+                <span><b>Đã tải Current Release và file checksum</b><small>ISO dự kiến khoảng 1.5 GB; phiên bản sẽ thay đổi theo tháng.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="iso-verify">
+                <span><b>Checksum ISO khớp</b><small>Nếu báo FAILED, xóa file và tải lại từ mirror khác.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="usb-written">
+                <span><b>Đã ghi ISO lên đúng USB và eject an toàn</b><small>Không chọn ổ chứa hệ điều hành hiện tại.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Kiểm tra SHA-256 trong thư mục tải</span><button type="button" class="copy-btn" data-copy-target="cmd-checksum">Sao chép</button></div>
+              <pre><code id="cmd-checksum">sha256sum -c sha256sums.txt --ignore-missing</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-step" id="stage-04" data-stage="04">
+          <div class="step-rail" aria-hidden="true"><span>04</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">Firmware</p>
+              <h2>Boot USB đúng chế độ UEFI</h2>
+              <p>ISO Arch không hỗ trợ Secure Boot mặc định. Tắt Secure Boot tạm thời; có thể cấu hình lại bằng khóa riêng sau khi hệ thống đã ổn định.</p>
+            </header>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="firmware-secure-boot">
+                <span><b>Secure Boot đã tắt</b><small>Giữ UEFI, không bật Legacy/CSM nếu máy hỗ trợ UEFI chuẩn.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="firmware-boot-menu">
+                <span><b>Đã chọn mục USB có nhãn UEFI</b><small>Trong menu Arch chọn “Arch Linux install medium”.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="firmware-efi-check">
+                <span><b>Live environment xác nhận đang chạy UEFI</b><small>Lệnh dưới phải trả exit code 0.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Kiểm tra UEFI trong live ISO</span><button type="button" class="copy-btn" data-copy-target="cmd-uefi">Sao chép</button></div>
+              <pre><code id="cmd-uefi">test -d /sys/firmware/efi/efivars &amp;&amp; echo "UEFI: OK"</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-step" id="stage-05" data-stage="05">
+          <div class="step-rail" aria-hidden="true"><span>05</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">Live environment</p>
+              <h2>Kết nối mạng và kiểm tra lại ổ</h2>
+              <p>Ethernet thường tự nhận. Với Wi‑Fi, dùng <code>iwctl</code>; thay <code>wlan0</code> và tên mạng bằng giá trị thật từ máy.</p>
+            </header>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="live-network">
+                <span><b>Ping được archlinux.org</b><small>Cài đặt tải package trực tiếp nên kết nối phải ổn định.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="live-clock">
+                <span><b>Đồng hồ hệ thống đã đồng bộ</b><small>Kiểm tra trạng thái NTP trước khi tải package và xác thực chữ ký.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="live-disk-match">
+                <span><b>Model và dung lượng ổ đích khớp ghi chú chặng 01</b><small>Đây là lần đối chiếu cuối trước archinstall.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Kết nối Wi‑Fi</span><button type="button" class="copy-btn" data-copy-target="cmd-wifi">Sao chép</button></div>
+              <pre><code id="cmd-wifi">iwctl
+device list
+station wlan0 scan
+station wlan0 get-networks
+station wlan0 connect TEN_WIFI
+exit
+ping -c 3 archlinux.org</code></pre>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Đồng bộ giờ và xem ổ</span><button type="button" class="copy-btn" data-copy-target="cmd-live-check">Sao chép</button></div>
+              <pre><code id="cmd-live-check">timedatectl
+lsblk -o NAME,SIZE,MODEL,TYPE,FSTYPE,MOUNTPOINTS</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-step" id="stage-06" data-stage="06">
+          <div class="step-rail" aria-hidden="true"><span>06</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">Cài hệ thống</p>
+              <h2>Chạy archinstall với profile tối giản</h2>
+              <p>Không chọn desktop profile. Repo sẽ cài Xorg, Qtile và Polybar sau first boot, tránh hai nguồn cấu hình desktop chồng nhau.</p>
+            </header>
+            <div class="source-links">
+              <a href="https://wiki.archlinux.org/title/Archinstall" target="_blank" rel="noreferrer">Archinstall trên ArchWiki <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="arch-choice" aria-label="Cấu hình archinstall khuyến nghị">
+              <dl>
+                <div><dt>Disk layout</dt><dd>Best-effort default · GPT · ext4 · không tách <code>/home</code></dd></div>
+                <div><dt>Encryption</dt><dd>Bật LUKS nếu là laptop; lưu passphrase ngoài máy</dd></div>
+                <div><dt>Bootloader</dt><dd>systemd-boot</dd></div>
+                <div><dt>Kernel</dt><dd><code>linux</code> + <code>linux-lts</code></dd></div>
+                <div><dt>Profile</dt><dd>Minimal · không desktop · không display manager</dd></div>
+                <div><dt>Network / Audio</dt><dd>NetworkManager · PipeWire</dd></div>
+                <div><dt>Locale</dt><dd><code>en_US.UTF-8</code> · Asia/Ho_Chi_Minh · keyboard <code>us</code></dd></div>
+                <div><dt>Extra packages</dt><dd><code>git base-devel sudo networkmanager openssh nano</code></dd></div>
+              </dl>
+            </div>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="archinstall-profile">
+                <span><b>Đã nhập đúng profile, kernel, network và user sudo</b><small>Không để máy chỉ có root account nếu bạn định dùng hàng ngày.</small></span>
+              </label>
+              <label class="task locked-task">
+                <input class="task-check" type="checkbox" data-task="archinstall-disk" data-requires="backup-confirmed" disabled>
+                <span><b>Đã chọn đúng ổ và xác nhận wipe</b><small class="lock-copy">Bị khóa cho tới khi hoàn tất xác nhận backup ở chặng 02.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="archinstall-complete">
+                <span><b>Installer báo hoàn tất an toàn</b><small>Đọc log lỗi trước khi reboot nếu installer không hiện trạng thái thành công.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Mở guided installer</span><button type="button" class="copy-btn" data-copy-target="cmd-archinstall">Sao chép</button></div>
+              <pre><code id="cmd-archinstall">archinstall</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-step" id="stage-07" data-stage="07">
+          <div class="step-rail" aria-hidden="true"><span>07</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">First boot</p>
+              <h2>Vào Arch base và xác nhận nền tảng</h2>
+              <p>Rút USB sau khi máy bắt đầu reboot. Đăng nhập bằng user thường, kiểm tra mạng rồi cập nhật full system trước khi dựng desktop.</p>
+            </header>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="boot-login">
+                <span><b>Đăng nhập được user thường và dùng được sudo</b><small>Không làm việc hàng ngày bằng root.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="boot-network">
+                <span><b>NetworkManager hoạt động và có Internet</b><small>Nếu Wi‑Fi chưa có, dùng <code>nmcli device wifi connect</code>.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="boot-updated">
+                <span><b><code>pacman -Syu</code> hoàn tất không lỗi</b><small>Arch không hỗ trợ partial upgrade trên hệ thống đang chạy.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Kiểm tra và cập nhật hệ thống</span><button type="button" class="copy-btn" data-copy-target="cmd-first-boot">Sao chép</button></div>
+              <pre><code id="cmd-first-boot">systemctl status NetworkManager --no-pager
+ping -c 3 archlinux.org
+sudo pacman -Syu</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-step" id="stage-08" data-stage="08">
+          <div class="step-rail" aria-hidden="true"><span>08</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">Dotfiles</p>
+              <h2>Kéo repo và dựng Qtile workspace</h2>
+              <p>Clone bằng HTTPS trước vì SSH key chưa được khôi phục. Luôn chạy dry-run và đọc toàn bộ plan trước lần chạy thật.</p>
+            </header>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="dotfiles-cloned">
+                <span><b>Repo <code>idiotcm910/dotfiles</code> đã clone từ branch <code>main</code></b><small>Đích chuẩn: <code>~/thai/system</code>.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="dotfiles-preview">
+                <span><b>Đã đọc hết output <code>restore.sh --dry-run</code></b><small>Kiểm tra package, symlink, backup và AUR trước khi xác nhận.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="dotfiles-restored">
+                <span><b>Restore hoàn tất không lỗi</b><small>Script cài Qtile/Polybar, Neovim/tmux, Chrome, IBus Bamboo, Codex và Claude.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Clone và preview</span><button type="button" class="copy-btn" data-copy-target="cmd-clone">Sao chép</button></div>
+              <pre><code id="cmd-clone">sudo pacman -S --needed git base-devel
+mkdir -p ~/thai
+git clone https://github.com/idiotcm910/dotfiles.git ~/thai/system
+cd ~/thai/system
+bash restore.sh --dry-run</code></pre>
+            </div>
+            <div class="command-block command-primary">
+              <div class="command-head"><span>Chạy restore sau khi đã review</span><button type="button" class="copy-btn" data-copy-target="cmd-restore">Sao chép</button></div>
+              <pre><code id="cmd-restore">cd ~/thai/system
+bash restore.sh</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="install-step final-step" id="stage-09" data-stage="09">
+          <div class="step-rail" aria-hidden="true"><span>09</span></div>
+          <div class="step-body">
+            <header class="step-head">
+              <p class="step-phase">Xác nhận hoàn tất</p>
+              <h2>Vào Qtile và mở lại workflow code</h2>
+              <p>Reboot lần cuối, đăng nhập TTY rồi chạy <code>startx</code>. Qtile autostart sẽ dựng wallpaper, Polybar và IBus.</p>
+            </header>
+            <div class="task-list">
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="qtile-startx">
+                <span><b><code>startx</code> mở được Qtile và Polybar</b><small>Kiểm tra terminal, Rofi, âm thanh, Wi‑Fi và phím tắt trước.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="qtile-workflow">
+                <span><b>Neovim, tmux, sesh và scripts hoạt động</b><small>Thử <code>nvim</code>, <code>tmux</code>, <code>wt-status</code> và <code>sesh list</code>.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="qtile-ai-login">
+                <span><b>Đã đăng nhập Chrome, Codex và Claude</b><small>Credential không nằm trong repo nên bước này luôn làm thủ công.</small></span>
+              </label>
+              <label class="task">
+                <input class="task-check" type="checkbox" data-task="qtile-backup-kept">
+                <span><b>Giữ ổ backup cho tới khi dùng máy ổn định vài ngày</b><small>Đừng xóa bản duy nhất ngay sau lần boot thành công đầu tiên.</small></span>
+              </label>
+            </div>
+            <div class="command-block">
+              <div class="command-head"><span>Khởi động desktop và kiểm tra tool</span><button type="button" class="copy-btn" data-copy-target="cmd-verify">Sao chép</button></div>
+              <pre><code id="cmd-verify">startx
+# Sau khi vào terminal trong Qtile:
+nvim --version
+tmux -V
+sesh --version
+codex --version
+claude --version</code></pre>
+            </div>
+            <div class="finish-line">
+              <p><b>Đích đến:</b> một Arch base nhỏ, desktop Qtile có thể dựng lại từ Git, và workflow code không phụ thuộc ký ức của lần cài trước.</p>
+              <a href="index.html">Quay lại tổng quan workspace</a>
+            </div>
+          </div>
+        </section>
+
+        <p class="copy-announcer" id="copyStatus" aria-live="polite"></p>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
