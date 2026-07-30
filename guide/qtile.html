@@ -1,0 +1,106 @@
+<!doctype html>
+<!--
+THESIS: Cheatsheet biến config Qtile thật thành bản đồ thao tác theo ý định; không liệt kê phím mặc định hay phím đề xuất.
+OWN-WORLD: Kế thừa giấy ấm, mực than, rust/sage và keycap của Vibe Workspace; hàng phím là đơn vị tra cứu chính.
+STORY: Nhận diện Super → focus → sắp xếp → đổi layout → chuyển workspace → điều khiển Qtile và chuột floating.
+FIRST VIEWPORT: Modifier legend, hai tổ hợp dễ nhầm và nhóm focus xuất hiện trước; tìm kiếm luôn nằm trong topbar.
+FORM: Trang Read dạng task-based cheatsheet, mở rộng trực tiếp hệ guide hiện tại và dùng chung shell, search, theme.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Cheatsheet phím tắt và thao tác chuột đang hoạt động trong Qtile config của idiotcm910.">
+<title>Qtile · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="qtile" data-title="Qtile">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím Qtile nào khớp. Thử tên tác vụ hoặc tổ hợp khác.</p>
+
+        <p class="lede"><kbd class="mod">Super</kbd> là phím Windows. Qtile dùng nó làm modifier chính để điều khiển cửa sổ mà không cần rời tay khỏi hàng phím home.</p>
+        <p class="note">Trang này phản ánh đúng <code class="cmd">config/qtile/config.py</code> hiện tại. Phím không xuất hiện ở đây chưa được cấu hình.</p>
+
+        <div class="callout"><b>Đừng nhầm:</b> <code class="cmd">Super + W</code> chỉ đóng cửa sổ đang focus; <code class="cmd">Super + Ctrl + Q</code> thoát toàn bộ Qtile và đưa bạn về TTY.</div>
+
+        <div class="group">
+          <h2>Focus cửa sổ <span class="tag">hjkl</span></h2>
+          <div class="rows two">
+            <div class="row" data-qtile-key="h"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>H</kbd></div><div class="d"><b>Focus trái</b>: chuyển focus sang cửa sổ bên trái</div></div>
+            <div class="row" data-qtile-key="l"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>L</kbd></div><div class="d"><b>Focus phải</b>: chuyển focus sang cửa sổ bên phải</div></div>
+            <div class="row" data-qtile-key="j"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>J</kbd></div><div class="d"><b>Focus xuống</b>: đi tới cửa sổ phía dưới hoặc kế tiếp</div></div>
+            <div class="row" data-qtile-key="k"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>K</kbd></div><div class="d"><b>Focus lên</b>: đi tới cửa sổ phía trên hoặc trước đó</div></div>
+            <div class="row" data-qtile-key="space"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Space</kbd></div><div class="d"><b>Focus cửa sổ kế tiếp</b>: cycle khi hướng không quan trọng</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Sắp xếp và resize <span class="tag">MonadTall</span></h2>
+          <div class="rows two">
+            <div class="row" data-qtile-action="swap"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>H</kbd></div><div class="d"><b>Đổi cửa sổ sang trái</b>: swap vị trí trong layout</div></div>
+            <div class="row" data-qtile-action="swap"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>L</kbd></div><div class="d"><b>Đổi cửa sổ sang phải</b>: swap vị trí trong layout</div></div>
+            <div class="row" data-qtile-action="resize"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>H</kbd></div><div class="d"><b>Nới cửa sổ</b>: grow trong MonadTall; tăng số master trong Tile</div></div>
+            <div class="row" data-qtile-action="resize"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>L</kbd></div><div class="d"><b>Thu cửa sổ</b>: shrink trong MonadTall; giảm số master trong Tile</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Layout và chế độ cửa sổ</h2>
+          <div class="rows two">
+            <div class="row" data-qtile-key="n"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>N</kbd></div><div class="d"><b>Normalize</b>: đưa tỷ lệ cửa sổ về mặc định</div></div>
+            <div class="row" data-qtile-key="m"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>M</kbd></div><div class="d"><b>Maximize trong layout</b>: chuyển cửa sổ giữa kích thước nhỏ và lớn</div></div>
+            <div class="row" data-qtile-key="f"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>F</kbd></div><div class="d"><b>Fullscreen</b>: phủ toàn màn hình và ẩn bar</div></div>
+            <div class="row" data-qtile-key="f" data-qtile-action="floating"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>F</kbd></div><div class="d"><b>Floating</b>: tách hoặc trả cửa sổ về tiling layout</div></div>
+            <div class="row" data-qtile-key="Tab"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Tab</kbd></div><div class="d"><b>Layout kế tiếp</b>: hiện có MonadTall và Max</div></div>
+            <div class="row" data-qtile-key="w"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>W</kbd></div><div class="d"><b>Đóng cửa sổ đang focus</b>: ứng dụng có dữ liệu chưa lưu vẫn có thể hỏi lại</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Workspace <span class="tag">group 1–9</span></h2>
+          <div class="rows two">
+            <div class="row" data-qtile-groups="1-9"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>1</kbd>…<kbd>9</kbd></div><div class="d"><b>Chuyển workspace</b>: hiển thị group tương ứng trên màn hình hiện tại</div></div>
+            <div class="row" data-qtile-groups="1-9"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>1</kbd>…<kbd>9</kbd></div><div class="d"><b>Gửi cửa sổ và đi theo</b>: chuyển cửa sổ đang focus sang group đích rồi mở group đó</div></div>
+          </div>
+          <p>Mỗi group là một workspace của Qtile. Đây là tầng desktop, độc lập với window và session bên trong tmux.</p>
+        </div>
+
+        <div class="group">
+          <h2>Mở ứng dụng</h2>
+          <div class="rows two">
+            <div class="row" data-qtile-key="Return"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Enter</kbd></div><div class="d"><b>Mở terminal</b>: Qtile dùng terminal được hệ thống nhận diện</div></div>
+            <div class="row" data-qtile-key="r"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>R</kbd></div><div class="d"><b>Mở Rofi</b>: tìm và chạy ứng dụng bằng chế độ <code class="cmd">drun</code></div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Điều khiển Qtile <span class="tag">system</span></h2>
+          <div class="rows two">
+            <div class="row" data-qtile-key="r"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>R</kbd></div><div class="d"><b>Reload config</b>: áp dụng thay đổi trong <code class="cmd">config.py</code></div></div>
+            <div class="row" data-qtile-key="q"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>Q</kbd></div><div class="d"><b>Shutdown Qtile</b>: kết thúc window manager và trở về TTY</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Chuột · cửa sổ floating</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Button1</kbd><span class="then">kéo</span></div><div class="d"><b>Di chuyển cửa sổ floating</b>: Button1 là chuột trái</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Button3</kbd><span class="then">kéo</span></div><div class="d"><b>Resize cửa sổ floating</b>: Button3 là chuột phải</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Button2</kbd></div><div class="d"><b>Đưa cửa sổ lên trước</b>: Button2 là nút chuột giữa</div></div>
+          </div>
+        </div>
+
+        <div class="callout">Muốn tìm nhanh, bấm <kbd>/</kbd> rồi gõ hành động như “focus”, “floating”, “workspace” hoặc tổ hợp phím. Bấm <kbd>Esc</kbd> để xóa tìm kiếm.</div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

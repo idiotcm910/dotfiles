@@ -19,6 +19,8 @@ guide/
 ├── nvim-search.html      # 04 · fzf / tree / dropbar
 ├── nvim-lsp-claude.html  # 05 · LSP / claude-multi / claudecode
 ├── setup.html            # 06 · cài đặt
+├── arch-install.html     # 08 · checklist cài Arch + Qtile từ đầu
+├── qtile.html            # 09 · phím tắt và chuột Qtile đang hoạt động
 ├── _template.html        # khuôn để tạo trang mới
 └── assets/
     ├── style.css         # style dùng chung (đổi 1 chỗ → đổi cả site)
@@ -42,3 +44,19 @@ guide/
 - Lệnh shell: `<code class="cmd">wt-new</code>`
 - Nhóm 2 cột: `<div class="rows two">`
 - Ô tìm kiếm (phím `/`) lọc mọi `.row` trong trang.
+
+## Checklist cài Arch
+
+`arch-install.html` là checklist tương tác cho quy trình xóa ổ và cài lại Arch:
+
+- task dùng `class="task-check"` và `data-task` duy nhất;
+- tiến độ lưu local bằng key `vibe-guide:arch-install:v1`;
+- command block liên kết nút copy qua `data-copy-target`;
+- task phá hủy có thể khóa bằng `data-requires="backup-confirmed"`;
+- reset luôn yêu cầu xác nhận, không có control nào thực thi lệnh hệ thống.
+
+## Qtile shortcuts
+
+`qtile.html` phản ánh các binding đang hoạt động trong
+`config/qtile/config.py`. Khi thêm, xóa hoặc đổi một `Key`, `Drag` hay `Click`
+trong config, cập nhật cheatsheet và chạy `bash tests/guide-qtile.test.sh`.
