@@ -157,8 +157,12 @@ done</code></pre>
             <header class="step-head">
               <p class="step-phase">Firmware</p>
               <h2>Boot USB đúng chế độ UEFI</h2>
-              <p>ISO Arch không hỗ trợ Secure Boot mặc định. Tắt Secure Boot tạm thời; có thể cấu hình lại bằng khóa riêng sau khi hệ thống đã ổn định.</p>
+              <p>ISO Arch không hỗ trợ Secure Boot mặc định. Tắt Secure Boot tạm thời; có thể cấu hình lại bằng khóa riêng sau khi hệ thống đã ổn định. Với ThinkPad T490 của tui: cắm USB, bật máy rồi bấm liên tục <code>F12</code> khi logo ThinkPad hiện ra; nếu hàng phím F đang là media key thì bấm <code>Fn</code> + <code>F12</code>.</p>
             </header>
+            <div class="callout"><b>Boot menu không hiện:</b> reboot, bấm <code>F1</code> vào BIOS → <code>Startup</code> → bật <code>F12 Boot Device List</code>. Trong boot menu, chọn USB có nhãn <b>UEFI</b> (thường là <code>USB HDD</code> hoặc tên hãng USB), không chọn mục Legacy.</div>
+            <div class="source-links">
+              <a href="https://support.lenovo.com/ch/en/solutions/ht104668-how-to-select-boot-device-from-bios-boot-menu-ideapad-thinkpad-thinkstation-thinkcentre-ideacentre" target="_blank" rel="noreferrer">Lenovo ThinkPad Boot Menu <span aria-hidden="true">↗</span></a>
+            </div>
             <div class="task-list">
               <label class="task">
                 <input class="task-check" type="checkbox" data-task="firmware-secure-boot">
@@ -166,7 +170,7 @@ done</code></pre>
               </label>
               <label class="task">
                 <input class="task-check" type="checkbox" data-task="firmware-boot-menu">
-                <span><b>Đã chọn mục USB có nhãn UEFI</b><small>Trong menu Arch chọn “Arch Linux install medium”.</small></span>
+                <span><b>Đã mở F12 Boot Menu và chọn USB có nhãn UEFI</b><small>Với ThinkPad T490: bấm F12 hoặc Fn + F12 tại logo. Sau khi boot USB, trong menu Arch chọn “Arch Linux install medium”.</small></span>
               </label>
               <label class="task">
                 <input class="task-check" type="checkbox" data-task="firmware-efi-check">
