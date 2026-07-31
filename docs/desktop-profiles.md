@@ -10,7 +10,7 @@ Picom, Rofi and the X11 screenshot workflow. Its sources are `config/qtile`,
 
 ## Hyprland Wayland
 
-Restore with `./restore.sh --profile wayland`. This installs Hyprland, Waybar,
+Restore with `./restore.sh --profile hyprland` (or `--profile wayland`). This installs Hyprland, Waybar,
 Fuzzel, Mako, Swaybg, Swaylock, Grim/Slurp/Satty and portals. It deliberately
 does not install `xorg-server`, `xorg-xinit`, or `xorg-xwayland`.
 

@@ -1,0 +1,11 @@
+# Orbit opens from Waybar as a compact, top-right Wayland layer-shell panel.
+position = "top-right"
+# Waybar reserves its own top layer area.  Keep only a small visual gap below it.
+margin_top = 10
+margin_right = 14
+margin_bottom = 14
+margin_left = 14
+window_transition = "slidedown"
+window_transition_duration = 180
+stack_transition = "slidehorizontal"
+stack_transition_duration = 160

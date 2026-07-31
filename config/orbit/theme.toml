@@ -1,0 +1,6 @@
+# Match the purple glass Waybar palette.
+accent_primary = "#b99cff"
+accent_secondary = "#d9ccff"
+background = "#1b1724"
+foreground = "#f8f3ff"
+opacity = 0.94

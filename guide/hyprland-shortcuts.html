@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Cheatsheet phím tắt Hyprland đang được cấu hình trong system dotfiles.">
+<title>Hyprland · Phím tắt · Vibe Workspace</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="hyprland-shortcuts" data-title="Hyprland · Phím tắt">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím Hyprland nào khớp. Thử tên tác vụ hoặc tổ hợp khác.</p>
+        <p class="lede"><kbd class="mod">Super</kbd> là phím Windows và là modifier chính của Hyprland. Trang này phản ánh <b>đúng các bind đang có</b> trong <code class="cmd">config/hypr/hyprland.conf</code>.</p>
+        <p class="note">Bấm <kbd>/</kbd> để tìm nhanh theo hành động như “focus”, “screenshot”, “workspace” hoặc tên phím.</p>
+
+        <div class="callout"><b>Đã migrate từ Qtile:</b> <kbd class="mod">Super</kbd> + <kbd>W</kbd> đóng cửa sổ, <kbd class="mod">Super</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd> bật floating, và <kbd class="mod">Super</kbd> + <kbd>Space</kbd> chuyển focus kế tiếp.</div>
+
+        <div class="group">
+          <h2>Mở ứng dụng và cửa sổ</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Enter</kbd></div><div class="d"><b>Mở Kitty</b>: terminal.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>D</kbd></div><div class="d"><b>Mở Fuzzel</b>: tìm và chạy ứng dụng.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>E</kbd></div><div class="d"><b>Mở Thunar</b>: file manager.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>W</kbd></div><div class="d"><b>Đóng cửa sổ đang focus</b>: phím Qtile cũ. <kbd class="mod">Super</kbd> + <kbd>Q</kbd> cũng là alias.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>F</kbd></div><div class="d"><b>Fullscreen</b>: bật hoặc tắt toàn màn hình.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>M</kbd></div><div class="d"><b>Maximize</b>: chế độ maximize của Hyprland, tương ứng Qtile cũ.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>F</kbd></div><div class="d"><b>Floating</b>: phím Qtile cũ.</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Focus cửa sổ <span class="tag">hjkl</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>H</kbd></div><div class="d"><b>Focus trái</b>.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>L</kbd></div><div class="d"><b>Focus phải</b>.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>J</kbd></div><div class="d"><b>Focus xuống</b>.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>K</kbd></div><div class="d"><b>Focus lên</b>.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Space</kbd></div><div class="d"><b>Focus kế tiếp</b>: cycle cửa sổ như Qtile.</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Sắp xếp Dwindle <span class="tag">migrate Qtile</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>H</kbd>/<kbd>L</kbd></div><div class="d"><b>Đẩy cửa sổ trái/phải</b>: tương ứng swap trong Qtile.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>H</kbd>/<kbd>L</kbd></div><div class="d"><b>Nới/thu cửa sổ</b>: resize cửa sổ đang focus.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Tab</kbd></div><div class="d"><b>Đổi hướng split</b>: hành vi gần nhất với đổi layout trong Dwindle.</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Workspace <span class="tag">1–9</span></h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>1</kbd>…<kbd>9</kbd></div><div class="d"><b>Chuyển workspace</b>: đi tới workspace số 1 đến 9.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>1</kbd>…<kbd>9</kbd></div><div class="d"><b>Gửi cửa sổ</b>: chuyển cửa sổ đang focus sang workspace số 1 đến 9.</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Chụp màn hình và khóa máy</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Alt</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>A</kbd></div><div class="d"><b>Chụp vùng chọn</b>: phím Qtile cũ; <kbd class="mod">Super</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd> cũng là alias.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>Print</kbd></div><div class="d"><b>Chụp toàn màn hình</b>: lưu và mở Satty.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Alt</kbd><span class="plus">+</span><kbd>L</kbd></div><div class="d"><b>Khóa màn hình</b>: chạy Swaylock.</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Fuzzel và Hyprland</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>R</kbd></div><div class="d"><b>Mở Fuzzel</b>: phím Rofi cũ. <kbd class="mod">Super</kbd> + <kbd>D</kbd> cũng mở Fuzzel.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>R</kbd></div><div class="d"><b>Reload config</b>: áp dụng <code class="cmd">hyprland.conf</code>.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>Q</kbd></div><div class="d"><b>Thoát Hyprland</b>: về màn hình đăng nhập/TTY; lưu công việc trước.</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Phím phần cứng</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><kbd>Brightness +</kbd></div><div class="d"><b>Tăng độ sáng</b>: +5%.</div></div>
+            <div class="row"><div class="keys"><kbd>Brightness −</kbd></div><div class="d"><b>Giảm độ sáng</b>: −5%.</div></div>
+            <div class="row"><div class="keys"><kbd>Volume +</kbd></div><div class="d"><b>Tăng âm lượng</b>: +5%, tối đa 150%.</div></div>
+            <div class="row"><div class="keys"><kbd>Volume −</kbd></div><div class="d"><b>Giảm âm lượng</b>: −5%.</div></div>
+            <div class="row"><div class="keys"><kbd>Mute</kbd></div><div class="d"><b>Tắt/bật tiếng</b>: audio sink mặc định.</div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,22 +1,66 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 52,
-  "margin-top": 10,
-  "margin-left": 14,
-  "margin-right": 14,
+  "height": 62,
+  "spacing": 0,
   "modules-left": ["custom/status", "temperature", "cpu", "memory", "battery", "network"],
   "modules-center": [],
-  "modules-right": ["hyprland/workspaces", "backlight", "pulseaudio", "clock", "custom/date"],
+  "modules-right": ["hyprland/workspaces", "bluetooth", "custom/microphone", "backlight", "pulseaudio", "clock", "custom/date", "custom/power"],
+
   "custom/status": { "format": "●", "tooltip": false },
   "temperature": { "format": "  {temperatureC}°C", "critical-threshold": 80 },
   "cpu": { "format": "  {usage}%" },
   "memory": { "format": "󰍛  {}%" },
   "battery": { "format": "{icon}  {capacity}%", "format-icons": ["", "", "", "", ""] },
-  "network": { "format-wifi": "  {essid}", "format-disconnected": "󰤭  Offline", "on-click": "~/.config/hypr/scripts/wifi-menu.sh" },
-  "hyprland/workspaces": { "format": "{name}", "on-click": "activate" },
+  "network": {
+    "format-wifi": "  {essid}",
+    "format-disconnected": "󰤭  Offline",
+    "on-click": "~/.config/hypr/scripts/wifi-menu.sh"
+  },
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "persistent-workspaces": { "*": 5 },
+    "on-click": "activate"
+  },
+  "bluetooth": {
+    "format": "󰂯",
+    "format-disabled": "󰂲",
+    "format-off": "󰂲",
+    "format-on": "󰂯",
+    "format-connected": "󰂯  {device_alias}",
+    "format-no-controller": "󰂲",
+    "tooltip-format": "Bluetooth: {status}",
+    "tooltip-format-connected": "Bluetooth\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "• {device_alias}",
+    "on-click": "~/.config/hypr/scripts/bluetooth-menu.sh"
+  },
   "backlight": { "format": "  {percent}%", "on-click": "~/.config/hypr/scripts/brightness-menu.sh" },
-  "pulseaudio": { "format": "{icon}  {volume}%", "format-muted": "󰖁  muted", "format-icons": { "default": ["", "", ""] }, "on-click": "~/.config/hypr/scripts/audio-menu.sh" },
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "󰖁  muted",
+    "format-icons": { "default": ["", "", ""] },
+    "on-click": "~/.config/hypr/scripts/audio-menu.sh"
+  },
+  "custom/microphone": {
+    "exec": "~/.config/hypr/scripts/mic-status.sh",
+    "return-type": "json",
+    "interval": 2,
+    "signal": 8,
+    "on-click": "~/.config/hypr/scripts/mic-toggle.sh"
+  },
   "clock": { "format": "  {:%H:%M}" },
-  "custom/date": { "exec": "date '+  %d/%m/%Y'", "interval": 60 }
+  "custom/date": { "exec": "date '+  %d/%m/%Y'", "interval": 60 },
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": false,
+    "menu": "on-click",
+    "menu-file": "~/.config/waybar/power-menu.xml",
+    "menu-actions": {
+      "lock": "~/.config/hypr/scripts/power-action.sh lock",
+      "suspend": "~/.config/hypr/scripts/power-action.sh suspend",
+      "logout": "~/.config/hypr/scripts/power-action.sh logout",
+      "reboot": "~/.config/hypr/scripts/power-action.sh reboot",
+      "shutdown": "~/.config/hypr/scripts/power-action.sh shutdown"
+    }
+  }
 }

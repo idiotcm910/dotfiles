@@ -47,7 +47,9 @@ const PAGES = [
   { page: "setup",           file: "setup.html",           n: "07", label: "Cài đặt" },
   { page: "arch-install",    file: "arch-install.html",    n: "08", label: "Cài Arch mới" },
   { page: "hyprland-wayland",file: "hyprland-wayland.html",n: "09", label: "Hyprland · Wayland" },
-  { page: "qtile",           file: "qtile.html",           n: "10", label: "Qtile" },
+  { page: "hyprland-shortcuts",file: "hyprland-shortcuts.html",n: "10", label: "Hyprland · Phím tắt" },
+  { page: "waybar-mockup",   file: "waybar-mockup.html",   n: "11", label: "Waybar · Mockup" },
+  { page: "qtile",           file: "qtile.html",           n: "12", label: "Qtile" },
 ];
 
 if (typeof module !== "undefined" && module.exports) {

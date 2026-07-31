@@ -1,0 +1,33 @@
+{
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "control-center-margin-top": 76,
+  "control-center-margin-right": 14,
+  "control-center-width": 390,
+  "control-center-height": 700,
+  "notification-window-width": 360,
+  "notification-icon-size": 56,
+  "notification-body-image-height": 120,
+  "notification-body-image-width": 200,
+  "timeout": 6,
+  "fit-to-screen": true,
+  "widgets": ["title", "dnd", "mpris", "volume", "backlight", "buttons-grid", "notifications"],
+  "widget-config": {
+    "title": { "text": "Control Center", "clear-all-button": true, "button-text": "Xóa thông báo" },
+    "dnd": { "text": "Không làm phiền" },
+    "volume": { "label": "Âm lượng", "show-per-app": true },
+    "backlight": { "label": "Độ sáng", "device": "intel_backlight" },
+    "buttons-grid": {
+      "actions": [
+        { "label": "  Wi-Fi", "command": "nm-sidebar --toggle" },
+        { "label": "  Bluetooth", "command": "~/.config/hypr/scripts/bluetooth-menu.sh" },
+        { "label": "  Mic bật/tắt", "command": "~/.config/hypr/scripts/mic-toggle.sh" },
+        { "label": "  Camera", "command": "~/.config/hypr/scripts/camera-menu.sh" },
+        { "label": "󰕾  Audio mixer", "command": "pavucontrol" },
+        { "label": "󰒓  Network profiles", "command": "nm-connection-editor" }
+      ]
+    }
+  }
+}

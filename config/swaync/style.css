@@ -1,0 +1,71 @@
+@define-color surface rgba(27, 23, 36, 0.96);
+@define-color surface-soft rgba(47, 40, 62, 0.94);
+@define-color accent #b99cff;
+@define-color text #f7f2ff;
+@define-color muted #c7bdd7;
+
+* {
+  font-family: "Adwaita Sans", sans-serif;
+  font-size: 14px;
+}
+
+.control-center {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(225, 214, 255, 0.18);
+  border-radius: 18px;
+  background: @surface;
+  color: @text;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+}
+
+.control-center-list,
+.floating-notifications,
+.notification-row,
+.notification,
+.widget-title,
+.widget-dnd,
+.widget-volume,
+.widget-backlight,
+.widget-buttons-grid,
+.widget-mpris {
+  background: transparent;
+}
+
+.widget-title,
+.widget-dnd,
+.widget-volume,
+.widget-backlight,
+.widget-buttons-grid,
+.widget-mpris,
+.notification {
+  margin: 5px 0;
+  padding: 12px;
+  border: 1px solid rgba(225, 214, 255, 0.1);
+  border-radius: 14px;
+  background: @surface-soft;
+}
+
+.widget-title > label { color: @text; font-size: 18px; font-weight: 700; }
+.widget-title > button,
+.widget-dnd > switch,
+.widget-buttons-grid flowboxchild > button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(185, 156, 255, 0.16);
+  color: @text;
+}
+.widget-title > button:hover,
+.widget-buttons-grid flowboxchild > button:hover { background: @accent; color: #211b2e; }
+.widget-dnd > switch:checked { background: @accent; }
+
+scale trough { min-height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); }
+scale highlight { border-radius: 999px; background: @accent; }
+scale slider { min-width: 18px; min-height: 18px; margin: -6px; border-radius: 50%; background: @text; }
+
+.notification { color: @text; }
+.notification-content { background: transparent; }
+.summary { color: @text; font-weight: 700; }
+.body { color: @muted; }
+.close-button { min-width: 24px; min-height: 24px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); color: @text; }

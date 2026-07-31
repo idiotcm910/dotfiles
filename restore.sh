@@ -10,7 +10,8 @@ PROFILE="x11"
 BACKUP_ROOT="${BACKUP_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-backup/$(date +%Y%m%d-%H%M%S)}"
 
 readonly -a BASE_PACKAGES=(
-  base-devel git curl wget unzip zip jq fontconfig
+  base-devel git curl wget unzip zip jq fontconfig ttf-nerd-fonts-symbols-mono
+  ttf-iosevka-nerd
 )
 
 readonly -a X11_DESKTOP_PACKAGES=(
@@ -22,13 +23,14 @@ readonly -a X11_DESKTOP_PACKAGES=(
 )
 
 readonly -a WAYLAND_DESKTOP_PACKAGES=(
-  hyprland waybar fuzzel mako swaybg swaylock
+  hyprland waybar fuzzel swaync swaybg hyprlock hyprshutdown
   grim slurp satty wl-clipboard
   xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-hyprland
-  qt5-wayland qt6-wayland
-  kitty thunar networkmanager
+  qt5-wayland qt6-wayland guvcview
+  kitty thunar networkmanager nm-connection-editor
   pipewire pipewire-pulse wireplumber alsa-utils pavucontrol playerctl brightnessctl
-  ibus polkit-kde-agent
+  fcitx5 fcitx5-bamboo fcitx5-gtk fcitx5-qt fcitx5-configtool
+  polkit-kde-agent
 )
 
 readonly -a DEV_PACKAGES=(
@@ -44,12 +46,13 @@ Usage: ./restore.sh [options]
 Khôi phục một trong hai desktop profile:
   x11      Qtile + Polybar + Picom (mặc định)
   wayland  Hyprland + Waybar, thuần Wayland (không cài Xorg/XWayland)
+  hyprland Alias của wayland
 
 Options:
   --dry-run          In các thao tác nhưng không thay đổi hệ thống
   --only GROUP       Chỉ chạy một nhóm: desktop, dev, ai hoặc all
-  --profile NAME     Chọn desktop: x11 hoặc wayland (mặc định: x11)
-  --skip-aur         Không cài package AUR (Chrome, IBus Bamboo)
+  --profile NAME     Chọn desktop: x11, wayland hoặc hyprland (mặc định: x11)
+  --skip-aur         Không cài package AUR (Chrome, Orbit)
   -h, --help         Hiện trợ giúp
 EOF
 }
@@ -197,7 +200,8 @@ parse_args() {
   esac
   case "$PROFILE" in
     x11 | wayland) ;;
-    *) die "profile không hỗ trợ: $PROFILE (chỉ x11 hoặc wayland)" ;;
+    hyprland) PROFILE="wayland" ;;
+    *) die "profile không hỗ trợ: $PROFILE (chỉ x11, wayland hoặc hyprland)" ;;
   esac
 }
 
@@ -278,7 +282,7 @@ install_aur_apps() {
 
   log "Cài ứng dụng AUR"
   install_aur_package google-chrome
-  install_aur_package ibus-bamboo
+  [[ "$PROFILE" == "wayland" ]] && install_aur_package orbit-wifi
 }
 
 install_codex() {
@@ -340,9 +344,12 @@ restore_desktop_config() {
   else
     link_managed "$REPO_DIR/config/hypr" "$HOME/.config/hypr"
     link_managed "$REPO_DIR/config/waybar" "$HOME/.config/waybar"
+    link_managed "$REPO_DIR/config/swaync" "$HOME/.config/swaync"
+    link_managed "$REPO_DIR/config/orbit" "$HOME/.config/orbit"
     link_managed "$REPO_DIR/config/fuzzel" "$HOME/.config/fuzzel"
-    link_managed "$REPO_DIR/config/mako" "$HOME/.config/mako"
     link_managed "$REPO_DIR/config/environment.d" "$HOME/.config/environment.d"
+    link_managed "$REPO_DIR/config/fcitx5" "$HOME/.config/fcitx5"
+    copy_managed "$REPO_DIR/config/chrome-flags.conf" "$HOME/.config/chrome-flags.conf"
   fi
   link_managed "$REPO_DIR/config/kitty" "$HOME/.config/kitty"
   run chmod +x \
@@ -352,10 +359,22 @@ restore_desktop_config() {
     "$REPO_DIR/config/hypr/scripts/brightness-menu.sh" \
     "$REPO_DIR/config/hypr/scripts/audio-menu.sh" \
     "$REPO_DIR/config/hypr/scripts/wifi-menu.sh" \
-    "$REPO_DIR/config/hypr/scripts/screenshot.sh"
+    "$REPO_DIR/config/hypr/scripts/bluetooth-menu.sh" \
+    "$REPO_DIR/config/hypr/scripts/mic-toggle.sh" \
+    "$REPO_DIR/config/hypr/scripts/mic-status.sh" \
+    "$REPO_DIR/config/hypr/scripts/camera-menu.sh" \
+    "$REPO_DIR/config/hypr/scripts/screenshot.sh" \
+    "$REPO_DIR/config/hypr/scripts/lock-screen.sh" \
+    "$REPO_DIR/config/hypr/scripts/power-action.sh"
   copy_managed "$REPO_DIR/font" "$HOME/.local/share/fonts/dotfiles"
   run fc-cache -f "$HOME/.local/share/fonts/dotfiles"
   run sudo systemctl enable NetworkManager
+  [[ "$PROFILE" == "wayland" ]] && run sudo systemctl enable --now bluetooth
+  if [[ "$PROFILE" == "wayland" && "$SKIP_AUR" -eq 0 ]]; then
+    run systemctl --user daemon-reload
+    run systemctl --user enable --now orbit
+  fi
+
 }
 
 install_tpm() {

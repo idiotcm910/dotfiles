@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+if command -v orbit >/dev/null 2>&1; then
+  exec orbit toggle --tab wifi
+fi
+
+if command -v nm-sidebar >/dev/null 2>&1; then
+  exec nm-sidebar --toggle
+fi
+
 iface="$(nmcli -t -f DEVICE,TYPE device status | awk -F: '$2=="wifi"{print $1;exit}')"
 [[ -n "$iface" ]] || { notify-send 'Wi-Fi' 'Không tìm thấy card Wi-Fi'; exit 1; }
 choice="$(nmcli -t -f IN-USE,SSID,SIGNAL device wifi list | awk -F: '$2!=""&&!seen[$2]++{printf "%s  %s  %s%%\\n",($1=="*"?"●":"○"),$2,$3}' | fuzzel --dmenu --prompt-only='Wi-Fi: ' || true)"
