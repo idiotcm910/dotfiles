@@ -1,23 +1,34 @@
 #!/usr/bin/env bash
-# Khôi phục môi trường Arch Linux + Qtile/Polybar từ dotfiles này.
+# Khôi phục môi trường Arch Linux từ dotfiles này.
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DRY_RUN=0
 SKIP_AUR=0
 ONLY="all"
+PROFILE="x11"
 BACKUP_ROOT="${BACKUP_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-backup/$(date +%Y%m%d-%H%M%S)}"
 
 readonly -a BASE_PACKAGES=(
   base-devel git curl wget unzip zip jq fontconfig
 )
 
-readonly -a DESKTOP_PACKAGES=(
+readonly -a X11_DESKTOP_PACKAGES=(
   xorg-server xorg-xinit
-  qtile polybar rofi kitty feh picom dunst thunar
+  qtile rofi kitty feh picom dunst thunar
   networkmanager pipewire pipewire-pulse wireplumber
   alsa-utils pavucontrol playerctl brightnessctl
   ibus xclip wl-clipboard
+)
+
+readonly -a WAYLAND_DESKTOP_PACKAGES=(
+  hyprland waybar fuzzel mako swaybg swaylock
+  grim slurp satty wl-clipboard
+  xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-hyprland
+  qt5-wayland qt6-wayland
+  kitty thunar networkmanager
+  pipewire pipewire-pulse wireplumber alsa-utils pavucontrol playerctl brightnessctl
+  ibus polkit-kde-agent
 )
 
 readonly -a DEV_PACKAGES=(
@@ -30,12 +41,15 @@ usage() {
   cat <<'EOF'
 Usage: ./restore.sh [options]
 
-Khôi phục dotfiles trên Arch Linux dùng Qtile + Polybar.
+Khôi phục một trong hai desktop profile:
+  x11      Qtile + Polybar + Picom (mặc định)
+  wayland  Hyprland + Waybar, thuần Wayland (không cài Xorg/XWayland)
 
 Options:
   --dry-run          In các thao tác nhưng không thay đổi hệ thống
   --only GROUP       Chỉ chạy một nhóm: desktop, dev, ai hoặc all
-  --skip-aur         Không cài package AUR (Google Chrome)
+  --profile NAME     Chọn desktop: x11 hoặc wayland (mặc định: x11)
+  --skip-aur         Không cài package AUR (Chrome, IBus Bamboo)
   -h, --help         Hiện trợ giúp
 EOF
 }
@@ -161,6 +175,11 @@ parse_args() {
         ONLY="$2"
         shift
         ;;
+      --profile)
+        (($# >= 2)) || die "--profile cần một giá trị"
+        PROFILE="$2"
+        shift
+        ;;
       -h | --help)
         usage
         exit 0
@@ -175,6 +194,10 @@ parse_args() {
   case "$ONLY" in
     all | desktop | dev | ai) ;;
     *) die "nhóm không hỗ trợ: $ONLY" ;;
+  esac
+  case "$PROFILE" in
+    x11 | wayland) ;;
+    *) die "profile không hỗ trợ: $PROFILE (chỉ x11 hoặc wayland)" ;;
   esac
 }
 
@@ -192,10 +215,11 @@ selected_packages() {
   local -a packages=("${BASE_PACKAGES[@]}")
   case "$ONLY" in
     all)
-      packages+=("${DESKTOP_PACKAGES[@]}" "${DEV_PACKAGES[@]}")
+      if [[ "$PROFILE" == "x11" ]]; then packages+=("${X11_DESKTOP_PACKAGES[@]}"); else packages+=("${WAYLAND_DESKTOP_PACKAGES[@]}"); fi
+      packages+=("${DEV_PACKAGES[@]}")
       ;;
     desktop)
-      packages+=("${DESKTOP_PACKAGES[@]}")
+      if [[ "$PROFILE" == "x11" ]]; then packages+=("${X11_DESKTOP_PACKAGES[@]}"); else packages+=("${WAYLAND_DESKTOP_PACKAGES[@]}"); fi
       ;;
     dev)
       packages+=("${DEV_PACKAGES[@]}")
@@ -280,6 +304,9 @@ install_codex() {
 }
 
 install_claude() {
+  # The Wayland profile intentionally installs only Codex. Claude Code stays
+  # available in the X11 profile where it is already part of the workflow.
+  [[ "$PROFILE" == "x11" ]] || return 0
   [[ "$ONLY" == "all" || "$ONLY" == "ai" ]] || return 0
   if ((!DRY_RUN)) && command -v claude >/dev/null 2>&1; then
     log "Claude Code đã có"
@@ -296,6 +323,7 @@ restore_ai_config() {
   copy_managed "$REPO_DIR/.codex/config.toml" "$HOME/.codex/config.toml"
   copy_managed "$REPO_DIR/.codex/prompts" "$HOME/.codex/prompts"
   copy_managed "$REPO_DIR/.codex/rules" "$HOME/.codex/rules"
+  [[ "$PROFILE" == "x11" ]] || return 0
   copy_managed "$REPO_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
   copy_managed "$REPO_DIR/.claude/agents" "$HOME/.claude/agents"
   copy_managed "$REPO_DIR/.claude/skills" "$HOME/.claude/skills"
@@ -303,15 +331,28 @@ restore_ai_config() {
 
 restore_desktop_config() {
   [[ "$ONLY" == "all" || "$ONLY" == "desktop" ]] || return 0
-  log "Khôi phục Qtile/Polybar desktop"
-  link_managed "$REPO_DIR/config/qtile" "$HOME/.config/qtile"
-  link_managed "$REPO_DIR/config/polybar" "$HOME/.config/polybar"
+  log "Khôi phục desktop profile: $PROFILE"
+  if [[ "$PROFILE" == "x11" ]]; then
+    link_managed "$REPO_DIR/config/qtile" "$HOME/.config/qtile"
+    link_managed "$REPO_DIR/config/polybar" "$HOME/.config/polybar"
+    link_managed "$REPO_DIR/config/rofi" "$HOME/.config/rofi"
+    link_managed "$REPO_DIR/.xinitrc" "$HOME/.xinitrc"
+  else
+    link_managed "$REPO_DIR/config/hypr" "$HOME/.config/hypr"
+    link_managed "$REPO_DIR/config/waybar" "$HOME/.config/waybar"
+    link_managed "$REPO_DIR/config/fuzzel" "$HOME/.config/fuzzel"
+    link_managed "$REPO_DIR/config/mako" "$HOME/.config/mako"
+    link_managed "$REPO_DIR/config/environment.d" "$HOME/.config/environment.d"
+  fi
   link_managed "$REPO_DIR/config/kitty" "$HOME/.config/kitty"
-  link_managed "$REPO_DIR/config/rofi" "$HOME/.config/rofi"
-  link_managed "$REPO_DIR/.xinitrc" "$HOME/.xinitrc"
   run chmod +x \
     "$REPO_DIR/config/qtile/autostart.sh" \
-    "$REPO_DIR/config/polybar/launch.sh"
+    "$REPO_DIR/config/qtile/screenshot.sh" \
+    "$REPO_DIR/config/hypr/autostart.sh" \
+    "$REPO_DIR/config/hypr/scripts/brightness-menu.sh" \
+    "$REPO_DIR/config/hypr/scripts/audio-menu.sh" \
+    "$REPO_DIR/config/hypr/scripts/wifi-menu.sh" \
+    "$REPO_DIR/config/hypr/scripts/screenshot.sh"
   copy_managed "$REPO_DIR/font" "$HOME/.local/share/fonts/dotfiles"
   run fc-cache -f "$HOME/.local/share/fonts/dotfiles"
   run sudo systemctl enable NetworkManager

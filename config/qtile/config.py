@@ -32,7 +32,9 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 mod = "mod4"
-terminal = guess_terminal()
+# Kitty needs this at process startup for IBus support under X11.  Keeping it
+# here also makes Vietnamese input work immediately, before the next login.
+terminal = "env GLFW_IM_MODULE=ibus XMODIFIERS=@im=ibus kitty"
 
 
 @hook.subscribe.startup_once
@@ -94,6 +96,12 @@ keys = [
 
     # Applications
     Key([mod, "shift"], "r", lazy.spawn('rofi -show drun')),
+
+    # Screenshots (requires maim and satty)
+    Key(["shift", "mod1"], "a", lazy.spawn(os.path.expanduser("~/.config/qtile/screenshot.sh")),
+        desc="Select an area to screenshot"),
+    Key(["shift"], "Print", lazy.spawn(f"{os.path.expanduser('~/.config/qtile/screenshot.sh')} full"),
+        desc="Screenshot the full screen"),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -122,14 +130,15 @@ for i in groups:
         ]
     )
 
-layout_theme = {"border_width": 3,
-                "margin": 8,
-                "border_focus": "#268bd2",
-                "border_normal": "#073642"
+layout_theme = {"border_width": 2,
+                "margin": 10,
+                # Catppuccin Mocha: a calm dark frame with a clear blue focus.
+                "border_focus": "#89b4fa",
+                "border_normal": "#313244"
                 }
 
 layouts = [
-    layout.MonadTall(**layout_theme, single_border_width=0),
+    layout.MonadTall(**layout_theme, single_border_width=2, single_margin=10),
     layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
     #layout.Bsp(**layout_theme),
@@ -149,7 +158,7 @@ def open_pavucontrol():
     qtile.cmd_spawn('pavucontrol')
 
 def open_terminal():
-    qtile.cmd_spawn("kitty")
+    qtile.cmd_spawn(terminal)
 
 def open_web():
     qtile.cmd_spawn("firefox")
@@ -188,7 +197,9 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-screens = []
+# The Eww dock itself is transparent; this keeps tiled windows below its
+# 52px floating bar plus the 10px outer margin.
+screens = [Screen(top=bar.Gap(72))]
 
 #screens = [
 #    Screen(

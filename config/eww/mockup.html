@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurora — Eww single bar mockup</title>
+  <style>
+    :root { --ink:#e7e9ff; --muted:#a9aecb; --line:rgba(209,214,255,.14); --panel:rgba(21,22,42,.88); --cyan:#86e7ff; --green:#a6efb0; --pink:#f4b5e1; --gold:#f9df91; --blue:#9dbdff; --purple:#cbb4ff; }
+    * { box-sizing:border-box } body { margin:0; min-height:100vh; overflow:hidden; color:var(--ink); font-family:"JetBrainsMono Nerd Font", "Symbols Nerd Font", monospace; background:linear-gradient(120deg,#b889aa 0%,#6f78a9 44%,#4f8f9c 100%); }
+    body::before, body::after { content:""; position:fixed; inset:-20%; pointer-events:none; } body::before { background:radial-gradient(circle at 13% 55%,rgba(255,179,218,.42),transparent 21%),radial-gradient(circle at 84% 18%,rgba(129,232,246,.23),transparent 25%); filter:blur(28px) } body::after { opacity:.37; background-image:radial-gradient(circle,rgba(255,255,255,.85) 0 1px,transparent 1.4px); background-size:38px 38px; mask-image:linear-gradient(to bottom,#000,transparent 60%); }
+    .bar { position:absolute; top:10px; left:14px; right:14px; height:52px; display:flex; align-items:center; padding:0 12px 0 16px; border:1px solid rgba(210,218,255,.23); border-radius:18px; background:linear-gradient(105deg,rgba(25,25,48,.93),rgba(23,25,48,.87)); box-shadow:0 15px 34px rgba(12,10,26,.34),inset 0 1px rgba(255,255,255,.08); backdrop-filter:blur(20px); }
+    .bar::before { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg,rgba(197,158,255,.13),transparent 29%,transparent 70%,rgba(126,221,255,.11)); }
+    .cluster { position:relative; z-index:1; display:flex; height:100%; align-items:center; gap:10px; } .cluster.right { margin-left:auto; gap:12px; } .divider { width:1px; height:21px; background:var(--line); margin:0 3px; }
+    .dot { width:7px; height:7px; margin-right:1px; border-radius:50%; background:var(--green); box-shadow:0 0 0 4px rgba(166,239,176,.09),0 0 12px rgba(166,239,176,.8); animation:pulse 2.4s infinite; }
+    .metric { display:flex; align-items:center; gap:7px; min-width:76px; color:var(--muted); font-size:12px; letter-spacing:.1px; } .metric.compact { min-width:auto; } .metric strong { font-weight:500; color:var(--ink); } .metric .meter { width:27px; height:3px; overflow:hidden; border-radius:4px; background:#444762; } .meter i { display:block; height:100%; border-radius:inherit; background:currentColor; box-shadow:0 0 8px currentColor; }
+    .icon { width:16px; height:16px; color:var(--cyan); flex:none; } .temp .icon,.temp .meter { color:var(--cyan) } .cpu .icon,.cpu .meter { color:var(--blue) } .ram .icon,.ram .meter { color:var(--green) } .battery .icon,.battery .meter { color:var(--pink) } .wifi .icon { color:var(--green) } .sun .icon { color:var(--gold) } .audio .icon { color:#99beff } .clock .icon { color:#f6b982 }
+    .workspaces { display:flex; align-items:center; gap:5px; } .workspace { display:grid; place-items:center; width:26px; height:26px; color:#9ea4c3; font-size:13px; border-radius:9px; transition:.18s ease; } .workspace:hover { background:rgba(255,255,255,.08); color:white; } .workspace.active { color:#20213e; font-weight:800; background:linear-gradient(145deg,#d0b8ff,#9ec4ff); box-shadow:0 5px 15px rgba(157,189,255,.38); }
+    @keyframes pulse { 50% { box-shadow:0 0 0 5px rgba(166,239,176,.05),0 0 16px rgba(166,239,176,.95) } }
+    @media(max-width:900px){ .bar{left:8px;right:8px}.hide-small{display:none}.metric{min-width:auto}.cluster{gap:7px}.divider{margin:0}.workspace:nth-child(n+5){display:none} }
+  </style>
+</head>
+<body>
+  <main class="bar" aria-label="Aurora status bar mockup">
+    <section class="cluster">
+      <span class="dot" title="System online"></span>
+      <div class="metric temp"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 14.8V5a4 4 0 0 0-8 0v9.8a6 6 0 1 0 8 0Z"/><path d="M10 5v10"/></svg><strong>48°C</strong><span class="meter"><i style="width:48%"></i></span></div>
+      <span class="divider"></span>
+      <div class="metric cpu"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1v5m6-5v5m-6 12v5m6-5v5M1 9h5m-5 6h5m12-6h5m-5 6h5"/></svg><strong>12%</strong><span class="meter"><i style="width:12%"></i></span></div>
+      <span class="divider hide-small"></span>
+      <div class="metric ram hide-small"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="1"/><path d="M7 10h2m2 0h2m2 0h2M7 14h10"/></svg><strong>42%</strong><span class="meter"><i style="width:42%"></i></span></div>
+      <span class="divider hide-small"></span>
+      <div class="metric battery hide-small"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 10v4M5 10h11v4H5z" fill="currentColor" stroke="none"/></svg><strong>86%</strong><span class="meter"><i style="width:86%"></i></span></div>
+      <span class="divider"></span>
+      <div class="metric compact wifi"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9c5.7-5 12.3-5 18 0M6.5 12.5c3.4-3 7.6-3 11 0M10 16c1.2-1 2.8-1 4 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg><strong>Wi‑Fi</strong></div>
+    </section>
+    <section class="cluster right">
+      <div class="workspaces"><span class="workspace">1</span><span class="workspace">2</span><span class="workspace active">3</span><span class="workspace">4</span><span class="workspace">5</span></div>
+      <span class="divider"></span>
+      <div class="metric compact sun"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m17.1-7.1-1.4 1.4M6.3 17.7l-1.4 1.4m14.2 0-1.4-1.4M6.3 6.3 4.9 4.9"/></svg><strong>100%</strong></div>
+      <span class="divider"></span>
+      <div class="metric compact audio"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10v4h4l5 4V6l-5 4H4Z"/><path d="M16 9.5a4 4 0 0 1 0 5m2.5-7.5a7 7 0 0 1 0 10"/></svg><strong>40%</strong></div>
+      <span class="divider"></span>
+      <div class="metric compact clock"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><strong>12:05</strong></div>
+      <span class="divider"></span>
+      <div class="metric compact date"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4m8-4v4M4 10h16"/></svg><strong>31/07/2026</strong></div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 52,
+  "margin-top": 10,
+  "margin-left": 14,
+  "margin-right": 14,
+  "modules-left": ["custom/status", "temperature", "cpu", "memory", "battery", "network"],
+  "modules-center": [],
+  "modules-right": ["hyprland/workspaces", "backlight", "pulseaudio", "clock", "custom/date"],
+  "custom/status": { "format": "●", "tooltip": false },
+  "temperature": { "format": "  {temperatureC}°C", "critical-threshold": 80 },
+  "cpu": { "format": "  {usage}%" },
+  "memory": { "format": "󰍛  {}%" },
+  "battery": { "format": "{icon}  {capacity}%", "format-icons": ["", "", "", "", ""] },
+  "network": { "format-wifi": "  {essid}", "format-disconnected": "󰤭  Offline", "on-click": "~/.config/hypr/scripts/wifi-menu.sh" },
+  "hyprland/workspaces": { "format": "{name}", "on-click": "activate" },
+  "backlight": { "format": "  {percent}%", "on-click": "~/.config/hypr/scripts/brightness-menu.sh" },
+  "pulseaudio": { "format": "{icon}  {volume}%", "format-muted": "󰖁  muted", "format-icons": { "default": ["", "", ""] }, "on-click": "~/.config/hypr/scripts/audio-menu.sh" },
+  "clock": { "format": "  {:%H:%M}" },
+  "custom/date": { "exec": "date '+  %d/%m/%Y'", "interval": 60 }
+}

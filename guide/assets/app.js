@@ -46,7 +46,8 @@ const PAGES = [
   { page: "nvim-lsp-claude", file: "nvim-lsp-claude.html", n: "06", label: "Nvim · LSP & Claude" },
   { page: "setup",           file: "setup.html",           n: "07", label: "Cài đặt" },
   { page: "arch-install",    file: "arch-install.html",    n: "08", label: "Cài Arch mới" },
-  { page: "qtile",           file: "qtile.html",           n: "09", label: "Qtile" },
+  { page: "hyprland-wayland",file: "hyprland-wayland.html",n: "09", label: "Hyprland · Wayland" },
+  { page: "qtile",           file: "qtile.html",           n: "10", label: "Qtile" },
 ];
 
 if (typeof module !== "undefined" && module.exports) {

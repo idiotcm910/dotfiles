@@ -1,0 +1,24 @@
+* {
+  bg: #e61e1e2e;
+  bg-solid: #1e1e2e;
+  surface: #313244;
+  fg: #cdd6f4;
+  muted: #a6adc8;
+  accent: #89b4fa;
+  mauve: #cba6f7;
+  border: #4d89b4fa;
+  font: "JetBrainsMono Nerd Font Bold 12";
+  background-color: transparent;
+  text-color: @fg;
+}
+window { width: 520px; border: 1px; border-color: @border; border-radius: 18px; background-color: @bg; padding: 12px; }
+mainbox { background-color: transparent; children: [ inputbar, listview ]; spacing: 10px; }
+inputbar { background-color: @surface; border-radius: 11px; padding: 11px 13px; children: [ prompt, entry ]; }
+prompt { text-color: @mauve; padding: 0 10px 0 0; }
+entry { placeholder: "Tìm hoặc chọn…"; placeholder-color: @muted; text-color: @fg; }
+listview { background-color: transparent; lines: 7; columns: 1; fixed-height: false; spacing: 5px; scrollbar: false; }
+element { background-color: transparent; text-color: @muted; border-radius: 10px; padding: 10px 12px; }
+element selected { background-color: @surface; text-color: @fg; }
+element-text { background-color: inherit; text-color: inherit; vertical-align: 0.5; }
+message { background-color: @surface; border-radius: 10px; padding: 10px; }
+textbox { text-color: @muted; }

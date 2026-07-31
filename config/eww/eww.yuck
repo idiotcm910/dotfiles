@@ -1,0 +1,52 @@
+; Aurora: a single transparent Eww dock containing one floating glass bar.
+(defpoll clock :initial "--:--" :interval "1s" `date '+%H:%M'`)
+(defpoll date :initial "--/--/----" :interval "60s" `date '+%d/%m/%Y'`)
+(defpoll temperature :initial "0" :interval "3s" `awk '{printf "%d", $1 / 1000}' /sys/class/thermal/thermal_zone0/temp`)
+(defpoll brightness :initial "0" :interval "3s" `brightnessctl -m | awk -F, '{gsub(/%/, "", $4); print $4}'`)
+(defpoll volume :initial "0" :interval "2s" `wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf "%d", $2 * 100}'`)
+(defpoll wifi :initial "Wi-Fi" :interval "5s" `nmcli -t -f WIFI general | grep -q enabled && printf 'Wi-Fi' || printf 'Offline'`)
+(defpoll workspace :initial "1" :interval "1s" `$HOME/.config/eww/scripts/workspace.sh`)
+
+(defwidget metric [class icon text level onclick]
+  (eventbox :class "metric ${class}" :onclick onclick :cursor "pointer"
+    (box :spacing 7 :valign "center"
+      (label :class "icon" :text icon)
+      (label :class "metric-value" :text text)
+      (box :class "meter-track" (box :class "meter-fill ${class}" :style "min-width: ${level}px;")))))
+
+(defwidget workspace-chip [name]
+  (button :class {workspace == name ? "workspace active" : "workspace"}
+          :onclick "qtile cmd-obj -o group ${name} -f toscreen"
+    name))
+
+(defwidget aurora-bar []
+  (box :class "aurora" :valign "center"
+    (box :class "cluster left" :spacing 10 :valign "center"
+      (label :class "online" :text "●")
+      (metric :class "temp" :icon "" :text "${temperature}°C" :level {round(temperature * 0.27, 0)} :onclick "")
+      (label :class "divider" :text "")
+      (metric :class "cpu" :icon "" :text "${round(EWW_CPU.avg, 0)}%" :level {round(EWW_CPU.avg * 0.27, 0)} :onclick "")
+      (label :class "divider hide-small" :text "")
+      (metric :class "ram hide-small" :icon "" :text "${round(EWW_RAM.used_mem_perc, 0)}%" :level {round(EWW_RAM.used_mem_perc * 0.27, 0)} :onclick "")
+      (label :class "divider hide-small" :text "")
+      (metric :class "battery hide-small" :icon "" :text "${EWW_BATTERY.BAT0.capacity}%" :level {round(EWW_BATTERY.BAT0.capacity * 0.27, 0)} :onclick "")
+      (label :class "divider" :text "")
+      (eventbox :class "metric wifi" :onclick "$HOME/.config/eww/scripts/wifi-menu.sh" :cursor "pointer"
+        (box :spacing 7 (label :class "icon" :text "") (label :class "metric-value" :text wifi))))
+    (box :class "cluster right" :spacing 12 :valign "center"
+      (box :class "workspaces" :spacing 5
+        (workspace-chip :name "1") (workspace-chip :name "2") (workspace-chip :name "3") (workspace-chip :name "4") (workspace-chip :name "5"))
+      (label :class "divider" :text "")
+      (metric :class "sun" :icon "" :text "${brightness}%" :level 0 :onclick "$HOME/.config/eww/scripts/brightness-menu.sh")
+      (label :class "divider" :text "")
+      (metric :class "audio" :icon "" :text "${volume}%" :level 0 :onclick "$HOME/.config/eww/scripts/audio-menu.sh")
+      (label :class "divider" :text "")
+      (box :class "clock" :spacing 7 (label :class "icon" :text "") (label :text clock))
+      (label :class "divider" :text "")
+      (box :class "date" :spacing 7 (label :class "icon" :text "") (label :text date)))))
+
+(defwindow aurora
+  :monitor 0
+  :geometry (geometry :x "0px" :y "0px" :width "850px" :height "72px" :anchor "top center")
+  :stacking "fg" :windowtype "normal" :wm-ignore true
+  (aurora-bar))

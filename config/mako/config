@@ -1,0 +1,7 @@
+font=Adwaita Mono 11
+background-color=#1e1e2ef2
+text-color=#cdd6f4
+border-color=#89b4fa
+border-size=2
+border-radius=12
+default-timeout=5000
