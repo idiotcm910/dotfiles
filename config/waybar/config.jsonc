@@ -3,55 +3,57 @@
   "position": "top",
   "height": 62,
   "spacing": 0,
-  "modules-left": ["custom/status", "temperature", "cpu", "memory", "battery", "network"],
+  "modules-left": ["custom/status", "custom/input-method", "temperature", "cpu", "memory", "battery", "network"],
   "modules-center": [],
-  "modules-right": ["hyprland/workspaces", "bluetooth", "custom/microphone", "backlight", "pulseaudio", "clock", "custom/date", "custom/power"],
+  "modules-right": ["tray", "hyprland/workspaces", "bluetooth", "custom/microphone", "backlight", "pulseaudio", "clock", "custom/date", "custom/power"],
+
+  "tray": { "icon-size": 18, "spacing": 10 },
 
   "custom/status": { "format": "●", "tooltip": false },
-  "temperature": { "format": "  {temperatureC}°C", "critical-threshold": 80 },
-  "cpu": { "format": "  {usage}%" },
-  "memory": { "format": "󰍛  {}%" },
-  "battery": { "format": "{icon}  {capacity}%", "format-icons": ["", "", "", "", ""] },
-  "network": {
-    "format-wifi": "  {essid}",
-    "format-disconnected": "󰤭  Offline",
-    "on-click": "~/.config/hypr/scripts/wifi-menu.sh"
+  "custom/input-method": {
+    "exec": "~/.config/hypr/scripts/input-method-status.sh",
+    "return-type": "json",
+    "markup": "pango",
+    "interval": 2,
+    "signal": 9,
+    "menu": "on-click",
+    "menu-file": "~/.config/waybar/input-method-menu.xml",
+    "menu-actions": {
+      "bamboo": "~/.config/hypr/scripts/input-method-set.sh bamboo",
+      "english": "~/.config/hypr/scripts/input-method-set.sh english",
+      "toggle": "~/.config/hypr/scripts/input-method-set.sh toggle",
+      "config": "~/.config/hypr/scripts/input-method-set.sh config"
+    }
   },
+  "temperature": { "format": "<span font='Font Awesome 6 Pro 14'></span>  {temperatureC}°C", "critical-threshold": 80 },
+  "cpu": { "format": "<span font='Font Awesome 6 Pro 14'></span>  {usage}%" },
+  "memory": { "format": "<span font='Font Awesome 6 Pro 14'></span>  {}%" },
+  "battery": { "format": "<span font='Font Awesome 6 Pro 14'>{icon}</span>  {capacity}%", "format-icons": ["", "", "", "", ""] },
+  "network": { "format-wifi": "<span font='Font Awesome 6 Pro 14'></span>  {essid}", "format-disconnected": "<span font='Font Awesome 6 Pro 14'></span>  Offline", "on-click": "~/.config/hypr/scripts/wifi-menu.sh" },
   "hyprland/workspaces": {
     "format": "{name}",
     "persistent-workspaces": { "*": 5 },
     "on-click": "activate"
   },
-  "bluetooth": {
-    "format": "󰂯",
-    "format-disabled": "󰂲",
-    "format-off": "󰂲",
-    "format-on": "󰂯",
-    "format-connected": "󰂯  {device_alias}",
-    "format-no-controller": "󰂲",
-    "tooltip-format": "Bluetooth: {status}",
-    "tooltip-format-connected": "Bluetooth\n{device_enumerate}",
-    "tooltip-format-enumerate-connected": "• {device_alias}",
-    "on-click": "~/.config/hypr/scripts/bluetooth-menu.sh"
-  },
-  "backlight": { "format": "  {percent}%", "on-click": "~/.config/hypr/scripts/brightness-menu.sh" },
-  "pulseaudio": {
-    "format": "{icon}  {volume}%",
-    "format-muted": "󰖁  muted",
-    "format-icons": { "default": ["", "", ""] },
-    "on-click": "~/.config/hypr/scripts/audio-menu.sh"
-  },
+  "bluetooth": { "format": "<span font='Font Awesome 6 Pro 14'></span>", "format-disabled": "<span font='Font Awesome 6 Pro 14'></span>", "format-off": "<span font='Font Awesome 6 Pro 14'></span>", "format-on": "<span font='Font Awesome 6 Pro 14'></span>", "format-connected": "<span font='Font Awesome 6 Pro 14'></span>  {device_alias}", "format-no-controller": "<span font='Font Awesome 6 Pro 14'></span>", "tooltip-format": "Bluetooth: {status}", "tooltip-format-connected": "Bluetooth\n{device_enumerate}", "tooltip-format-enumerate-connected": "• {device_alias}", "on-click": "~/.config/hypr/scripts/bluetooth-menu.sh" },
+  "backlight": { "format": "<span font='Font Awesome 6 Pro 14'></span>  {percent}%", "on-click": "~/.config/hypr/scripts/brightness-menu.sh" },
+  "pulseaudio": { "format": "<span font='Font Awesome 6 Pro 14'>{icon}</span>  {volume}%", "format-muted": "<span font='Font Awesome 6 Pro 14'></span>  muted", "format-icons": { "default": ["", "", ""] }, "on-click": "~/.config/hypr/scripts/audio-menu.sh" },
   "custom/microphone": {
     "exec": "~/.config/hypr/scripts/mic-status.sh",
     "return-type": "json",
+    "markup": "pango",
     "interval": 2,
     "signal": 8,
-    "on-click": "~/.config/hypr/scripts/mic-toggle.sh"
+    "on-click": "~/.config/hypr/scripts/mic-settings.sh",
+    "on-click-right": "~/.config/hypr/scripts/mic-toggle.sh",
+    "on-scroll-up": "~/.config/hypr/scripts/mic-volume.sh up",
+    "on-scroll-down": "~/.config/hypr/scripts/mic-volume.sh down"
   },
-  "clock": { "format": "  {:%H:%M}" },
-  "custom/date": { "exec": "date '+  %d/%m/%Y'", "interval": 60 },
+  "clock": { "format": "<span font='Font Awesome 6 Pro 14'></span>  {:%H:%M}" },
+  "custom/date": { "exec": "~/.config/hypr/scripts/date-status.sh", "markup": "pango", "interval": 60 },
   "custom/power": {
-    "format": "⏻",
+    "format": "<span font='Font Awesome 6 Pro 16'></span>",
+    "markup": "pango",
     "tooltip": false,
     "menu": "on-click",
     "menu-file": "~/.config/waybar/power-menu.xml",

@@ -27,7 +27,7 @@
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>E</kbd></div><div class="d"><b>Mở Thunar</b>: file manager.</div></div>
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>W</kbd></div><div class="d"><b>Đóng cửa sổ đang focus</b>: phím Qtile cũ. <kbd class="mod">Super</kbd> + <kbd>Q</kbd> cũng là alias.</div></div>
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>F</kbd></div><div class="d"><b>Fullscreen</b>: bật hoặc tắt toàn màn hình.</div></div>
-            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>M</kbd></div><div class="d"><b>Maximize</b>: chế độ maximize của Hyprland, tương ứng Qtile cũ.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>M</kbd></div><div class="d"><b>Maximize</b>: chế độ maximize của Hyprland; khi cycle, cửa sổ mới tiếp quản trạng thái này.</div></div>
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>F</kbd></div><div class="d"><b>Floating</b>: phím Qtile cũ.</div></div>
           </div>
         </div>
@@ -39,7 +39,8 @@
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>L</kbd></div><div class="d"><b>Focus phải</b>.</div></div>
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>J</kbd></div><div class="d"><b>Focus xuống</b>.</div></div>
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>K</kbd></div><div class="d"><b>Focus lên</b>.</div></div>
-            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Space</kbd></div><div class="d"><b>Focus kế tiếp</b>: cycle cửa sổ như Qtile.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Space</kbd></div><div class="d"><b>Focus kế tiếp</b>: cycle trong workspace; cửa sổ mới vẫn maximize/fullscreen nếu cửa sổ cũ đang ở chế độ đó.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>Space</kbd></div><div class="d"><b>Focus trước đó</b>: cycle ngược trong workspace và giữ maximize/fullscreen.</div></div>
           </div>
         </div>
 
@@ -47,7 +48,8 @@
           <h2>Sắp xếp Dwindle <span class="tag">migrate Qtile</span></h2>
           <div class="rows two">
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Shift</kbd><span class="plus">+</span><kbd>H</kbd>/<kbd>L</kbd></div><div class="d"><b>Đẩy cửa sổ trái/phải</b>: tương ứng swap trong Qtile.</div></div>
-            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>H</kbd>/<kbd>L</kbd></div><div class="d"><b>Nới/thu cửa sổ</b>: resize cửa sổ đang focus.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>H</kbd>/<kbd>L</kbd></div><div class="d"><b>Nới/thu chiều ngang</b>: tăng/giảm chiều rộng cửa sổ đang focus.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>J</kbd>/<kbd>K</kbd></div><div class="d"><b>Nới/thu chiều dọc</b>: tăng/giảm chiều cao cửa sổ đang focus.</div></div>
             <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd>Tab</kbd></div><div class="d"><b>Đổi hướng split</b>: hành vi gần nhất với đổi layout trong Dwindle.</div></div>
           </div>
         </div>
@@ -86,6 +88,8 @@
             <div class="row"><div class="keys"><kbd>Volume +</kbd></div><div class="d"><b>Tăng âm lượng</b>: +5%, tối đa 150%.</div></div>
             <div class="row"><div class="keys"><kbd>Volume −</kbd></div><div class="d"><b>Giảm âm lượng</b>: −5%.</div></div>
             <div class="row"><div class="keys"><kbd>Mute</kbd></div><div class="d"><b>Tắt/bật tiếng</b>: audio sink mặc định.</div></div>
+            <div class="row"><div class="keys"><kbd>Mic Mute</kbd></div><div class="d"><b>Tắt/bật microphone</b>: input mặc định.</div></div>
+            <div class="row"><div class="keys"><kbd class="mod">Super</kbd><span class="plus">+</span><kbd class="mod">Ctrl</kbd><span class="plus">+</span><kbd>↑</kbd>/<kbd>↓</kbd></div><div class="d"><b>Tăng/giảm mic</b>: mỗi lần 5%. Click biểu tượng mic trên Waybar để mở slider Input Devices; chuột phải để mute.</div></div>
           </div>
         </div>
       </div>

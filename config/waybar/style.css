@@ -3,7 +3,7 @@
   border-radius: 0;
   min-height: 0;
   font-family: "Iosevka Nerd Font Mono", "Font Awesome 6 Pro", "Symbols Nerd Font Mono";
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 300;
 }
 
@@ -34,9 +34,20 @@ window#waybar > box > box.modules-right { margin: 7px 14px 7px 0; padding: 0 10p
 #custom-status {
   padding: 0 12px 0 3px;
   color: #b99cff;
-  font-size: 16px;
+  font-size: 18px;
   text-shadow: 0 0 10px #b99cff;
 }
+
+#custom-input-method {
+  padding: 0 13px;
+  font-size: 15px;
+  color: #d9d0ec;
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+#custom-input-method.vietnamese { color: #b99cff; }
+#custom-input-method.inactive { color: #ff9caa; }
+#custom-input-method:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
 
 #temperature,
 #cpu,
@@ -49,9 +60,20 @@ window#waybar > box > box.modules-right { margin: 7px 14px 7px 0; padding: 0 10p
 #pulseaudio,
 #clock,
 #custom-date {
-  padding: 0 11px;
+  padding: 0 13px;
   color: #d9d0ec;
   border-left: 1px solid rgba(255, 255, 255, 0.09);
+  font-size: 16px;
+}
+
+#tray {
+  padding: 0 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+#tray menu {
+  background: #1e1b2e;
+  color: #d9d0ec;
 }
 
 #workspaces { padding: 0 6px; }

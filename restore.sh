@@ -11,7 +11,7 @@ BACKUP_ROOT="${BACKUP_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-backu
 
 readonly -a BASE_PACKAGES=(
   base-devel git curl wget unzip zip jq fontconfig ttf-nerd-fonts-symbols-mono
-  ttf-iosevka-nerd
+  ttf-iosevka-nerd obsidian
 )
 
 readonly -a X11_DESKTOP_PACKAGES=(
@@ -362,7 +362,13 @@ restore_desktop_config() {
     "$REPO_DIR/config/hypr/scripts/bluetooth-menu.sh" \
     "$REPO_DIR/config/hypr/scripts/mic-toggle.sh" \
     "$REPO_DIR/config/hypr/scripts/mic-status.sh" \
+    "$REPO_DIR/config/hypr/scripts/mic-volume.sh" \
+    "$REPO_DIR/config/hypr/scripts/mic-settings.sh" \
     "$REPO_DIR/config/hypr/scripts/camera-menu.sh" \
+    "$REPO_DIR/config/hypr/scripts/input-method-menu.sh" \
+    "$REPO_DIR/config/hypr/scripts/input-method-status.sh" \
+    "$REPO_DIR/config/hypr/scripts/input-method-set.sh" \
+    "$REPO_DIR/config/hypr/scripts/date-status.sh" \
     "$REPO_DIR/config/hypr/scripts/screenshot.sh" \
     "$REPO_DIR/config/hypr/scripts/lock-screen.sh" \
     "$REPO_DIR/config/hypr/scripts/power-action.sh"

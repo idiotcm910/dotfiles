@@ -156,6 +156,15 @@ Thanh trên cùng liệt kê các file (buffer) đang mở, có icon + dấu l�
 
 > **Mẹo:** không nhớ phím? Bấm `Space` rồi chờ 0.4s → **which-key** hiện popup nhắc tất cả.
 
+### Gõ tiếng Việt trên Hyprland
+
+Neovim tự chuyển Fcitx5 sang `bamboo` khi vào Insert/Replace mode và
+`keyboard-us` khi về Normal/Command mode, nên các phím `j`, `s`, `f` vẫn
+hoạt động như lệnh Vim. Khi thoát, Neovim khôi phục bộ gõ và trạng thái
+Fcitx5 của ứng dụng trước đó. Không cần bật Bamboo bằng hotkey trong
+Normal mode: bấm `i` trước, Neovim sẽ tự bật Bamboo ngay khi Insert mode
+bắt đầu.
+
 ---
 
 ## Cấu trúc config
@@ -166,6 +175,7 @@ nvim/
 ├── lua/config/
 │   ├── options.lua           # cài đặt editor + leader
 │   ├── keymaps.lua           # phím tự định nghĩa
+│   ├── fcitx5.lua            # Fcitx5-Bamboo theo mode của Neovim
 │   └── lazy.lua              # bootstrap lazy.nvim
 └── lua/plugins/
     ├── colorscheme.lua       # tokyonight

@@ -1,2 +1,9 @@
 [Hotkey/TriggerKeys]
 0=Alt+Shift+space
+
+[Behavior]
+# Keep the same input method and active state across all applications.
+ShareInputState=All
+ActiveByDefault=True
+resetStateWhenFocusIn=No
+PreloadInputMethod=True

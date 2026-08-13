@@ -11,5 +11,5 @@ else
 fi
 swaync &
 waybar &
-fcitx5 -d &
+fcitx5 -d --replace &
 /usr/lib/polkit-kde-authentication-agent-1 &

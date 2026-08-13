@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# Mở một link zoommtg:// bằng Zoom desktop.
+#
+# Dùng:
+#   zoom-open "zoommtg://zoom.us/join?..."   # truyền thẳng link
+#   zoom-open                                 # lấy link từ clipboard
+#
+# Script xử lý luôn hai thứ hay làm Zoom "im lặng" trên Hyprland:
+#   - instance Zoom còn sống nhưng không có cửa sổ nào (nuốt mọi lần mở sau)
+#   - cửa sổ họp mở ở workspace khác nên tưởng như không có gì xảy ra
+set -euo pipefail
+
+zoom_bin=/usr/bin/zoom
+lock_dir="$HOME/.config/zoom"
+
+die() { printf '%s\n' "$*" >&2; exit 1; }
+
+url="${1-}"
+if [[ -z "$url" ]]; then
+  command -v wl-paste >/dev/null || die "Không có link và cũng không tìm thấy wl-paste."
+  url="$(wl-paste 2>/dev/null || true)"
+  [[ -n "$url" ]] || die "Clipboard rỗng. Copy link zoommtg:// rồi chạy lại."
+fi
+
+# Bỏ khoảng trắng / xuống dòng thừa khi copy từ trình duyệt.
+url="$(printf '%s' "$url" | tr -d '[:space:]')"
+
+[[ "$url" == zoommtg://* ]] || die "Không phải link zoommtg://
+Nhận được: ${url:0:60}..."
+
+# Cảnh báo sớm nếu token đã hết hạn — nếu không Zoom sẽ mở rồi im lặng không vào phòng.
+if [[ "$url" == *confid=* ]]; then
+  python3 - "$url" <<'PY' || true
+import base64, json, re, sys, time
+m = re.search(r'confid=([^&]+)', sys.argv[1])
+if not m:
+    sys.exit()
+try:
+    p = m.group(1) + '=' * (-len(m.group(1)) % 4)
+    inner = base64.urlsafe_b64decode(p).decode('utf-8', 'replace')
+    zak = re.search(r'zak=([\w-]+\.[\w-]+\.[\w-]+)', inner)
+    if not zak:
+        sys.exit()
+    payload = zak.group(1).split('.')[1]
+    payload += '=' * (-len(payload) % 4)
+    exp = json.loads(base64.urlsafe_b64decode(payload))['exp']
+except Exception:
+    sys.exit()
+left = exp - int(time.time())
+if left <= 0:
+    print(f"CẢNH BÁO: token trong link đã hết hạn lúc "
+          f"{time.strftime('%H:%M:%S', time.localtime(exp))}. "
+          f"Lấy link mới từ trình duyệt rồi chạy lại.", file=sys.stderr)
+else:
+    print(f"Token còn hạn {left // 60} phút "
+          f"(đến {time.strftime('%H:%M:%S', time.localtime(exp))}).", file=sys.stderr)
+PY
+fi
+
+# Zoom chạy nhưng không có cửa sổ nào = instance kẹt, phải dọn trước.
+if pgrep -x zoom >/dev/null 2>&1; then
+  windows=0
+  if command -v hyprctl >/dev/null 2>&1; then
+    windows="$(hyprctl clients -j 2>/dev/null \
+      | python3 -c 'import json,sys; print(sum(1 for c in json.load(sys.stdin) if (c.get("class") or "").lower()=="zoom"))' \
+      2>/dev/null || echo 0)"
+  fi
+  if [[ "$windows" == "0" ]]; then
+    printf 'Dọn instance Zoom kẹt (đang chạy nhưng không có cửa sổ)...\n' >&2
+    pkill -9 -x zoom || true
+    sleep 2
+    rm -f "$lock_dir"/qtsingleapp-zoom-* 2>/dev/null || true
+  fi
+fi
+
+# LANGUAGE=vi_VN:vi cho giao diện tiếng Việt; không đụng LANG/LC_ALL để
+# không phá encoding và fcitx5.
+LANGUAGE=vi_VN:vi setsid "$zoom_bin" "$url" >/dev/null 2>&1 </dev/null &
+disown 2>/dev/null || true
+
+# Chờ cửa sổ họp xuất hiện rồi nhảy tới nó, dù nó nằm ở workspace nào.
+command -v hyprctl >/dev/null 2>&1 || exit 0
+for _ in $(seq 1 20); do
+  sleep 1
+  if hyprctl clients -j 2>/dev/null \
+    | python3 -c 'import json,sys; sys.exit(0 if any((c.get("class") or "").lower()=="zoom" for c in json.load(sys.stdin)) else 1)' 2>/dev/null
+  then
+    hyprctl dispatch focuswindow class:zoom >/dev/null 2>&1 || true
+    ws="$(hyprctl activeworkspace -j 2>/dev/null \
+      | python3 -c 'import json,sys; print(json.load(sys.stdin).get("name"))' 2>/dev/null || echo '?')"
+    printf 'Zoom đã mở (workspace %s).\n' "$ws" >&2
+    exit 0
+  fi
+done
+
+printf 'Zoom không mở được cửa sổ sau 20 giây.\n' >&2
+exit 1
