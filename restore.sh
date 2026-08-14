@@ -366,6 +366,7 @@ restore_ai_config() {
   copy_managed "$REPO_DIR/.pi/agent/settings.json" "$HOME/.pi/agent/settings.json"
   copy_managed "$REPO_DIR/.pi/agent/alibaba-config.json" "$HOME/.pi/agent/alibaba-config.json"
   copy_managed "$REPO_DIR/.pi/agent/zentui.json" "$HOME/.pi/agent/zentui.json"
+  copy_managed "$REPO_DIR/.pi/agent/compact-thinking.json" "$HOME/.pi/agent/compact-thinking.json"
   copy_managed "$REPO_DIR/.pi/agent/config" "$HOME/.pi/agent/config"
   copy_managed "$REPO_DIR/.pi/agent/themes" "$HOME/.pi/agent/themes"
   copy_managed "$REPO_DIR/.pi/agent/skills" "$HOME/.pi/agent/skills"

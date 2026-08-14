@@ -11,12 +11,16 @@
     "npm:@juicesharp/rpiv-advisor",
     "git:github.com/obra/superpowers",
     "npm:@henryqw/pi-auto-compact",
-    "npm:pi-image-tools"
+    "npm:pi-image-tools",
+    "npm:pi-tool-display",
+    "npm:@plannotator/pi-extension",
+    "npm:pi-compact-thinking"
   ],
   "theme": "atom-one-dark",
   "defaultProvider": "xai",
   "defaultModel": "grok-4.5",
   "defaultThinkingLevel": "medium",
+  "hideThinkingBlock": true,
   "subagents": {
     "defaultModel": "xai/grok-4.5",
     "defaultThinking": "medium",

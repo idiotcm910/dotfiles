@@ -19,14 +19,15 @@ Portable Pi agent configuration exported from `~/.pi/agent`.
 
 ## Tracked in this repo
 
-- `agent/settings.json` — packages, theme, default provider/model/thinking, subagent model map, compaction off (handled by pi-auto-compact)
+- `agent/settings.json` — packages, theme, default provider/model/thinking, compact-thinking mode, subagent model map, compaction off (handled by pi-auto-compact)
 - `agent/alibaba-config.json` — Alibaba plan endpoint URLs only
 - `agent/zentui.json` — footer: model, context, session tokens, cost, session duration
 - `agent/config/pi-auto-compact.json` — multi-model auto-compact at 60% + resume
+- `agent/compact-thinking.json` — compact animated reasoning preview
 - `agent/extensions/pi-rtk-optimizer/config.json`
 - `agent/themes/*.json`
 - `agent/skills/` — local skills (`ui-ux-pro-max`, `web-testing`, `ui-styling`, `frontend-design`)
-- `agent/npm/package.json` — extension dependency input (including `pi-image-tools` for clipboard/recent-image attachments)
+- `agent/npm/package.json` — extension dependency input (including `pi-image-tools`, `pi-tool-display`, Plannotator, and compact-thinking)
 
 Credentials, sessions, model caches, `node_modules`, and git package checkouts
 are intentionally excluded. Restore these files selectively into
