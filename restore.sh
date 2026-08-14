@@ -332,6 +332,30 @@ install_pi() {
   run npm install -g @earendil-works/pi-coding-agent
 }
 
+install_rtk() {
+  [[ "$ONLY" == "all" || "$ONLY" == "ai" ]] || return 0
+  if ((!DRY_RUN)) && command -v rtk >/dev/null 2>&1; then
+    log "RTK đã có: $(rtk --version)"
+    return 0
+  fi
+
+  log "Cài RTK binary cho pi-rtk-optimizer"
+  if ((DRY_RUN)); then
+    print_command curl -fsSL \
+      https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh \
+      -o /tmp/rtk-install.sh
+    print_command sh /tmp/rtk-install.sh
+    return 0
+  fi
+
+  local install_script
+  install_script="$(mktemp)"
+  curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh \
+    -o "$install_script"
+  sh "$install_script"
+  rm -f -- "$install_script"
+}
+
 restore_ai_config() {
   [[ "$ONLY" == "all" || "$ONLY" == "ai" ]] || return 0
   log "Khôi phục config AI portable"
@@ -556,6 +580,7 @@ main() {
   install_codex
   install_claude
   install_pi
+  install_rtk
   restore_ai_config
 }
 
