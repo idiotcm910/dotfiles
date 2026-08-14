@@ -13,7 +13,6 @@
     "npm:@henryqw/pi-auto-compact",
     "npm:pi-image-tools",
     "npm:pi-tool-display",
-    "npm:@plannotator/pi-extension",
     "npm:pi-compact-thinking"
   ],
   "theme": "atom-one-dark",

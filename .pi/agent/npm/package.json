@@ -7,7 +7,6 @@
     "@juicesharp/rpiv-advisor": "^2.5.0",
     "@juicesharp/rpiv-ask-user-question": "^2.5.0",
     "@nguyenquangthai/pi-todo": "^0.6.1",
-    "@plannotator/pi-extension": "^0.27.3",
     "pi-alibaba-models": "^1.0.14",
     "pi-codex": "^0.1.1",
     "pi-compact-thinking": "^0.2.1",
