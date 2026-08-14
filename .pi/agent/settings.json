@@ -14,5 +14,35 @@
   "theme": "atom-one-dark",
   "defaultProvider": "xai",
   "defaultModel": "grok-4.5",
-  "defaultThinkingLevel": "medium"
+  "defaultThinkingLevel": "medium",
+  "subagents": {
+    "defaultModel": "xai/grok-4.5",
+    "defaultThinking": "medium",
+    "agentOverrides": {
+      "scout": {
+        "model": "alibaba-plan/deepseek-v4-flash-0731",
+        "thinking": "medium"
+      },
+      "worker": {
+        "model": "alibaba-plan/deepseek-v4-flash-0731",
+        "thinking": "medium"
+      },
+      "reviewer": {
+        "model": "xai/grok-4.5",
+        "thinking": "medium"
+      },
+      "oracle": {
+        "model": "openai-codex/gpt-5.6-sol",
+        "thinking": "medium"
+      },
+      "researcher": {
+        "model": "alibaba-plan/deepseek-v4-flash-0731",
+        "thinking": "medium"
+      },
+      "delegate": {
+        "model": "xai/grok-4.5",
+        "thinking": "medium"
+      }
+    }
+  }
 }
