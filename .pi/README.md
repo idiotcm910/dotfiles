@@ -27,7 +27,7 @@ Portable Pi agent configuration exported from `~/.pi/agent`.
 - `agent/extensions/pi-rtk-optimizer/config.json`
 - `agent/themes/*.json`
 - `agent/skills/` — local skills (`ui-ux-pro-max`, `web-testing`, `ui-styling`, `frontend-design`)
-- `agent/npm/package.json` — extension dependency input (including `pi-image-tools`, `pi-tool-display`, Plannotator, and compact-thinking)
+- `agent/npm/package.json` — extension dependency input (including `pi-image-tools`, `pi-tool-display`, Plannotator, compact-thinking, and the OpenCode-style `pi-todo` overlay)
 
 Credentials, sessions, model caches, `node_modules`, and git package checkouts
 are intentionally excluded. Restore these files selectively into
