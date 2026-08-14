@@ -12,14 +12,16 @@ Portable Pi agent configuration exported from `~/.pi/agent`.
 | `~/.pi/agent/npm/` | Installed npm packages for extensions |
 | `~/.pi/agent/extensions/` | Local extension config overrides |
 | `~/.pi/agent/themes/` | Custom / selected themes |
+| `~/.pi/agent/skills/` | Local user skills (auto-discovered by Pi) |
 | `~/.pi/agent/sessions/` | Chat history (not tracked) |
 
 ## Tracked in this repo
 
-- `agent/settings.json` — packages, theme, default provider/model/thinking
+- `agent/settings.json` — packages, theme, default provider/model/thinking, subagent model map
 - `agent/alibaba-config.json` — Alibaba plan endpoint URLs only
 - `agent/extensions/pi-rtk-optimizer/config.json`
 - `agent/themes/*.json`
+- `agent/skills/` — local skills (`ui-ux-pro-max`, `web-testing`, `ui-styling`, `frontend-design`)
 - `agent/npm/package.json` — extension dependency lock input
 
 Credentials, sessions, model caches, `node_modules`, and git package checkouts

@@ -342,6 +342,7 @@ restore_ai_config() {
   copy_managed "$REPO_DIR/.pi/agent/settings.json" "$HOME/.pi/agent/settings.json"
   copy_managed "$REPO_DIR/.pi/agent/alibaba-config.json" "$HOME/.pi/agent/alibaba-config.json"
   copy_managed "$REPO_DIR/.pi/agent/themes" "$HOME/.pi/agent/themes"
+  copy_managed "$REPO_DIR/.pi/agent/skills" "$HOME/.pi/agent/skills"
   copy_managed \
     "$REPO_DIR/.pi/agent/extensions/pi-rtk-optimizer/config.json" \
     "$HOME/.pi/agent/extensions/pi-rtk-optimizer/config.json"
