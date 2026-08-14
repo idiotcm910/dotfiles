@@ -26,7 +26,7 @@ Portable Pi agent configuration exported from `~/.pi/agent`.
 - `agent/extensions/pi-rtk-optimizer/config.json`
 - `agent/themes/*.json`
 - `agent/skills/` — local skills (`ui-ux-pro-max`, `web-testing`, `ui-styling`, `frontend-design`)
-- `agent/npm/package.json` — extension dependency lock input
+- `agent/npm/package.json` — extension dependency input (including `pi-image-tools` for clipboard/recent-image attachments)
 
 Credentials, sessions, model caches, `node_modules`, and git package checkouts
 are intentionally excluded. Restore these files selectively into

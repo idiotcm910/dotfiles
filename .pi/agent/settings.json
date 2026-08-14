@@ -10,7 +10,8 @@
     "npm:pi-subagents",
     "npm:@juicesharp/rpiv-advisor",
     "git:github.com/obra/superpowers",
-    "npm:@henryqw/pi-auto-compact"
+    "npm:@henryqw/pi-auto-compact",
+    "npm:pi-image-tools"
   ],
   "theme": "atom-one-dark",
   "defaultProvider": "xai",
