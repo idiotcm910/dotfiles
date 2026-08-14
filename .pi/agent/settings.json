@@ -1,0 +1,18 @@
+{
+  "packages": [
+    "npm:pi-codex",
+    "npm:@howaboua/pi-codex-conversion",
+    "npm:pi-alibaba-models",
+    "npm:pi-zentui",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:pi-rtk-optimizer",
+    "npm:pi-subagents",
+    "npm:@juicesharp/rpiv-advisor",
+    "git:github.com/obra/superpowers"
+  ],
+  "theme": "atom-one-dark",
+  "defaultProvider": "xai",
+  "defaultModel": "grok-4.5",
+  "defaultThinkingLevel": "medium"
+}

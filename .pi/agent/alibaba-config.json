@@ -1,0 +1,4 @@
+{
+  "planOpenAI": "https://token-plan.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1",
+  "planAnthropic": "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic"
+}

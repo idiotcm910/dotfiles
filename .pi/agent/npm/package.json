@@ -1,0 +1,15 @@
+{
+  "name": "pi-extensions",
+  "private": true,
+  "dependencies": {
+    "@howaboua/pi-codex-conversion": "^3.0.12",
+    "@juicesharp/rpiv-advisor": "^2.5.0",
+    "@juicesharp/rpiv-ask-user-question": "^2.5.0",
+    "@juicesharp/rpiv-todo": "^2.5.0",
+    "pi-alibaba-models": "^1.0.14",
+    "pi-codex": "^0.1.1",
+    "pi-rtk-optimizer": "^0.9.0",
+    "pi-subagents": "^0.49.0",
+    "pi-zentui": "^0.20.0"
+  }
+}

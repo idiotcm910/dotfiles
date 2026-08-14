@@ -1,0 +1,17 @@
+*
+!.gitignore
+!README.md
+!agent/
+!agent/**
+agent/auth.json
+agent/**/auth.json
+agent/sessions/
+agent/sessions/**
+agent/npm/node_modules/
+agent/npm/package-lock.json
+agent/npm/.package-lock.json
+agent/git/
+agent/git/**
+agent/*.cache.json
+agent/models-store.json
+agent/alibaba-plan-models.cache.json

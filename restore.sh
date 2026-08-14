@@ -321,12 +321,61 @@ install_claude() {
   run npm install -g --prefix "$HOME/.local" @anthropic-ai/claude-code
 }
 
+install_grok() {
+  [[ "$ONLY" == "all" || "$ONLY" == "ai" ]] || return 0
+  if ((!DRY_RUN)) && command -v grok >/dev/null 2>&1; then
+    log "Grok CLI đã có"
+    return 0
+  fi
+
+  log "Cài Grok CLI"
+  if ((DRY_RUN)); then
+    print_command curl -fsSL https://x.ai/cli/install.sh -o /tmp/grok-install.sh
+    print_command bash /tmp/grok-install.sh
+    return 0
+  fi
+
+  local install_script
+  install_script="$(mktemp)"
+  curl -fsSL https://x.ai/cli/install.sh -o "$install_script"
+  bash "$install_script"
+  rm -f -- "$install_script"
+}
+
+install_pi() {
+  [[ "$ONLY" == "all" || "$ONLY" == "ai" ]] || return 0
+  if ((!DRY_RUN)) && command -v pi >/dev/null 2>&1; then
+    log "Pi coding agent đã có"
+    return 0
+  fi
+
+  log "Cài Pi coding agent bằng npm"
+  run npm install -g @earendil-works/pi-coding-agent
+}
+
 restore_ai_config() {
   [[ "$ONLY" == "all" || "$ONLY" == "ai" ]] || return 0
   log "Khôi phục config AI portable"
   copy_managed "$REPO_DIR/.codex/config.toml" "$HOME/.codex/config.toml"
   copy_managed "$REPO_DIR/.codex/prompts" "$HOME/.codex/prompts"
   copy_managed "$REPO_DIR/.codex/rules" "$HOME/.codex/rules"
+
+  copy_managed "$REPO_DIR/.grok/config.toml" "$HOME/.grok/config.toml"
+
+  copy_managed "$REPO_DIR/.pi/agent/settings.json" "$HOME/.pi/agent/settings.json"
+  copy_managed "$REPO_DIR/.pi/agent/alibaba-config.json" "$HOME/.pi/agent/alibaba-config.json"
+  copy_managed "$REPO_DIR/.pi/agent/themes" "$HOME/.pi/agent/themes"
+  copy_managed \
+    "$REPO_DIR/.pi/agent/extensions/pi-rtk-optimizer/config.json" \
+    "$HOME/.pi/agent/extensions/pi-rtk-optimizer/config.json"
+  copy_managed "$REPO_DIR/.pi/agent/npm/package.json" "$HOME/.pi/agent/npm/package.json"
+  if ((!DRY_RUN)) && command -v npm >/dev/null 2>&1; then
+    log "Cài npm packages cho Pi extensions"
+    (cd "$HOME/.pi/agent/npm" && npm install)
+  elif ((DRY_RUN)); then
+    print_command "(cd \"$HOME/.pi/agent/npm\" && npm install)"
+  fi
+
   [[ "$PROFILE" == "x11" ]] || return 0
   copy_managed "$REPO_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
   copy_managed "$REPO_DIR/.claude/agents" "$HOME/.claude/agents"
@@ -526,6 +575,8 @@ main() {
   restore_developer_workflow
   install_codex
   install_claude
+  install_grok
+  install_pi
   restore_ai_config
 }
 
