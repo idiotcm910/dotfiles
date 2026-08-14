@@ -321,27 +321,6 @@ install_claude() {
   run npm install -g --prefix "$HOME/.local" @anthropic-ai/claude-code
 }
 
-install_grok() {
-  [[ "$ONLY" == "all" || "$ONLY" == "ai" ]] || return 0
-  if ((!DRY_RUN)) && command -v grok >/dev/null 2>&1; then
-    log "Grok CLI đã có"
-    return 0
-  fi
-
-  log "Cài Grok CLI"
-  if ((DRY_RUN)); then
-    print_command curl -fsSL https://x.ai/cli/install.sh -o /tmp/grok-install.sh
-    print_command bash /tmp/grok-install.sh
-    return 0
-  fi
-
-  local install_script
-  install_script="$(mktemp)"
-  curl -fsSL https://x.ai/cli/install.sh -o "$install_script"
-  bash "$install_script"
-  rm -f -- "$install_script"
-}
-
 install_pi() {
   [[ "$ONLY" == "all" || "$ONLY" == "ai" ]] || return 0
   if ((!DRY_RUN)) && command -v pi >/dev/null 2>&1; then
@@ -359,8 +338,6 @@ restore_ai_config() {
   copy_managed "$REPO_DIR/.codex/config.toml" "$HOME/.codex/config.toml"
   copy_managed "$REPO_DIR/.codex/prompts" "$HOME/.codex/prompts"
   copy_managed "$REPO_DIR/.codex/rules" "$HOME/.codex/rules"
-
-  copy_managed "$REPO_DIR/.grok/config.toml" "$HOME/.grok/config.toml"
 
   copy_managed "$REPO_DIR/.pi/agent/settings.json" "$HOME/.pi/agent/settings.json"
   copy_managed "$REPO_DIR/.pi/agent/alibaba-config.json" "$HOME/.pi/agent/alibaba-config.json"
@@ -575,7 +552,6 @@ main() {
   restore_developer_workflow
   install_codex
   install_claude
-  install_grok
   install_pi
   restore_ai_config
 }
