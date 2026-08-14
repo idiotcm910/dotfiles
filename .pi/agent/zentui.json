@@ -1,0 +1,54 @@
+{
+  "components": {
+    "footer": {
+      "style": "starship",
+      "colorSource": "theme",
+      "modelLabel": "id",
+      "styles": {
+        "starship": {
+          "format": "$model $fill $context $sep $session_duration",
+          "responsive": true,
+          "compactFormat": "$model $wrap$context $wrap_sep$session_duration",
+          "compactMaxLines": 1,
+          "separator": "pipe",
+          "contextStyle": "text",
+          "contextThresholds": {
+            "warning": 70,
+            "error": 90
+          },
+          "segments": {
+            "cwd": false,
+            "sessionName": false,
+            "gitBranch": false,
+            "gitStatus": false,
+            "gitCounts": false,
+            "runtime": false,
+            "username": false,
+            "os": false,
+            "time": false,
+            "modelInfo": true,
+            "context": true,
+            "tokens": false,
+            "cost": false,
+            "sessionDuration": true,
+            "packageVersion": false,
+            "gitCommit": false,
+            "gitMetrics": false
+          },
+          "extensionStatuses": {
+            "defaultPlacement": "off",
+            "placements": {},
+            "colorModes": {}
+          }
+        }
+      }
+    }
+  },
+  "colors": {
+    "contextNormal": "bright-black",
+    "contextWarning": "bold yellow",
+    "contextError": "bold red",
+    "sessionDuration": "yellow",
+    "separator": "bright-black"
+  }
+}
