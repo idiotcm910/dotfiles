@@ -1,5 +1,7 @@
 [Hotkey/TriggerKeys]
-0=Alt+Shift+space
+# Tránh mọi tổ hợp có space: khi giữ Shift để viết hoa lúc gõ tiếng Việt,
+# chỉ cần chạm Alt là lần nhấn space kế tiếp bị nuốt thành lệnh chuyển.
+0=Control+grave
 
 [Behavior]
 # Keep the same input method and active state across all applications.
