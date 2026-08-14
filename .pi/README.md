@@ -14,13 +14,15 @@ Portable Pi agent configuration exported from `~/.pi/agent`.
 | `~/.pi/agent/themes/` | Custom / selected themes |
 | `~/.pi/agent/skills/` | Local user skills (auto-discovered by Pi) |
 | `~/.pi/agent/zentui.json` | Zentui footer/editor UI (Starship status line) |
+| `~/.pi/agent/config/` | Extension configs (e.g. pi-auto-compact) |
 | `~/.pi/agent/sessions/` | Chat history (not tracked) |
 
 ## Tracked in this repo
 
-- `agent/settings.json` — packages, theme, default provider/model/thinking, subagent model map
+- `agent/settings.json` — packages, theme, default provider/model/thinking, subagent model map, compaction off (handled by pi-auto-compact)
 - `agent/alibaba-config.json` — Alibaba plan endpoint URLs only
 - `agent/zentui.json` — footer: model, context, session tokens, cost, session duration
+- `agent/config/pi-auto-compact.json` — multi-model auto-compact at 60% + resume
 - `agent/extensions/pi-rtk-optimizer/config.json`
 - `agent/themes/*.json`
 - `agent/skills/` — local skills (`ui-ux-pro-max`, `web-testing`, `ui-styling`, `frontend-design`)

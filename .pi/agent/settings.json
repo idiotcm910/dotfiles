@@ -9,7 +9,8 @@
     "npm:pi-rtk-optimizer",
     "npm:pi-subagents",
     "npm:@juicesharp/rpiv-advisor",
-    "git:github.com/obra/superpowers"
+    "git:github.com/obra/superpowers",
+    "npm:@henryqw/pi-auto-compact"
   ],
   "theme": "atom-one-dark",
   "defaultProvider": "xai",
@@ -44,5 +45,8 @@
         "thinking": "medium"
       }
     }
+  },
+  "compaction": {
+    "enabled": false
   }
 }

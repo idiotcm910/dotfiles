@@ -2,6 +2,7 @@
   "name": "pi-extensions",
   "private": true,
   "dependencies": {
+    "@henryqw/pi-auto-compact": "^0.3.0",
     "@howaboua/pi-codex-conversion": "^3.0.12",
     "@juicesharp/rpiv-advisor": "^2.5.0",
     "@juicesharp/rpiv-ask-user-question": "^2.5.0",
