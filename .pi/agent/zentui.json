@@ -6,9 +6,9 @@
       "modelLabel": "id",
       "styles": {
         "starship": {
-          "format": "$model $fill $context $sep $session_duration",
+          "format": "$model $fill $context $sep $tokens $sep $cost $sep $session_duration",
           "responsive": true,
-          "compactFormat": "$model $wrap$context $wrap_sep$session_duration",
+          "compactFormat": "$model $wrap$context $wrap_sep$tokens $wrap_sep$cost $wrap_sep$session_duration",
           "compactMaxLines": 1,
           "separator": "pipe",
           "contextStyle": "text",
@@ -28,8 +28,8 @@
             "time": false,
             "modelInfo": true,
             "context": true,
-            "tokens": false,
-            "cost": false,
+            "tokens": true,
+            "cost": true,
             "sessionDuration": true,
             "packageVersion": false,
             "gitCommit": false,
@@ -49,6 +49,8 @@
     "contextWarning": "bold yellow",
     "contextError": "bold red",
     "sessionDuration": "yellow",
-    "separator": "bright-black"
+    "separator": "bright-black",
+    "tokens": "bright-black",
+    "cost": "bold green"
   }
 }

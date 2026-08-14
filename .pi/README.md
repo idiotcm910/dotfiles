@@ -20,7 +20,7 @@ Portable Pi agent configuration exported from `~/.pi/agent`.
 
 - `agent/settings.json` — packages, theme, default provider/model/thinking, subagent model map
 - `agent/alibaba-config.json` — Alibaba plan endpoint URLs only
-- `agent/zentui.json` — minimal footer: model, context usage, session duration
+- `agent/zentui.json` — footer: model, context, session tokens, cost, session duration
 - `agent/extensions/pi-rtk-optimizer/config.json`
 - `agent/themes/*.json`
 - `agent/skills/` — local skills (`ui-ux-pro-max`, `web-testing`, `ui-styling`, `frontend-design`)
