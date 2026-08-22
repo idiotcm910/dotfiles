@@ -15,6 +15,10 @@ Pi continues to store **one credential per provider** in `~/.pi/agent/auth.json`
 > - **Neither file is ever committed to git.**
 > - **Neither file is copied or restored by `restore.sh`.**
 > - All credentials must be added interactively via `/acc add` or adopted via `/acc adopt` on fresh machines.
+> - Antigravity OAuth **client id/secret** are never committed. Set them in the environment before `/acc add antigravity` fallback login:
+>   - `ANTIGRAVITY_CLIENT_ID`
+>   - `ANTIGRAVITY_CLIENT_SECRET`
+> - Optional: `XAI_CLIENT_ID` overrides the default public xAI device-code client id.
 
 ## Commands
 
