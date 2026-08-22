@@ -157,11 +157,16 @@ assert_not_contains "$ai_output" "polybar" "--only ai không cài Polybar"
 
 all_output="$(run_restore --dry-run)"
 assert_contains "$all_output" "https://aur.archlinux.org/google-chrome.git" "Chrome có fallback AUR chính thức"
-assert_contains "$all_output" "https://aur.archlinux.org/ibus-bamboo.git" "giữ bộ gõ IBus Bamboo từ AUR"
+assert_not_contains "$all_output" "https://aur.archlinux.org/fcitx5-lotus.git" "profile x11 mặc định không cài Fcitx5 Lotus"
 
-skip_aur_output="$(run_restore --dry-run --skip-aur)"
+skip_aur_output="$(run_restore --dry-run --skip-aur --profile wayland)"
 assert_not_contains "$skip_aur_output" "https://aur.archlinux.org/google-chrome.git" "--skip-aur bỏ qua Chrome"
-assert_not_contains "$skip_aur_output" "https://aur.archlinux.org/ibus-bamboo.git" "--skip-aur bỏ qua IBus Bamboo"
+assert_not_contains "$skip_aur_output" "https://aur.archlinux.org/fcitx5-lotus.git" "--skip-aur bỏ qua Fcitx5 Lotus"
+
+wayland_output="$(run_restore --dry-run --profile wayland)"
+assert_contains "$wayland_output" "https://aur.archlinux.org/fcitx5-lotus.git" "wayland cài Fcitx5 Lotus"
+assert_contains "$wayland_output" "fcitx5-lotus-server@" "wayland bật lotus server"
+assert_contains "$wayland_output" ".config/fcitx5" "wayland khôi phục fcitx5 config"
 
 printf '\n── Desktop và developer workflow ──\n'
 assert_contains "$all_output" ".config/qtile" "khôi phục Qtile config"

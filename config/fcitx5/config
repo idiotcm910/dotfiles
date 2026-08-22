@@ -9,3 +9,4 @@ ShareInputState=All
 ActiveByDefault=True
 resetStateWhenFocusIn=No
 PreloadInputMethod=True
+PreeditEnabledByDefault=True

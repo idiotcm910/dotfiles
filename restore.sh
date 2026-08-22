@@ -10,7 +10,7 @@ PROFILE="x11"
 BACKUP_ROOT="${BACKUP_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-backup/$(date +%Y%m%d-%H%M%S)}"
 
 readonly -a BASE_PACKAGES=(
-  base-devel git curl wget unzip zip jq fontconfig ttf-nerd-fonts-symbols-mono
+  base-devel git curl wget unzip zip jq less fontconfig ttf-nerd-fonts-symbols-mono
   ttf-iosevka-nerd obsidian
 )
 
@@ -29,7 +29,8 @@ readonly -a WAYLAND_DESKTOP_PACKAGES=(
   qt5-wayland qt6-wayland guvcview
   kitty thunar networkmanager nm-connection-editor
   pipewire pipewire-pulse wireplumber alsa-utils pavucontrol playerctl brightnessctl
-  fcitx5 fcitx5-bamboo fcitx5-gtk fcitx5-qt fcitx5-configtool
+  fcitx5 fcitx5-gtk fcitx5-qt fcitx5-configtool
+  extra-cmake-modules python-dbus python-qtpy
   polkit-kde-agent
 )
 
@@ -282,7 +283,10 @@ install_aur_apps() {
 
   log "Cài ứng dụng AUR"
   install_aur_package google-chrome
-  [[ "$PROFILE" == "wayland" ]] && install_aur_package orbit-wifi
+  if [[ "$PROFILE" == "wayland" ]]; then
+    install_aur_package fcitx5-lotus
+    install_aur_package orbit-wifi
+  fi
 }
 
 install_codex() {
@@ -364,21 +368,45 @@ restore_ai_config() {
   copy_managed "$REPO_DIR/.codex/rules" "$HOME/.codex/rules"
 
   copy_managed "$REPO_DIR/.pi/agent/settings.json" "$HOME/.pi/agent/settings.json"
+  copy_managed "$REPO_DIR/.pi/agent/keybindings.json" "$HOME/.pi/agent/keybindings.json"
+  copy_managed "$REPO_DIR/.pi/agent/mcp.json" "$HOME/.pi/agent/mcp.json"
   copy_managed "$REPO_DIR/.pi/agent/alibaba-config.json" "$HOME/.pi/agent/alibaba-config.json"
   copy_managed "$REPO_DIR/.pi/agent/zentui.json" "$HOME/.pi/agent/zentui.json"
   copy_managed "$REPO_DIR/.pi/agent/compact-thinking.json" "$HOME/.pi/agent/compact-thinking.json"
   copy_managed "$REPO_DIR/.pi/agent/config" "$HOME/.pi/agent/config"
   copy_managed "$REPO_DIR/.pi/agent/themes" "$HOME/.pi/agent/themes"
   copy_managed "$REPO_DIR/.pi/agent/skills" "$HOME/.pi/agent/skills"
+  # brainstorming override keeps companion assets from Superpowers package via symlinks
+  _sp_brain="$HOME/.pi/agent/git/github.com/obra/superpowers/skills/brainstorming"
+  if [[ -d "$_sp_brain" ]]; then
+    mkdir -p "$HOME/.pi/agent/skills/brainstorming"
+    if ((!DRY_RUN)); then
+      ln -sfn "$_sp_brain/visual-companion.md" "$HOME/.pi/agent/skills/brainstorming/visual-companion.md"
+      ln -sfn "$_sp_brain/spec-document-reviewer-prompt.md" "$HOME/.pi/agent/skills/brainstorming/spec-document-reviewer-prompt.md"
+      ln -sfn "$_sp_brain/scripts" "$HOME/.pi/agent/skills/brainstorming/scripts"
+    else
+      print_command "ln -sfn \"$_sp_brain/visual-companion.md\" \"$HOME/.pi/agent/skills/brainstorming/visual-companion.md\""
+      print_command "ln -sfn \"$_sp_brain/spec-document-reviewer-prompt.md\" \"$HOME/.pi/agent/skills/brainstorming/spec-document-reviewer-prompt.md\""
+      print_command "ln -sfn \"$_sp_brain/scripts\" \"$HOME/.pi/agent/skills/brainstorming/scripts\""
+    fi
+  fi
+  copy_managed "$REPO_DIR/.pi/agent/extensions/focus-mode.ts" "$HOME/.pi/agent/extensions/focus-mode.ts"
+  copy_managed "$REPO_DIR/.pi/agent/extensions/compact-tool-calls.ts" "$HOME/.pi/agent/extensions/compact-tool-calls.ts"
+  copy_managed "$REPO_DIR/.pi/agent/patches" "$HOME/.pi/agent/patches"
   copy_managed \
     "$REPO_DIR/.pi/agent/extensions/pi-rtk-optimizer/config.json" \
     "$HOME/.pi/agent/extensions/pi-rtk-optimizer/config.json"
+  copy_managed \
+    "$REPO_DIR/.pi/agent/extensions/pi-tool-display/config.json" \
+    "$HOME/.pi/agent/extensions/pi-tool-display/config.json"
   copy_managed "$REPO_DIR/.pi/agent/npm/package.json" "$HOME/.pi/agent/npm/package.json"
   if ((!DRY_RUN)) && command -v npm >/dev/null 2>&1; then
     log "Cài npm packages cho Pi extensions"
-    (cd "$HOME/.pi/agent/npm" && npm install)
+    (cd "$HOME/.pi/agent/npm" && npm install --legacy-peer-deps)
+    run node "$HOME/.pi/agent/patches/apply-focus-mode.mjs"
   elif ((DRY_RUN)); then
-    print_command "(cd \"$HOME/.pi/agent/npm\" && npm install)"
+    print_command "(cd \"$HOME/.pi/agent/npm\" && npm install --legacy-peer-deps)"
+    print_command "node \"$HOME/.pi/agent/patches/apply-focus-mode.mjs\""
   fi
 
   [[ "$PROFILE" == "x11" ]] || return 0
@@ -431,6 +459,8 @@ restore_desktop_config() {
   run sudo systemctl enable NetworkManager
   [[ "$PROFILE" == "wayland" ]] && run sudo systemctl enable --now bluetooth
   if [[ "$PROFILE" == "wayland" && "$SKIP_AUR" -eq 0 ]]; then
+    # Lotus uinput proxy (Smooth/Uinput modes); Surrounding Text works without it.
+    run sudo systemctl enable --now "fcitx5-lotus-server@$(whoami).service"
     run systemctl --user daemon-reload
     run systemctl --user enable --now orbit
   fi
@@ -482,6 +512,32 @@ install_sesh() {
   tar -xzf "$temp_root/sesh.tar.gz" -C "$HOME/.local/bin" sesh
   chmod +x "$HOME/.local/bin/sesh"
   rm -rf -- "$temp_root"
+}
+
+install_brew() {
+  [[ "$ONLY" == "all" || "$ONLY" == "dev" ]] || return 0
+  local brew_bin="/home/linuxbrew/.linuxbrew/bin/brew"
+  if [[ -x "$brew_bin" ]]; then
+    return 0
+  fi
+
+  log "Cài Homebrew"
+  if ((DRY_RUN)); then
+    print_command bash -c \
+      'NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+    return 0
+  fi
+
+  NONINTERACTIVE=1 /bin/bash -c \
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  [[ -x "$brew_bin" ]] || die "Cài đặt Homebrew không thành công"
+}
+
+install_brew_fish() {
+  [[ "$ONLY" == "all" || "$ONLY" == "dev" ]] || return 0
+  ensure_shell_block "$HOME/.config/fish/conf.d/brew.fish" "brew" \
+    'set --global --export HOMEBREW_PREFIX "/home/linuxbrew/.linuxbrew"; fish_add_path --global --move --path "/home/linuxbrew/.linuxbrew/bin" "/home/linuxbrew/.linuxbrew/sbin"'
 }
 
 install_blesh() {
@@ -538,6 +594,8 @@ configure_bash() {
 fi'
   ensure_shell_block "$HOME/.bashrc" "ble.sh" \
     '[[ $- == *i* ]] && [[ -f "$HOME/.local/share/blesh/ble.sh" ]] && source "$HOME/.local/share/blesh/ble.sh"'
+  ensure_shell_block "$HOME/.bashrc" "brew" \
+    'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"'
 }
 
 setup_nvim() {
@@ -575,6 +633,8 @@ main() {
   ensure_arch
   install_pacman_packages
   configure_user_path
+  install_brew
+  install_brew_fish
   install_aur_apps
   restore_desktop_config
   restore_developer_workflow
