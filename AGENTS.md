@@ -16,9 +16,10 @@ When changing or repairing desktop behavior in this repository:
    `wayland`) and keep `config/hypr`, `config/waybar`, and their startup
    dependencies consistent.
 6. For Vietnamese input on Hyprland, use Fcitx5-Lotus (AUR `fcitx5-lotus`).
-   Keep package list, `config/fcitx5` profile (DefaultIM=lotus), Lotus conf +
-   `lotus-app-rules.conf` (Kitty → Surrounding Text), Wayland IM env vars, and
-   autostart in sync; enable `fcitx5-lotus-server@$USER` for uinput modes.
+   Keep package list, `config/fcitx5` profile (DefaultIM=lotus), Lotus conf
+   (Mode=Uinput Smooth) + `lotus-app-rules.conf` (Kitty/Chrome → Smooth),
+   Wayland IM env vars, and autostart in sync; enable
+   `fcitx5-lotus-server@$USER` (required for Smooth/uinput modes).
    Avoid hotkeys claimed by Hyprland. Keep Chrome's Wayland IME flag in
    `config/chrome-flags.conf` and restore it to `~/.config/chrome-flags.conf`.
    Kitty must keep `wayland_enable_ime yes` so Lotus can type Vietnamese.
