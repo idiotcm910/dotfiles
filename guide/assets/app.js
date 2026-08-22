@@ -50,6 +50,7 @@ const PAGES = [
   { page: "hyprland-shortcuts",file: "hyprland-shortcuts.html",n: "10", label: "Hyprland · Phím tắt" },
   { page: "waybar-mockup",   file: "waybar-mockup.html",   n: "11", label: "Waybar · Mockup" },
   { page: "qtile",           file: "qtile.html",           n: "12", label: "Qtile" },
+  { page: "pi-agent",        file: "pi-agent.html",        n: "13", label: "Pi Agent" },
 ];
 
 if (typeof module !== "undefined" && module.exports) {

@@ -121,17 +121,26 @@ a:hover{text-decoration:underline}
 
 .rows{display:grid; grid-template-columns:1fr; gap:0}
 @media(min-width:760px){ .rows.two{grid-template-columns:1fr 1fr; column-gap:2.6rem} }
-.row{display:grid; grid-template-columns:minmax(120px,190px) 1fr; gap:1rem; align-items:baseline; padding:.55rem 0; border-bottom:1px solid var(--line)}
-.row .keys{display:flex; flex-wrap:wrap; gap:.3rem; align-items:center}
-.row .d{color:var(--ink-soft); font-size:.92rem}
+.row{display:grid; grid-template-columns:minmax(0,min(46%,260px)) minmax(0,1fr); gap:.85rem 1rem; align-items:start; padding:.55rem 0; border-bottom:1px solid var(--line)}
+.row .keys{display:flex; flex-wrap:wrap; gap:.3rem; align-items:center; min-width:0; max-width:100%}
+.row .keys > *{max-width:100%}
+.row .d{color:var(--ink-soft); font-size:.92rem; min-width:0; overflow-wrap:anywhere}
 .row .d b{color:var(--ink); font-weight:600}
 .row.hide{display:none}
+/* Lệnh dài (API / path): xếp dọc, không đè mô tả */
+.row.stack{grid-template-columns:1fr; gap:.28rem}
+.row.stack .keys{width:100%}
+@media(max-width:759px){
+  .row{grid-template-columns:1fr; gap:.28rem}
+}
 
 kbd{font-family:"JetBrains Mono",ui-monospace,monospace; font-weight:700; font-size:.78rem; color:var(--key-ink); background:var(--key-face); border:1px solid var(--key-edge); border-radius:6px; padding:.16rem .48rem; box-shadow:var(--shadow); line-height:1.4; white-space:nowrap}
 kbd.mod{color:var(--rust)}
 .plus{color:var(--ink-faint); font-size:.72rem; font-family:"JetBrains Mono"}
 .then{color:var(--ink-faint); font-size:.68rem; font-style:italic; margin:0 .1rem; font-family:"Fraunces",serif}
-code.cmd{font-family:"JetBrains Mono",monospace; font-weight:500; font-size:.82rem; background:var(--paper-2); border:1px solid var(--line); border-radius:5px; padding:.12rem .4rem; color:var(--rust-deep); white-space:nowrap}
+code.cmd{font-family:"JetBrains Mono",monospace; font-weight:500; font-size:.82rem; background:var(--paper-2); border:1px solid var(--line); border-radius:5px; padding:.12rem .4rem; color:var(--rust-deep); white-space:nowrap; max-width:100%; box-decoration-break:clone; -webkit-box-decoration-break:clone}
+/* Trong cột keys: cho phép xuống dòng để không tràn sang .d */
+.row .keys code.cmd{white-space:normal; overflow-wrap:anywhere; word-break:break-word; display:inline-block; line-height:1.45}
 
 /* overview extras */
 .arch{margin:1.8rem 0; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--paper-2)}
@@ -157,6 +166,8 @@ code.cmd{font-family:"JetBrains Mono",monospace; font-weight:500; font-size:.82r
 
 .callout{border-left:3px solid var(--rust); background:var(--paper-2); border-radius:0 8px 8px 0; padding:.85rem 1.1rem; margin:1.5rem 0; font-size:.9rem; color:var(--ink-soft)}
 .callout b{color:var(--ink)}
+pre.codeblock{margin:1rem 0 1.2rem;padding:1rem 1.1rem;background:var(--paper-2);border:1px solid var(--line);border-radius:10px;overflow:auto}
+pre.codeblock code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.8rem;line-height:1.55;color:var(--ink);white-space:pre}
 .noresult{display:none; padding:2rem 0; color:var(--ink-faint); font-family:"Fraunces",serif; font-size:1.2rem; font-style:italic}
 .noresult.on{display:block}
 

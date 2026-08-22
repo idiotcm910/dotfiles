@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pi Agent · Vibe Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="pi-agent" data-title="Pi Agent">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="content">
+      <header class="topbar" id="topbar"></header>
+      <div class="doc">
+        <p class="noresult" id="noresult">Không tìm thấy phím nào khớp — thử từ khoá khác.</p>
+
+        <p class="lede">Cách <b>mở Pi</b>, <b>gọi subagent</b>, và quản lý <b>nhiều tài khoản</b> Antigravity / xAI bằng extension <code class="cmd">/acc</code>. Chỉ lệnh dùng hàng ngày.</p>
+        <p class="note">Trong TUI bấm <kbd>/</kbd> để gõ slash. Tab = autocomplete. Sau khi restore extension mới: <code class="cmd">/reload</code>.</p>
+
+        <div class="group">
+          <h2>Mở Pi</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">pi</code></div><div class="d">Mở TUI</div></div>
+            <div class="row"><div class="keys"><code class="cmd">pi -p "…"</code></div><div class="d">Chạy 1 prompt rồi thoát</div></div>
+            <div class="row"><div class="keys"><code class="cmd">pi -c</code></div><div class="d">Continue session trước</div></div>
+            <div class="row"><div class="keys"><code class="cmd">pi -r</code></div><div class="d">Chọn session resume</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">pi --model xai/grok-4.5</code></div><div class="d">Chọn model session</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">pi --thinking medium</code></div><div class="d">Thinking: off → max</div></div>
+            <div class="row"><div class="keys"><code class="cmd">pi agents</code></div><div class="d">Xem danh sách agent</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/reload</code></div><div class="d">Reload extension / config</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Gọi agent — lệnh chính</h2>
+          <div class="rows two">
+            <div class="row stack"><div class="keys"><code class="cmd">/run &lt;agent&gt; &lt;task&gt;</code></div><div class="d">Cách gọi mọi agent</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/run worker Fix flaky test</code></div><div class="d">Implement</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/run scout Map auth module</code></div><div class="d">Recon codebase</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/run reviewer Review last commit</code></div><div class="d">Review</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/run researcher Compare X vs Y</code></div><div class="d">Research</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/run oracle Challenge this plan</code></div><div class="d">Advisory / anti-drift</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/run delegate Quick helper task</code></div><div class="d">Child nhẹ</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/ui-ux-designer &lt;task&gt;</code></div><div class="d">Design + implement UI</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/design &lt;task&gt;</code></div><div class="d">Alias của ui-ux-designer</div></div>
+          </div>
+          <div class="callout">Cú pháp chung: <code class="cmd">/run &lt;tên-agent&gt; &lt;việc cần làm&gt;</code>. Agent user có slash riêng thì gõ thẳng <code class="cmd">/tên-agent</code>.</div>
+        </div>
+
+        <div class="group">
+          <h2>Agent có sẵn</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">scout</code></div><div class="d">Recon codebase nhanh</div></div>
+            <div class="row"><div class="keys"><code class="cmd">worker</code></div><div class="d">Viết / sửa code</div></div>
+            <div class="row"><div class="keys"><code class="cmd">reviewer</code></div><div class="d">Review diff · plan · PR</div></div>
+            <div class="row"><div class="keys"><code class="cmd">researcher</code></div><div class="d">Research → brief</div></div>
+            <div class="row"><div class="keys"><code class="cmd">oracle</code></div><div class="d">Góp ý hướng / rủi ro</div></div>
+            <div class="row"><div class="keys"><code class="cmd">delegate</code></div><div class="d">Task phụ nhẹ</div></div>
+            <div class="row"><div class="keys"><code class="cmd">ui-ux-designer</code></div><div class="d">UI/UX design + code</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Tuỳ chọn khi gọi</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">--bg</code></div><div class="d">Chạy nền (async)</div></div>
+            <div class="row"><div class="keys"><code class="cmd">--async</code></div><div class="d">= <code class="cmd">--bg</code></div></div>
+            <div class="row"><div class="keys"><code class="cmd">--fork</code></div><div class="d">Kế thừa context session</div></div>
+            <div class="row"><div class="keys"><code class="cmd">--fresh</code></div><div class="d">Context sạch</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">[model=xai/grok-4.5]</code></div><div class="d">Đổi model lần này</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">[skill=a+b]</code></div><div class="d">Gắn skill lần này</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">[output=report.md]</code></div><div class="d">Ghi output ra file</div></div>
+          </div>
+          <p>Ví dụ:</p>
+          <div class="rows two">
+            <div class="row stack"><div class="keys"><code class="cmd">/run worker Fix CI --bg</code></div><div class="d">Worker chạy nền</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/run reviewer Review PR --fresh</code></div><div class="d">Review context sạch</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/run worker[model=xai/grok-4.5] …</code></div><div class="d">Override model</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/design Pricing page --bg</code></div><div class="d">Design agent nền</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/ui-ux-designer [model=xai/grok-4.5] Hero --fresh</code></div><div class="d">Model + fresh</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Recipe có sẵn</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">/parallel-review</code></div><div class="d">Nhiều reviewer song song</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/parallel-research</code></div><div class="d">Research song song</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/review-loop</code></div><div class="d">Review ↔ fix lặp</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/prompt-workflow list</code></div><div class="d">Xem workflow prompt</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/prompt-workflow &lt;name&gt; …</code></div><div class="d">Chạy workflow theo tên</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Theo dõi / điều khiển child</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">/subagents-fleet</code></div><div class="d">Xem child đang chạy</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/subagents-stop [id]</code></div><div class="d">Dừng async</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/subagents-detach [id]</code></div><div class="d">Tách foreground, giữ chạy</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/subagent-cost</code></div><div class="d">Cost session</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/subagents-doctor</code></div><div class="d">Chẩn đoán khi lỗi launch</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/subagents</code></div><div class="d">Admin agent (model…)</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Chat thường (không slash)</h2>
+          <div class="rows two">
+            <div class="row stack"><div class="keys"><code class="cmd">Dùng scout map auth</code></div><div class="d">Parent tự spawn scout</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">Cho worker fix test flaky</code></div><div class="d">Parent tự spawn worker</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">Reviewer check diff hiện tại</code></div><div class="d">Parent tự spawn reviewer</div></div>
+          </div>
+          <p class="note">Slash <code class="cmd">/run</code> chắc hơn chat tự do — chọn đúng agent + task ngay.</p>
+        </div>
+
+        <div class="group">
+          <h2>Tài khoản · <code class="cmd">/acc</code> <span class="tag">pi-accounts</span></h2>
+          <p>Vault nhiều account Antigravity + xAI (Grok). Kết quả lệnh hiện dạng <b>overlay pager nổi</b> (cuộn được, không vào context AI, đóng bằng <kbd>Enter</kbd> / <kbd>Esc</kbd> / <kbd>q</kbd>).</p>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">/acc</code></div><div class="d">Help ngắn + active mỗi provider</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/acc ls</code></div><div class="d">Panel TUI (không vào context AI) · card nhiều dòng · <code class="cmd">*</code> active</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/acc clear</code></div><div class="d">Đóng panel /acc</div></div>
+            <div class="row"><div class="keys"><code class="cmd">/acc usage</code></div><div class="d">Refresh usage <b>tất cả</b> rồi in card (plan + từng quota một dòng)</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc usage &lt;alias&gt;</code></div><div class="d">Refresh đúng một alias</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc add &lt;provider&gt; &lt;alias&gt;</code></div><div class="d">OAuth riêng (không gọi <code class="cmd">/login</code>) · lưu vault · active nếu provider chưa có active</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc switch &lt;alias&gt;</code></div><div class="d">Chờ idle → sync active cũ → ghi slot → đánh dấu active</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc rename &lt;old&gt; &lt;new&gt;</code></div><div class="d">Đổi alias (trùng = lỗi)</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc rm &lt;alias&gt;</code></div><div class="d">Xoá account <b>không</b> active</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc rm &lt;alias&gt; --force</code></div><div class="d">Xoá cả khi active + xoá key provider trong <code class="cmd">auth.json</code></div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc adopt &lt;alias&gt; [provider]</code></div><div class="d">Nhận credential đang nằm trong <code class="cmd">auth.json</code> vào vault (alias mới <b>bắt buộc</b> provider)</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Provider &amp; alias</h2>
+          <div class="rows two">
+            <div class="row"><div class="keys"><code class="cmd">antigravity</code> · <code class="cmd">agy</code></div><div class="d">→ provider <code class="cmd">antigravity</code></div></div>
+            <div class="row"><div class="keys"><code class="cmd">xai</code> · <code class="cmd">grok</code></div><div class="d">→ provider <code class="cmd">xai</code></div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">[A-Za-z0-9][A-Za-z0-9_-]{0,31}</code></div><div class="d">Alias 1–32 ký tự · không space · không bắt đầu bằng <code class="cmd">-</code></div></div>
+          </div>
+          <p>Ví dụ hằng ngày:</p>
+          <div class="rows two">
+            <div class="row stack"><div class="keys"><code class="cmd">/acc add agy work</code></div><div class="d">Login Google → vault <code class="cmd">work</code></div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc add agy home</code></div><div class="d">Account thứ hai · thường <b>stored, not active</b></div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc add grok personal</code></div><div class="d">Login xAI device-code</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc switch home</code></div><div class="d">Request Antigravity kế tiếp dùng <code class="cmd">home</code></div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc ls</code></div><div class="d">Xem * active + usage cache</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc usage</code></div><div class="d">Cập nhật quota (xAI có thể <code class="cmd">quota n/a</code>)</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">/acc adopt extra antigravity</code></div><div class="d">Sau <code class="cmd">/login antigravity</code> — gắn slot vào vault</div></div>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>File &amp; bảo mật <span class="tag">secrets</span></h2>
+          <div class="rows two">
+            <div class="row stack"><div class="keys"><code class="cmd">~/.pi/agent/accounts.json</code></div><div class="d">Vault multi-account · mode <code class="cmd">0600</code> · <b>không</b> commit · <b>không</b> restore</div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">~/.pi/agent/auth.json</code></div><div class="d">Slot live của Pi (1 credential / provider) · extension chỉ đụng key <code class="cmd">antigravity</code> + <code class="cmd">xai</code></div></div>
+            <div class="row stack"><div class="keys"><code class="cmd">.pi/agent/extensions/pi-accounts/</code></div><div class="d">Source trong repo · restore profile <code class="cmd">ai</code> copy vào <code class="cmd">~/.pi/agent/extensions/</code></div></div>
+          </div>
+          <div class="callout"><b>Không in token.</b> Lệnh không bao giờ hiện access/refresh/JWT. Active <code class="cmd">rm</code> cần <code class="cmd">--force</code>. Alias sai gõ gần đúng sẽ gợi ý: <code class="cmd">did you mean: …</code>.</div>
+        </div>
+
+        <div class="callout"><b>Nhớ:</b> <code class="cmd">/run &lt;agent&gt; &lt;task&gt;</code> · design dùng <code class="cmd">/design</code> · account dùng <code class="cmd">/acc ls</code> · <code class="cmd">/acc switch &lt;alias&gt;</code> · thêm account <code class="cmd">/acc add agy|grok &lt;alias&gt;</code> · nền thêm <code class="cmd">--bg</code>.</div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

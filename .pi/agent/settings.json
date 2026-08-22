@@ -4,22 +4,33 @@
     "npm:@howaboua/pi-codex-conversion",
     "npm:pi-alibaba-models",
     "npm:pi-zentui",
-    "npm:@nguyenquangthai/pi-todo",
     "npm:@juicesharp/rpiv-ask-user-question",
     "npm:pi-rtk-optimizer",
     "npm:pi-subagents",
+    "npm:pi-mcp-adapter",
     "npm:@juicesharp/rpiv-advisor",
     "git:github.com/obra/superpowers",
     "npm:@henryqw/pi-auto-compact",
     "npm:pi-image-tools",
     "npm:pi-tool-display",
-    "npm:pi-compact-thinking"
+    "npm:pi-compact-thinking",
+    "npm:@nguyenquangthai/pi-todo",
+    "npm:@bacnh85/pi-agy",
+    "npm:pi-antigravity"
   ],
+  "lastChangelogVersion": "0.84.2",
   "theme": "atom-one-dark",
   "defaultProvider": "xai",
   "defaultModel": "grok-4.5",
   "defaultThinkingLevel": "medium",
   "hideThinkingBlock": true,
+  "tuiMode": "fullscreen",
+  "fullscreenScrollbar": "auto",
+  "fullscreenExitOutput": "resume-hint",
+  "showHardwareCursor": false,
+  "markdown": {
+    "mermaid": "off"
+  },
   "subagents": {
     "defaultModel": "xai/grok-4.5",
     "defaultThinking": "medium",
@@ -51,6 +62,8 @@
     }
   },
   "compaction": {
-    "enabled": false
+    "enabled": false,
+    "reserveTokens": 16384,
+    "keepRecentTokens": 24000
   }
 }

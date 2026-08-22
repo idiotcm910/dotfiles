@@ -1,0 +1,80 @@
+{
+  "debug": false,
+  "enabled": true,
+  "registerToolOverrides": {
+    "read": false,
+    "grep": false,
+    "find": false,
+    "ls": false,
+    "bash": false,
+    "edit": false,
+    "write": false
+  },
+  "customToolOverrides": {
+    "todo_write": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "todo_update": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "todo_read": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "todo_diagnose": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "subagent": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "subagent_wait": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "subagent_supervisor": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "ask_user_question": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "codex_ask": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    },
+    "agy_execute": {
+      "enabled": true,
+      "kind": "generic",
+      "outputMode": "hidden"
+    }
+  },
+  "enableNativeUserMessageBox": false,
+  "readOutputMode": "hidden",
+  "searchOutputMode": "hidden",
+  "mcpOutputMode": "hidden",
+  "previewLines": 1,
+  "expandedPreviewMaxLines": 4000,
+  "bashOutputMode": "summary",
+  "bashCollapsedLines": 0,
+  "diffViewMode": "unified",
+  "diffIndicatorMode": "none",
+  "diffSplitMinWidth": 120,
+  "diffCollapsedLines": 4,
+  "diffWordWrap": true,
+  "showTruncationHints": false,
+  "showRtkCompactionHints": false
+}

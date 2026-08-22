@@ -1,0 +1,4 @@
+{
+  "tui.altScreen.bottom": ["ctrl+alt+down", "ctrl+shift+b"],
+  "tui.altScreen.top": ["ctrl+alt+up", "ctrl+shift+t"]
+}
